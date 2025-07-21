@@ -37,9 +37,8 @@ const Footer = () => {
               <img 
                 src="/favicon.ico" 
                 alt="Phel Arts" 
-                className="w-10 h-10"
+                className="w-20 h-20"
               />
-              <span className="text-2xl font-bold">Phel Arts</span>
             </div>
             
             <p className="text-lg text-gray-300 leading-relaxed max-w-md">
@@ -58,7 +57,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3 text-gray-300">
                 <MapPin className="w-5 h-5 text-orange-400" />
-                <span>San Francisco, CA</span>
+                <span>Port Harcourt, Nigeria</span>
               </div>
             </div>
 
