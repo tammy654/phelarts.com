@@ -23,6 +23,9 @@
            <div className="flex flex-wrap justify-center gap-4">
              {filters.map((filter) => (
                <button
+)
+)
+}
 @@ .. @@
        {/* Portfolio Grid */}
        <section className="py-24 bg-[#fefefe]">
@@ -32,6 +35,9 @@
                <div
                  key={index}
                  className="group"
+       )
+       )
+       }
 +                data-aos="fade-up"
 +                data-aos-delay={index * 100}
                >
