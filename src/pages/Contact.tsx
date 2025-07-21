@@ -54,8 +54,8 @@ const Contact = () => {
       icon: Phone,
       title: 'Call us',
       description: 'Speak directly with our team during business hours',
-      contact: '+1 (555) 123-4567',
-      action: 'tel:+15551234567'
+      contact: '+234 (906) 755-6062',
+      action: 'tel:+2349067556062'
     },
     {
       icon: MessageCircle,
@@ -89,7 +89,7 @@ const Contact = () => {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             Get in Touch
           </h1>
@@ -112,13 +112,15 @@ const Contact = () => {
 
       {/* Contact Methods */}
       <section className="py-16 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <div className="grid md:grid-cols-3 gap-8">
             {contactMethods.map((method, index) => (
               <a
                 key={index}
                 href={method.action}
                 className="group p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all duration-300 text-center"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   <method.icon className="w-8 h-8 text-[#fefefe]" />
@@ -158,7 +160,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <div className="font-semibold text-[#242424] mb-1">Call us</div>
-                      <div className="text-gray-600">+1 (555) 123-4567</div>
+                      <div className="text-gray-600">+234 (906) 755-6062</div>
                     </div>
                   </div>
 

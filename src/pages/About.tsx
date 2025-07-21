@@ -58,7 +58,7 @@ const About = () => {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             About Phel Arts
           </h1>
@@ -71,10 +71,10 @@ const About = () => {
 
       {/* Story Section */}
       <section className="py-24 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Story */}
-            <div className="space-y-8">
+            <div className="space-y-8" data-aos="fade-right">
               <h2 className="text-4xl lg:text-5xl font-bold text-[#242424]">
                 Our Story
               </h2>
@@ -108,7 +108,7 @@ const About = () => {
             </div>
 
             {/* Image */}
-            <div className="relative">
+            <div className="relative" data-aos="fade-left">
               <div className="relative overflow-hidden rounded-3xl">
                 <img
                   src="https://images.pexels.com/photos/3584994/pexels-photo-3584994.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -124,7 +124,7 @@ const About = () => {
 
       {/* Stats */}
       <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#242424] mb-6">
               By the Numbers
@@ -139,6 +139,8 @@ const About = () => {
               <div
                 key={index}
                 className="text-center p-8 rounded-2xl bg-[#fefefe] hover:shadow-lg transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="w-8 h-8 text-[#fefefe]" />
@@ -226,7 +228,7 @@ const About = () => {
               Book a Call
             </a>
             <a
-              href="/portfolio"
+              href="/our-work"
               className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
             >
               View Our Work

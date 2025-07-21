@@ -80,7 +80,7 @@ const Services = () => {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             Our Services
           </h1>
@@ -92,7 +92,7 @@ const Services = () => {
             href="/book-call"
             className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center space-x-2"
           >
-            <span>Get Started</span>
+            <span>Start a Project</span>
             <ArrowRight className="w-5 h-5" />
           </a>
         </div>
@@ -100,12 +100,14 @@ const Services = () => {
 
       {/* Services Grid */}
       <section className="py-24 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <div className="grid lg:grid-cols-2 gap-12">
             {services.map((service, index) => (
               <div
                 key={index}
                 className="group p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-gray-100"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <service.icon className="w-8 h-8 text-[#fefefe]" />

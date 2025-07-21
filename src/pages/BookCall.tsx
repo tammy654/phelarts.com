@@ -70,7 +70,7 @@ const BookCall = () => {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             Book a Call
           </h1>
@@ -93,15 +93,15 @@ const BookCall = () => {
 
       {/* Benefits Section */}
       <section className="py-16 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#242424] mb-4">What you'll get</h2>
             <p className="text-gray-600">Everything you need to make an informed decision about your project.</p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="200">
             {benefits.map((benefit, index) => (
-              <div key={index} className="flex items-center space-x-3 p-4 rounded-xl bg-gray-50">
+              <div key={index} className="flex items-center space-x-3 p-4 rounded-xl bg-gray-50" data-aos="fade-up" data-aos-delay={index * 50}>
                 <div className="w-6 h-6 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-full flex items-center justify-center flex-shrink-0">
                   <Check className="w-4 h-4 text-[#fefefe]" />
                 </div>
@@ -114,7 +114,7 @@ const BookCall = () => {
 
       {/* Booking Form */}
       <section className="py-24 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <form onSubmit={handleSubmit} className="bg-[#fefefe] rounded-3xl p-8 lg:p-12 shadow-lg">
             <h2 className="text-3xl font-bold text-[#242424] mb-8 text-center">Schedule Your Call</h2>
             

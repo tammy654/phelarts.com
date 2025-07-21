@@ -8,7 +8,7 @@ const Home = () => {
       
       {/* Quick Services Preview */}
       <section className="py-24 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#242424] mb-6">
               What we create
@@ -18,7 +18,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="200">
             {[
               {
                 title: '2D Animation',
@@ -36,7 +36,7 @@ const Home = () => {
                 image: 'https://images.pexels.com/photos/3945312/pexels-photo-3945312.jpeg?auto=compress&cs=tinysrgb&w=600'
               }
             ].map((service, index) => (
-              <div key={index} className="group cursor-pointer">
+              <div key={index} className="group cursor-pointer" data-aos="fade-up" data-aos-delay={index * 100}>
                 <div className="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
                   <img
                     src={service.image}
@@ -64,7 +64,7 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="/portfolio"
+              href="/our-work"
               className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
             >
               View Our Work
@@ -73,7 +73,7 @@ const Home = () => {
               href="/book-call"
               className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
             >
-              Book a Call
+              Start a Project
             </a>
           </div>
         </div>
