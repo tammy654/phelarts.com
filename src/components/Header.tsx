@@ -118,12 +118,11 @@ const Header = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#ff9a1d] to-[#016952] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-              <Play className="w-5 h-5 text-[#fefefe]" />
-            </div>
-            <span className={`text-2xl font-bold tracking-tight transition-colors ${
-              isScrolled ? 'text-[#242424]' : location.pathname === '/' ? 'text-[#fefefe]' : 'text-[#242424]'
-            }`}>Phel Arts</span>
+            <img 
+              src="/favicon.ico" 
+              alt="Phel Arts" 
+              className="w-10 h-10 group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Navigation */}
