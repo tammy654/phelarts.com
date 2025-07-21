@@ -35,7 +35,7 @@ const Footer = () => {
           <div className="lg:col-span-2 space-y-8">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-emerald-600 rounded-2xl flex items-center justify-center">
-                <Play className="w-5 h-5 text-white" />
+              
               </div>
               <span className="text-2xl font-bold">Phel Arts</span>
             </div>
