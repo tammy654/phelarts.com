@@ -121,7 +121,7 @@ const Header = () => {
             <img 
               src="/favicon.ico" 
               alt="Phel Arts" 
-              className="w-10 h-10 group-hover:scale-105 transition-transform"
+              className="w-20 h-20 group-hover:scale-105 transition-transform"
             />
           </Link>
 
