@@ -77,7 +77,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900 mb-1">Visit us</div>
-                    <div className="text-gray-600">San Francisco, CA</div>
+                    <div className="text-gray-600">Port Harcourt, Nigeria</div>
                   </div>
                 </div>
               </div>
