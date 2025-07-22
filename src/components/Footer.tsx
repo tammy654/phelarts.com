@@ -105,30 +105,31 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Section */}
-        <div className="bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl p-8 mb-12">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold mb-4">Stay in the loop</h3>
-            <p className="text-gray-300">
-              Get the latest animation trends, tips, and project updates delivered to your inbox.
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-xl overflow-hidden">
-            <iframe 
-              src="https://docs.google.com/forms/d/e/1FAIpQLScwu_rbqz3itky1arUn_SBkYTWaAe3DCaAopaQ1vs6EPYo61g/viewform?embedded=true" 
-            
-              width="100%" 
-              height="451" 
-              frameBorder="0" 
-              marginHeight={0} 
-              marginWidth={0}
-              className="w-full"
-              title="Newsletter Subscription Form"
-            >
-              Loading…
-            </iframe>
-          </div>
-        </div>
+        <div className="bg-[#016952] rounded-2xl px-6 py-10 md:px-12 md:py-16 mb-12 shadow-lg max-w-4xl mx-auto">
+  <div className="text-center mb-8">
+    <h3 className="text-2xl md:text-3xl font-bold text-[#ff9a1d] mb-3">
+      Stay in the Loop
+    </h3>
+    <p className="text-[#fefefe] text-base md:text-lg leading-relaxed">
+      Get the latest animation trends, tips, and project updates delivered to your inbox.
+    </p>
+  </div>
+
+  <div className="bg-[#fefefe] rounded-xl overflow-hidden shadow-md">
+    <iframe 
+      src="https://docs.google.com/forms/d/e/1FAIpQLScwu_rbqz3itky1arUn_SBkYTWaAe3DCaAopaQ1vs6EPYo61g/viewform?embedded=true" 
+      width="100%" 
+      height="520" 
+      frameBorder="0" 
+      marginHeight={0} 
+      marginWidth={0}
+      className="w-full border-none"
+      title="Newsletter Subscription Form"
+    >
+      Loading…
+    </iframe>
+  </div>
+</div>
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8">
