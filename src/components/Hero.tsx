@@ -52,19 +52,19 @@ const Hero = () => {
       </div>
 
       {/* Video Controls */}
-      <div className="absolute top-1/2 left-8 transform -translate-y-1/2 z-20">
+      <div className="absolute top-1/2 left-6 transform -translate-y-1/2 z-20">
         <button
           onClick={prevVideo}
-          className="w-12 h-36 bg-[#fefefe]/0  border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 backdrop-blur-2xl transition-all duration-300"
+          className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 backdrop-blur-2xl transition-all duration-300"
         >
           <ChevronLeft className="w-6 h-6 text-[#fefefe]/30" />
         </button>
       </div>
       
-      <div className="absolute top-1/2 right-8 transform -translate-y-1/2 z-20">
+      <div className="absolute top-1/2 right-6 transform -translate-y-1/2 z-20">
         <button
           onClick={nextVideo}
-          className="w-12 h-40 bg-transparent /0 border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 backdrop-blur-2xl transition-all duration-300"
+          className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 backdrop-blur-2xl transition-all duration-300"
         >
           <ChevronRight className="w-6 h-6 text-[#fefefe]/30" />
         </button>
