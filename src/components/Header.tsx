@@ -158,24 +158,26 @@ const Header = () => {
 
                 {/* Dropdown Menu */}
                 {item.dropdown && activeDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-2 w-96 bg-[#fefefe] rounded-2xl shadow-2xl border border-gray-100 py-4 z-50">
-                    {item.dropdown.map((dropdownItem, index) => (
-                      <Link
-                        key={index}
-                        to={dropdownItem.href}
-                        className="flex items-start px-6 py-4 hover:bg-gray-50 transition-colors group"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        <div className="flex-1">
-                          <div className="font-semibold text-[#242424] group-hover:text-[#ff9a1d] transition-colors mb-1">
-                            {dropdownItem.label}
-                          </div>
-                          <div className="text-sm text-gray-600 leading-relaxed">
-                            {dropdownItem.description}
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
+                  <div className="fixed top-full left-0 right-0 mt-2 bg-[#fefefe] shadow-2xl border-t border-gray-100 py-8 z-50">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {item.dropdown.map((dropdownItem, index) => (
+                          <Link
+                            key={index}
+                            to={dropdownItem.href}
+                            className="flex flex-col p-6 rounded-xl hover:bg-gray-50 transition-colors group"
+                            onClick={() => setActiveDropdown(null)}
+                          >
+                            <div className="font-semibold text-[#242424] group-hover:text-[#ff9a1d] transition-colors mb-2 text-lg">
+                              {dropdownItem.label}
+                            </div>
+                            <div className="text-sm text-gray-600 leading-relaxed">
+                              {dropdownItem.description}
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

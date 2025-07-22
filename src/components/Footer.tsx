@@ -113,17 +113,28 @@ const Footer = () => {
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <form 
+              action="https://formspree.io/f/xpwzgqvr" 
+              method="POST"
+              className="flex flex-col sm:flex-row gap-4"
+            >
               <input
                 type="email"
+                name="email"
                 placeholder="Enter your email"
+                required
                 className="flex-1 px-4 py-3 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
               />
-              <button className="bg-gradient-to-r from-orange-400 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+              <input type="hidden" name="_subject" value="Newsletter Subscription - Phel Arts" />
+              <input type="hidden" name="_next" value="https://phelarts.com/thank-you" />
+              <button 
+                type="submit"
+                className="phel-btn px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2"
+              >
                 <span>Subscribe</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
+            </form>
           </div>
         </div>
 

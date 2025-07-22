@@ -13,8 +13,44 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission here
+    
+    // Create form data for submission
+    const submitData = new FormData();
+    submitData.append('name', formData.name);
+    submitData.append('email', formData.email);
+    submitData.append('company', formData.company);
+    submitData.append('budget', formData.budget);
+    submitData.append('projectType', formData.projectType);
+    submitData.append('message', formData.message);
+    submitData.append('_subject', 'Contact Form Submission - Phel Arts');
+    submitData.append('_next', 'https://phelarts.com/thank-you');
+    
+    // Submit to Formspree
+    fetch('https://formspree.io/f/xpwzgqvr', {
+      method: 'POST',
+      body: submitData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        alert('Message sent successfully! We\'ll get back to you within 24 hours.');
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          budget: '',
+          message: '',
+          projectType: '',
+        });
+      } else {
+        alert('There was an error sending your message. Please try again.');
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+      alert('There was an error sending your message. Please try again.');
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
