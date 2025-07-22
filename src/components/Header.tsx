@@ -245,6 +245,25 @@ const Header = () => {
                               setMobileDropdown(null);
                             }}
                           >
+                            {dropdownItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={`block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
+                      isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </div>
+            ))}
             <div className="px-6 pt-4">
               <Link
                 to="/book-call"
