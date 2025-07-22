@@ -16,9 +16,9 @@ p, span, div, button, input, textarea, label, .body-text {
 .phel-btn {
   background-color: #ff9a1d;
   color: #fefefe;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 9999px;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   text-align: center;
   transition: all 0.3s ease;
