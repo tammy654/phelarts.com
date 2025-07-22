@@ -52,7 +52,23 @@ const Hero = () => {
       </div>
 
       {/* Video Controls */}
-      ?
+      {/* <div className="absolute top-1/2 left-6 transform -translate-y-1/2 z-20">
+        <button
+          onClick={prevVideo}
+          className="w-12 h-12 bg-[#fefefe]/20 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
+        >
+          <ChevronLeft className="w-6 h-6 text-[#fefefe]" />
+        </button>
+      </div>
+      
+      <div className="absolute top-1/2 right-6 transform -translate-y-1/2 z-20">
+        <button
+          onClick={nextVideo}
+          className="w-12 h-12 bg-[#fefefe]/20 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
+        >
+          <ChevronRight className="w-6 h-6 text-[#fefefe]" />
+        </button>
+      </div> */}
 
       {/* Video Indicators */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
@@ -76,7 +92,7 @@ const Hero = () => {
           </div>
           
           {/* Main Heading */}
-          <h1 className="text-6xl lg:text-8xl font-bold text-[#fefefe] mb-8 tracking-tight leading-none">
+          <h1 className="text-4xl lg:text-6xl font-bold text-[#fefefe] mb-6 tracking-tight leading-none">
             We craft
             <span className="block bg-gradient-to-r from-[#ff9a1d] to-[#016952] bg-clip-text text-transparent">
               visual stories
@@ -85,7 +101,7 @@ const Hero = () => {
           </h1>
           
           {/* Subheading */}
-          <p className="text-xl lg:text-2xl text-[#fefefe]/70 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-m lg:text-lg text-[#fefefe]/70 mb-12 max-w-xl mx-auto leading-relaxed">
             From concept to completion, we create stunning motion graphics and 2D animations 
             that captivate audiences and drive results for forward-thinking brands.
           </p>
@@ -102,10 +118,10 @@ const Hero = () => {
             
             <a
               href="/book-call"
-              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-10 py-4 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
+              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
             >
               <span>Start a Project</span>
-              <ArrowRight className="w-5 h-5" />
+              {/* <ArrowRight className="w-5 h-5" /> */}
             </a>
           </div>
           
