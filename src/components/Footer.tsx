@@ -35,9 +35,9 @@ const Footer = () => {
           <div className="lg:col-span-2 space-y-8">
             <div className="flex items-center space-x-3">
               <img 
-                src="/favicon.ico" 
+                src="/phelarts_logo.png" 
                 alt="Phel Arts" 
-                className="w-20 h-20"
+                className="w-16 h-16"
               />
             </div>
             

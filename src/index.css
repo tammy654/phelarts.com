@@ -5,3 +5,12 @@
 * {
   font-family: 'Quan', sans-serif;
 }
+
+/* Font pairing: Libre Baskerville for headings, Quan for body text */
+h1, h2, h3, h4, h5, h6, .heading {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+}
+
+p, span, div, button, input, textarea, label, .body-text {
+  font-family: 'Quan', sans-serif;

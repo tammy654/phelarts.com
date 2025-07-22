@@ -119,9 +119,9 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <img 
-              src="/favicon.ico" 
+              src="/phelarts_logo.png" 
               alt="Phel Arts" 
-              className="w-20 h-20 group-hover:scale-105 transition-transform"
+              className="w-12 h-12 group-hover:scale-105 transition-transform"
             />
           </Link>
 
