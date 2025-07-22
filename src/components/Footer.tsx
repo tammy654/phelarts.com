@@ -1,7 +1,12 @@
 import React from 'react';
+import { useState } from 'react';
 import { Play, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -26,6 +31,46 @@ const Footer = () => {
     'App Animations',
   ];
 
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('_subject', 'Newsletter Subscription - Phel Arts');
+      formData.append('_next', 'https://phelarts.com/thank-you');
+      
+      const response = await fetch('https://formspree.io/f/xpwzgqvr', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setSubmitStatus('success');
+        setEmail('');
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus('idle'), 3000);
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-20">
@@ -113,28 +158,54 @@ const Footer = () => {
               </p>
             </div>
             
-            <form 
-              action="https://formspree.io/f/xpwzgqvr" 
-              method="POST"
-              className="flex flex-col sm:flex-row gap-4"
-            >
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="flex-1 px-4 py-3 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                disabled={isSubmitting}
+                className="flex-1 px-4 py-3 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent disabled:opacity-50"
               />
-              <input type="hidden" name="_subject" value="Newsletter Subscription - Phel Arts" />
-              <input type="hidden" name="_next" value="https://phelarts.com/thank-you" />
               <button 
                 type="submit"
-                className="phel-btn px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2"
+                disabled={isSubmitting}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 ${
+                  isSubmitting 
+                    ? 'bg-gray-600 cursor-not-allowed' 
+                    : submitStatus === 'success'
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : submitStatus === 'error'
+                    ? 'bg-red-600 hover:bg-red-700'
+                    : 'phel-btn hover:shadow-lg'
+                }`}
               >
-                <span>Subscribe</span>
-                <ArrowRight className="w-4 h-4" />
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Subscribing...</span>
+                  </>
+                ) : submitStatus === 'success' ? (
+                  <span>Subscribed!</span>
+                ) : submitStatus === 'error' ? (
+                  <span>Try Again</span>
+                ) : (
+                  <>
+                    <span>Subscribe</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </form>
+            
+            {submitStatus === 'success' && (
+              <p className="text-green-400 text-sm mt-2">Thank you for subscribing! You'll receive our latest updates.</p>
+            )}
+            {submitStatus === 'error' && (
+              <p className="text-red-400 text-sm mt-2">Please enter a valid email address and try again.</p>
+            )}
           </div>
         </div>
 

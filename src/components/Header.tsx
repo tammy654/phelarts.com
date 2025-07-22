@@ -6,6 +6,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -110,6 +111,9 @@ const Header = () => {
     setActiveDropdown(null);
   };
 
+  const toggleMobileDropdown = (label: string) => {
+    setMobileDropdown(mobileDropdown === label ? null : label);
+  };
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ? 'bg-[#fefefe]/95 backdrop-blur-xl border-b border-gray-100' : 'bg-transparent'
@@ -216,26 +220,52 @@ const Header = () => {
           <div className="lg:hidden bg-[#fefefe] rounded-2xl shadow-2xl mt-4 py-6 border border-gray-100">
             {navItems.map((item) => (
               <div key={item.href}>
-                <Link
-                  to={item.href}
-                  className={`block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
-                    isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
+                {item.dropdown ? (
+                  <div>
+                    <button
+                      onClick={() => toggleMobileDropdown(item.label)}
+                      className={`w-full text-left px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors flex items-center justify-between ${
+                        isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown className={`w-4 h-4 transition-transform ${
+                        mobileDropdown === item.label ? 'rotate-180' : ''
+                      }`} />
+                    </button>
+                    {mobileDropdown === item.label && (
+                      <div className="bg-gray-50 border-l-4 border-[#ff9a1d] ml-4 animate-in slide-in-from-top-2 duration-300">
+                        {item.dropdown.map((dropdownItem, index) => (
+                          <Link
+                            key={index}
+                            to={dropdownItem.href}
+                            className="block px-6 py-3 text-sm text-gray-600 hover:text-[#ff9a1d] hover:bg-[#ff9a1d]/5 transition-colors"
+                            onClick={() => {
+                              setIsMenuOpen(false);
+                              setMobileDropdown(null);
+                            }}
+                          >
+                            <div className="font-medium mb-1">{dropdownItem.label}</div>
+                            <div className="text-xs text-gray-500">{dropdownItem.description}</div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={`block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
+                      isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                )}
                 {item.dropdown && (
                   <div className="ml-4 border-l-2 border-gray-100">
                     {item.dropdown.map((dropdownItem, index) => (
-                      <Link
-                        key={index}
-                        to={dropdownItem.href}
-                        className="block px-6 py-2 text-sm text-gray-600 hover:text-[#ff9a1d] transition-colors"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {dropdownItem.label}
-                      </Link>
                     ))}
                   </div>
                 )}
