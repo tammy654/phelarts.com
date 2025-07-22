@@ -57,7 +57,7 @@ const Hero = () => {
           onClick={prevVideo}
           className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 backdrop-blur-6xl transition-all duration-300"
         >
-          <ChevronLeft className="w-6 h-6 text-[#fefefe]/5" />
+          <ChevronLeft className="w-6 h-6 text-[#fefefe]/10" />
         </button>
       </div>
       
@@ -66,7 +66,7 @@ const Hero = () => {
           onClick={nextVideo}
           className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 backdrop-blur-6xl transition-all duration-300"
         >
-          <ChevronRight className="w-6 h-6 text-[#fefefe]/5" />
+          <ChevronRight className="w-6 h-6 text-[#fefefe]/10" />
         </button>
       </div>
 
