@@ -64,7 +64,7 @@ const Hero = () => {
       <div className="absolute top-1/2 right-8 transform -translate-y-1/2 z-20">
         <button
           onClick={nextVideo}
-          className="w-12 h-12 bg-[#fefefe]/5 backdrop-blur-sm border border-[#fefefe]/5 rounded-full flex items-center justify-center hover:bg-[#fefefe]/10 transition-all duration-300"
+          className="w-12 h-12 bg-[#fefefe]/5 backdrop-blur-base border border-[#fefefe]/5 rounded-full flex items-center justify-center hover:bg-[#fefefe]/10 transition-all duration-300"
         >
           <ChevronRight className="w-6 h-6 text-[#fefefe]" />
         </button>
