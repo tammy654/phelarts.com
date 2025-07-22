@@ -97,11 +97,11 @@ const Hero = () => {
             <span className="block bg-gradient-to-r from-[#ff9a1d] to-[#016952] bg-clip-text text-transparent">
               visual stories
             </span>
-            that move people
+            that connects people
           </h1>
           
           {/* Subheading */}
-          <p className="text-m lg:text-lg text-[#fefefe]/70 mb-12 max-w-xl mx-auto leading-relaxed">
+          <p className="text-base lg:text-lg text-[#fefefe]/70 mb-12 max-w-xl mx-auto leading-relaxed">
             From concept to completion, we create stunning motion graphics and 2D animations 
             that captivate audiences and drive results for forward-thinking brands.
           </p>
@@ -110,7 +110,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
             <a
               href="/our-work"
-              className="phel-btn px-10 py-4 text-lg space-x-3"
+              className="phel-btn px-8 py-4 text-base space-x-3"
             >
               <Play className="w-5 h-5" />
               <span>View Our Work</span>
@@ -118,7 +118,7 @@ const Hero = () => {
             
             <a
               href="/book-call"
-              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
+              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-base font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
             >
               <span>Start a Project</span>
               {/* <ArrowRight className="w-5 h-5" /> */}
