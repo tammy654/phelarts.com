@@ -55,7 +55,7 @@ const Hero = () => {
       <div className="absolute top-1/2 left-6 transform -translate-y-1/2 z-20">
         <button
           onClick={prevVideo}
-          className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 text-[#fefefe]/30 backdrop-blur-2xl transition-all duration-300"
+          className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/5 text-[#fefefe]/30  transition-all duration-300"
         >
           <ChevronLeft className="w-6 h-6 text-[#fefefe]/0" />
         </button>
