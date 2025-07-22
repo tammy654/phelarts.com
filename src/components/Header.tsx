@@ -186,7 +186,7 @@ const Header = () => {
           <div className="hidden lg:block">
             <Link
               to="/book-call"
-              className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-6 py-3 rounded-full text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
+              className="phel-btn text-sm px-6 py-3"
             >
               Book a Call
             </Link>
@@ -242,7 +242,7 @@ const Header = () => {
             <div className="px-6 pt-4">
               <Link
                 to="/book-call"
-                className="block bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-6 py-3 rounded-full text-center font-semibold"
+                className="phel-btn block text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Book a Call

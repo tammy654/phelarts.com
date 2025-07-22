@@ -238,6 +238,7 @@ const OurWork = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+            <button className="phel-btn px-8 py-4">
               Start a Project
             </button>
             <button className="border-2 border-[#242424] text-[#242424] px-8 py-4 rounded-full font-semibold hover:bg-[#242424] hover:text-[#fefefe] transition-all duration-300">

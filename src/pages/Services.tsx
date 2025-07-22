@@ -191,7 +191,7 @@ const Services = () => {
           </p>
           <a
             href="/book-call"
-            className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-10 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center space-x-3"
+            className="phel-btn px-10 py-4 text-lg space-x-3"
           >
             <span>Book a Call</span>
             <ArrowRight className="w-5 h-5" />

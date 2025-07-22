@@ -204,11 +204,7 @@ const Pricing = () => {
 
                 <a
                   href="/book-call"
-                  className={`w-full py-4 px-6 rounded-xl font-semibold text-center transition-all duration-300 flex items-center justify-center space-x-2 ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] hover:shadow-xl hover:scale-105'
-                      : 'bg-[#242424] text-[#fefefe] hover:bg-gray-800'
-                  }`}
+                  className="phel-btn w-full py-4 px-6 rounded-xl space-x-2"
                 >
                   <span>{plan.cta}</span>
                   <ArrowRight className="w-5 h-5" />
@@ -288,7 +284,7 @@ const Pricing = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/book-call"
-              className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
+              className="phel-btn px-8 py-4 text-lg"
             >
               Book a Call
             </a>

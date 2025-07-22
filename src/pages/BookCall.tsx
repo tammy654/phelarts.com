@@ -281,7 +281,7 @@ const BookCall = () => {
             <button
               type="submit"
               disabled={!selectedDate || !selectedTime}
-              className="w-full bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="phel-btn w-full px-8 py-4 rounded-xl text-lg space-x-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               <span>Book Your Call</span>
               <ArrowRight className="w-5 h-5" />

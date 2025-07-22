@@ -110,7 +110,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
             <a
               href="/our-work"
-              className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-10 py-4 rounded-full text-lg font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-3"
+              className="phel-btn px-10 py-4 text-lg space-x-3"
             >
               <Play className="w-5 h-5" />
               <span>View Our Work</span>

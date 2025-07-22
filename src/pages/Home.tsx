@@ -65,7 +65,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/our-work"
-              className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
+              className="phel-btn px-8 py-4 text-lg"
             >
               View Our Work
             </a>

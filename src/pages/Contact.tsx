@@ -120,7 +120,7 @@ const Contact = () => {
                 href={method.action}
                 className="group p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all duration-300 text-center"
                 data-aos="fade-up"
-                data-aos-delay={index * 100}
+                className="phel-btn w-full px-8 py-4 rounded-xl text-lg space-x-3"
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   <method.icon className="w-8 h-8 text-[#fefefe]" />
