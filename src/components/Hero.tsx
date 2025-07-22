@@ -110,9 +110,9 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
             <a
               href="/our-work"
-              className="phel-btn px-8 py-4 text-base space-x-3"
+              className="phel-btn px- py-4 text-base space-x-3"
             >
-              <Play className="w-5 h-5" />
+              <Play className="w-5 h-4" />
               <span>View Our Work</span>
             </a>
             
