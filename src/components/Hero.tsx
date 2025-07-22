@@ -118,7 +118,7 @@ const Hero = () => {
             
             <a
               href="/book-call"
-              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-base font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
+              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-2 rounded-full text-base font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
             >
               <span>Start a Project</span>
               <ArrowRight className="w-5 h-5" />
