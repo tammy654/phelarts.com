@@ -34,3 +34,4 @@ p, span, div, button, input, textarea, label, .body-text {
   background-color: #016952;
   transform: scale(1.05);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
