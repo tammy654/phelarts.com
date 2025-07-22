@@ -40,10 +40,8 @@ const Footer = () => {
                 className="w-24 h-24"
               />
             </div>
-            
             <p className="text-lg text-gray-300 leading-relaxed max-w-md">
-              We create stunning motion graphics and 2D animations that captivate 
-              audiences and elevate brands to new heights.
+              We create stunning motion graphics and 2D animations that   captivate audiences and elevate brands to new heights.
             </p>
             
             <div className="space-y-4">
