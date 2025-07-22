@@ -52,23 +52,7 @@ const Hero = () => {
       </div>
 
       {/* Video Controls */}
-      <div className="absolute top-1/2 left-6 transform -translate-y-1/2 z-20">
-        <button
-          onClick={prevVideo}
-          className="w-12 h-12 bg-[#fefefe]/20 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
-        >
-          <ChevronLeft className="w-6 h-6 text-[#fefefe]" />
-        </button>
-      </div>
-      
-      <div className="absolute top-1/2 right-6 transform -translate-y-1/2 z-20">
-        <button
-          onClick={nextVideo}
-          className="w-12 h-12 bg-[#fefefe]/20 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
-        >
-          <ChevronRight className="w-6 h-6 text-[#fefefe]" />
-        </button>
-      </div>
+      ?
 
       {/* Video Indicators */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
