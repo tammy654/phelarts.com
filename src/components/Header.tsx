@@ -121,7 +121,7 @@ const Header = () => {
             <img 
               src="/phelarts_logo.png" 
               alt="Phel Arts" 
-              className="w-12 h-12 group-hover:scale-105 transition-transform"
+              className="w-24 h-24 group-hover:scale-105 transition-transform"
             />
           </Link>
 
