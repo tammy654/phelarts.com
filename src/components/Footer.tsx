@@ -3,10 +3,6 @@ import { useState } from 'react';
 import { Play, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -31,46 +27,6 @@ const Footer = () => {
     'App Animations',
   ];
 
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !email.includes('@')) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
-      return;
-    }
-
-    setIsSubmitting(true);
-    
-    try {
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('_subject', 'Newsletter Subscription - Phel Arts');
-      formData.append('_next', 'https://phelarts.com/thank-you');
-      
-      const response = await fetch('https://formspree.io/f/xpwzgqvr', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        setSubmitStatus('success');
-        setEmail('');
-        setTimeout(() => setSubmitStatus('idle'), 5000);
-      } else {
-        setSubmitStatus('error');
-        setTimeout(() => setSubmitStatus('idle'), 3000);
-      }
-    } catch (error) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-20">
@@ -150,62 +106,26 @@ const Footer = () => {
 
         {/* Newsletter Section */}
         <div className="bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl p-8 mb-12">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">Stay in the loop</h3>
-              <p className="text-gray-300">
-                Get the latest animation trends, tips, and project updates delivered to your inbox.
-              </p>
-            </div>
-            
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                disabled={isSubmitting}
-                className="flex-1 px-4 py-3 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent disabled:opacity-50"
-              />
-              <button 
-                type="submit"
-                disabled={isSubmitting}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 ${
-                  isSubmitting 
-                    ? 'bg-gray-600 cursor-not-allowed' 
-                    : submitStatus === 'success'
-                    ? 'bg-green-600 hover:bg-green-700'
-                    : submitStatus === 'error'
-                    ? 'bg-red-600 hover:bg-red-700'
-                    : 'phel-btn hover:shadow-lg'
-                }`}
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Subscribing...</span>
-                  </>
-                ) : submitStatus === 'success' ? (
-                  <span>Subscribed!</span>
-                ) : submitStatus === 'error' ? (
-                  <span>Try Again</span>
-                ) : (
-                  <>
-                    <span>Subscribe</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-            
-            {submitStatus === 'success' && (
-              <p className="text-green-400 text-sm mt-2">Thank you for subscribing! You'll receive our latest updates.</p>
-            )}
-            {submitStatus === 'error' && (
-              <p className="text-red-400 text-sm mt-2">Please enter a valid email address and try again.</p>
-            )}
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold mb-4">Stay in the loop</h3>
+            <p className="text-gray-300">
+              Get the latest animation trends, tips, and project updates delivered to your inbox.
+            </p>
+          </div>
+          
+          <div className="bg-white rounded-xl overflow-hidden">
+            <iframe 
+              src="https://docs.google.com/forms/d/e/1FAIpQLScwu_rbqz3itky1arUn_SBkYTWaAe3DCaAopaQ1vs6EPYo61g/viewform?embedded=true" 
+              width="100%" 
+              height="451" 
+              frameBorder="0" 
+              marginHeight={0} 
+              marginWidth={0}
+              className="w-full"
+              title="Newsletter Subscription Form"
+            >
+              Loading…
+            </iframe>
           </div>
         </div>
 
