@@ -37,7 +37,7 @@ const Footer = () => {
               <img 
                 src="/phelarts_logo.png" 
                 alt="Phel Arts" 
-                className="w-16 h-16"
+                className="w-24 h-24"
               />
             </div>
             
