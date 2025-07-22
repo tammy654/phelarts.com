@@ -52,10 +52,10 @@ const Hero = () => {
       </div>
 
       {/* Video Controls */}
-      {/* <div className="absolute top-1/2 left-6 transform -translate-y-1/2 z-20">
+      <div className="absolute top-1/2 left-6 transform -translate-y-1/2 z-20">
         <button
           onClick={prevVideo}
-          className="w-12 h-12 bg-[#fefefe]/20 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
+          className="w-12 h-12 bg-[#fefefe]/50 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
         >
           <ChevronLeft className="w-6 h-6 text-[#fefefe]" />
         </button>
@@ -64,11 +64,11 @@ const Hero = () => {
       <div className="absolute top-1/2 right-6 transform -translate-y-1/2 z-20">
         <button
           onClick={nextVideo}
-          className="w-12 h-12 bg-[#fefefe]/20 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
+          className="w-12 h-12 bg-[#fefefe]/50 backdrop-blur-sm border border-[#fefefe]/30 rounded-full flex items-center justify-center hover:bg-[#fefefe]/30 transition-all duration-300"
         >
           <ChevronRight className="w-6 h-6 text-[#fefefe]" />
         </button>
-      </div> */}
+      </div>
 
       {/* Video Indicators */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
@@ -121,7 +121,7 @@ const Hero = () => {
               className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-base font-semibold hover:bg-[#fefefe]/10 hover:border-[#fefefe]/50 transition-all duration-300 flex items-center space-x-3"
             >
               <span>Start a Project</span>
-              {/* <ArrowRight className="w-5 h-5" /> */}
+              <ArrowRight className="w-5 h-5" />
             </a>
           </div>
           
