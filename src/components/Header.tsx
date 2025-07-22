@@ -245,32 +245,6 @@ const Header = () => {
                               setMobileDropdown(null);
                             }}
                           >
-                            <div className="font-medium mb-1">{dropdownItem.label}</div>
-                            <div className="text-xs text-gray-500">{dropdownItem.description}</div>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    to={item.href}
-                    className={`block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
-                      isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                )}
-                {item.dropdown && (
-                  <div className="ml-4 border-l-2 border-gray-100">
-                    {item.dropdown.map((dropdownItem, index) => (
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
             <div className="px-6 pt-4">
               <Link
                 to="/book-call"
