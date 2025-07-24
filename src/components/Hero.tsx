@@ -86,10 +86,7 @@ const Hero = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 pt-32 pb-20">
         <div className="text-center max-w-4xl mx-auto" data-aos="fade-up">
           {/* Badge */}
-          <div className="inline-flex items-center space-x-2 bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2 mb-8">
-            <Sparkles className="w-4 h-4 text-[#ff9a1d]" />
-            <span className="text-sm font-medium text-[#fefefe]/90">Award-winning animation studio</span>
-          </div>
+          
           
           {/* Main Heading */}
           <h1 className="text-4xl lg:text-6xl font-bold text-[#fefefe] mb-6 tracking-tight leading-none">
