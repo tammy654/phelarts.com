@@ -58,7 +58,7 @@ const Hero = () => {
           className="w-12 h-36 bg-transparent border border-[#fefefe]/0  flex items-center justify-center hover:bg-[#fefefe]/4 backdrop-blur-4xl transition-all duration-300"
         >
           <ChevronLeft className="w-6 h-6 text-[#fefefe]/10" />
-        </button
+        </button>
       </div>
       
       <div className="absolute top-1/2 right-6 transform -translate-y-1/2 z-20">
