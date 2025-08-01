@@ -141,19 +141,19 @@ const Header = () => {
               >
                 <Link
                   to={item.href}
-                  className={text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 relative flex items-center space-x-1 ${
+                  className={`text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 relative flex items-center space-x-1 ${
                     isActive(item.href)
                       ? 'text-[#ff9a1d]'
                       : isScrolled || location.pathname !== '/'
                       ? 'text-[#242424] hover:text-[#ff9a1d]'
                       : 'text-[#fefefe]/90 hover:text-[#ff9a1d]'
-                  }}
+                  }`}
                 >
                   <span>{item.label}</span>
                   {item.dropdown && (
-                    <ChevronDown className={w-4 h-4 transition-transform ${
+                    <ChevronDown className={`w-4 h-4 transition-transform ${
                       activeDropdown === item.label ? 'rotate-180' : ''
-                    }} />
+                    }`} />
                   )}
                 </Link>
                 
@@ -211,7 +211,7 @@ const Header = () => {
             ) : (
               <Menu className={w-6 h-6 ${
                 isScrolled || location.pathname !== '/' ? 'text-[#242424]' : 'text-[#fefefe]'
-              }} />
+              }`} />
             )}
           </button>
         </div>
@@ -225,14 +225,14 @@ const Header = () => {
                   <div>
                     <button
                       onClick={() => toggleMobileDropdown(item.label)}
-                      className={w-full text-left px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors flex items-center justify-between ${
+                      className={`w-full text-left px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors flex items-center justify-between ${
                         isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
-                      }}
+                      }`}
                     >
                       <span>{item.label}</span>
-                      <ChevronDown className={w-4 h-4 transition-transform ${
+                      <ChevronDown className={`w-4 h-4 transition-transform ${
                         mobileDropdown === item.label ? 'rotate-180' : ''
-                      }} />
+                      }`} />
                     </button>
                     {mobileDropdown === item.label && (
                       <div className="bg-gray-50 border-l-4 border-[#ff9a1d] ml-4 animate-in slide-in-from-top-2 duration-300">
@@ -255,9 +255,9 @@ const Header = () => {
                 ) : (
                   <Link
                     to={item.href}
-                    className={block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
+                    className={`block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
                       isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
-                    }}
+                    }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
