@@ -117,8 +117,7 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ? 'bg-[#fefefe]/95 backdrop-blur-xl border-b border-gray-100' : 'bg-transparent'
-    }
-    }}>
+    }`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -205,11 +204,11 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
-              <X className={w-6 h-6 ${
+              <X className={`w-6 h-6 ${
                 isScrolled || location.pathname !== '/' ? 'text-[#242424]' : 'text-[#fefefe]'
-              }} />
+              }`} />
             ) : (
-              <Menu className={w-6 h-6 ${
+              <Menu className={`w-6 h-6 ${
                 isScrolled || location.pathname !== '/' ? 'text-[#242424]' : 'text-[#fefefe]'
               }`} />
             )}
@@ -282,5 +281,3 @@ const Header = () => {
 };
 
 export default Header;
-  )
-}
