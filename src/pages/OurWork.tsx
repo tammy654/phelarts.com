@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Filter, ExternalLink, Calendar, Users, Award } from 'lucide-react';
+import ClientLogos from '../components/ClientLogos';
+import ParallaxSection from '../components/ParallaxSection';
 
 const OurWork = () => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -70,8 +73,20 @@ const OurWork = () => {
   return (
     <div className="min-h-screen bg-[#fefefe]">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
+      <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952] relative overflow-hidden">
+        <ParallaxSection direction="swirl" intensity={30}>
+          <div className="absolute top-20 right-20 w-32 h-32 bg-[#ff9a1d]/20 rounded-full blur-xl"></div>
+        </ParallaxSection>
+        <ParallaxSection direction="left" intensity={40}>
+          <div className="absolute bottom-20 left-20 w-24 h-24 bg-[#016952]/30 rounded-full blur-lg"></div>
+        </ParallaxSection>
+        
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             Our Work
           </h1>
@@ -79,6 +94,7 @@ const OurWork = () => {
             A showcase of our recent projects that demonstrate our commitment to 
             exceptional design and storytelling.
           </p>
+          </motion.div>
           <div className="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
             <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
               <span className="text-sm font-medium text-[#fefefe]/90">500+ Projects Completed</span>
@@ -92,6 +108,9 @@ const OurWork = () => {
           </div>
         </div>
       </section>
+
+      {/* Client Logos */}
+      <ClientLogos />
 
       {/* Filter Section */}
       <section className="py-12 bg-[#fefefe] border-b border-gray-100">
@@ -119,11 +138,17 @@ const OurWork = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
             {filteredProjects.map((project, index) => (
-              <div
-                key={index}
+              <ParallaxSection 
+                key={index} 
+                direction={index % 2 === 0 ? 'up' : 'down'} 
+                intensity={20}
+              >
+                <motion.div
                 className="group"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
               >
                 <div className="relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500">
                   <div className="aspect-[4/3] overflow-hidden">
@@ -181,7 +206,8 @@ const OurWork = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+                </motion.div>
+              </ParallaxSection>
             ))}
           </div>
         </div>

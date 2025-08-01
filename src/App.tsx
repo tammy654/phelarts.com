@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import OurWork from './pages/OurWork';
+import Portfolio from './pages/Portfolio';
+import CaseStudies from './pages/CaseStudies';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import BookCall from './pages/BookCall';
@@ -42,9 +44,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services/:serviceType" element={<Services />} />
           <Route path="/our-work" element={<OurWork />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/about" element={<About />} />
+          <Route path="/about/:section" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/contact/:section" element={<Contact />} />
           <Route path="/book-call" element={<BookCall />} />
           <Route path="/pricing" element={<Pricing />} />
         </Routes>
