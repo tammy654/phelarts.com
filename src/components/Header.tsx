@@ -125,4 +125,10 @@ const Header = () => {
                             className="flex flex-col p-6 rounded-xl hover:bg-gray-50 transition-colors group"
                             onClick={() => setActiveDropdown(null)}
                           >
-                            <d
+                            <div className="font-medium text-gray-900 mb-2 group-hover:text-[#ff9a1d] transition-colors">
+                              {dropdownItem.label}
+                            </div>
+                            <div className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors">
+                              {dropdownItem.description}
+                            </div>
+                          </Link>
