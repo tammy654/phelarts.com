@@ -125,6 +125,7 @@ const Home = () => {
         </section>
       </ParallaxSection>
     </div>
+  )
   );
 };
 
