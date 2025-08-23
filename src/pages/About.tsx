@@ -317,7 +317,7 @@ const About = () => {
             Let's create something extraordinary that tells your story and achieves your goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a>
+              
             <a
               href="/book-call"
               className="phel-btn px-8 py-4 text-lg"
@@ -325,7 +325,7 @@ const About = () => {
                 whileTap={{ scale: 0.95 }}
             >
               Book a Call
-              </motion.a>
+             
               <motion.a>
             </a>
             <a
