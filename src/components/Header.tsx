@@ -39,32 +39,32 @@ const Header = () => {
         {
           href: '/services/2d-animation',
           label: '2D Animation',
-          description: 'Character-driven stories and explainer videos that engage audiences.'
+          description: 'Character-driven stories and explainer videos that captivate and engage your audience.'
         },
         {
           href: '/services/motion-graphics',
           label: 'Motion Graphics',
-          description: 'Dynamic visual elements that bring your brand to life.'
+          description: 'Dynamic visual elements that bring your brand to life with style and sophistication.'
         },
         {
           href: '/services/visual-effects',
           label: 'Visual Effects',
-          description: 'Cutting-edge VFX and compositing for cinematic quality.'
+          description: 'Cutting-edge VFX and compositing that elevate your content to cinematic quality.'
         },
         {
           href: '/services/web-animation',
           label: 'Web Animation',
-          description: 'Interactive animations for websites and digital platforms.'
+          description: 'Interactive animations that enhance user experience and drive engagement.'
         },
         {
-          href: '/services/app-animation',
-          label: 'App Animation',
-          description: 'UI/UX motion designs for mobile and web applications.'
+          href: '/services/app-animations',
+          label: 'App Animations',
+          description: 'Smooth, delightful animations that make mobile experiences memorable.'
         },
         {
           href: '/services/video-production',
           label: 'Video Production',
-          description: 'End-to-end video creation and professional editing.'
+          description: 'End-to-end video production from concept development to final delivery.'
         }
       ]
     },
@@ -195,22 +195,26 @@ const Header = () => {
 
                 {/* Dropdown Menu */}
                 {item.dropdown && activeDropdown === item.label && (
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-[#fefefe] shadow-2xl border border-gray-100 rounded-2xl py-4 z-50">
-                    {item.dropdown.map((dropdownItem, index) => (
-                      <Link
-                        key={index}
-                        to={dropdownItem.href}
-                        className="flex flex-col p-4 hover:bg-gray-50 transition-colors group"
-                        onClick={() => setActiveDropdown(null)}
-                      >
-                        <div className="font-semibold text-[#242424] group-hover:text-[#ff9a1d] transition-colors mb-1">
-                          {dropdownItem.label}
-                        </div>
-                        <div className="text-sm text-gray-600 leading-relaxed">
-                          {dropdownItem.description}
-                        </div>
-                      </Link>
-                    ))}
+                  <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-[#fefefe] shadow-2xl border border-gray-100 rounded-2xl py-4 z-50 ${
+                    item.label === 'Services' ? 'w-[640px] h-[360px] overflow-y-auto' : 'w-80'
+                  }`}>
+                    <div className={item.label === 'Services' ? 'lg:grid lg:grid-cols-2 lg:gap-6 lg:p-4' : ''}>
+                      {item.dropdown.map((dropdownItem, index) => (
+                        <Link
+                          key={index}
+                          to={dropdownItem.href}
+                          className="flex flex-col p-4 hover:bg-gray-50 transition-colors group"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="font-bold text-[#242424] group-hover:text-[#ff9a1d] transition-colors mb-2">
+                            {dropdownItem.label}
+                          </div>
+                          <div className="text-sm text-gray-600 leading-relaxed">
+                            {dropdownItem.description}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -219,12 +223,12 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Link
-              to="/book-call"
-              className="phel-btn text-sm px-6 py-3"
+            <a
+              href="mailto:pheldesignstudios@gmail.com?subject=Book a Call with Phel Arts"
+              className="px-4 py-2 bg-[#016952] text-white rounded-lg shadow hover:opacity-90 transition-opacity text-sm font-medium"
             >
               Book a Call
-            </Link>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -294,13 +298,13 @@ const Header = () => {
               </div>
             ))}
             <div className="px-6 pt-4">
-              <Link
-                to="/book-call"
-                className="phel-btn block text-center"
+              <a
+                href="mailto:pheldesignstudios@gmail.com?subject=Book a Call with Phel Arts"
+                className="px-4 py-2 bg-[#016952] text-white rounded-lg shadow hover:opacity-90 transition-opacity text-sm font-medium block text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Book a Call
-              </Link>
+              </a>
             </div>
           </div>
         )}

@@ -108,8 +108,8 @@ const Home = () => {
               View Our Work
             </motion.a>
             <motion.a
-              href="/book-call"
-              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-6 py-2 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
+              href="mailto:pheldesignstudios@gmail.com?subject=Book a Call with Phel Arts"
+              className="px-4 py-2 bg-[#016952] text-white rounded-lg shadow hover:opacity-90 transition-opacity font-medium"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

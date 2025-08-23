@@ -190,8 +190,8 @@ const Services = () => {
             Let's discuss your project and create something extraordinary together.
           </p>
           <a
-            href="/book-call"
-            className="phel-btn px-10 py-4 text-lg space-x-3"
+            href="mailto:pheldesignstudios@gmail.com?subject=Book a Call with Phel Arts"
+            className="px-4 py-2 bg-[#016952] text-white rounded-lg shadow hover:opacity-90 transition-opacity font-medium inline-flex items-center space-x-3"
           >
             <span>Book a Call</span>
             <ArrowRight className="w-5 h-5" />
