@@ -342,7 +342,6 @@ const About = () => {
       </ParallaxSection>
     </div>
   )
-  )
   );
 };
 

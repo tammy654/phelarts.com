@@ -99,26 +99,22 @@ const Home = () => {
             Let's discuss your project and bring your vision to life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-            <a
+            <motion.a
               href="/our-work"
               className="phel-btn px-6 py-2 text-base"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               View Our Work
-              </motion.a>
-              <motion.a
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="/book-call"
               className="border-2 border-[#fefefe]/30 text-[#fefefe] px-6 py-2 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Start a Project
-              </motion.a>
-            </a>
+            </motion.a>
           </div>
             </motion.div>
         </div>
