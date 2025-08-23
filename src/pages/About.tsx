@@ -323,10 +323,9 @@ const About = () => {
               className="phel-btn px-8 py-4 text-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-            >
+              >
               Book a Call
              
-              <motion.a>
             </a>
             <a
               href="/our-work"
@@ -335,7 +334,6 @@ const About = () => {
                 whileTap={{ scale: 0.95 }}
             >
               View Our Work
-              </motion.a>
             </a>
           </div>
             </motion.div>
