@@ -342,6 +342,6 @@ const About = () => {
       </ParallaxSection>
     </div>
   );
-};
+
 
 export default About;
