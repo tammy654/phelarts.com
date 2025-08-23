@@ -318,7 +318,7 @@ const About = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
               
-            <a
+            <motion.a
               href="/book-call"
               className="phel-btn px-8 py-4 text-lg"
                 whileHover={{ scale: 1.05 }}
@@ -326,22 +326,21 @@ const About = () => {
               >
               Book a Call
              
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="/our-work"
               className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
             >
               View Our Work
-            </a>
+            </motion.a>
           </div>
             </motion.div>
         </div>
         </section>
       </ParallaxSection>
     </div>
-  )
   );
 };
 
