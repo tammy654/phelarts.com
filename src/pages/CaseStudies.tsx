@@ -234,8 +234,8 @@ const CaseStudies = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.a
-                  href="mailto:pheldesignstudios@gmail.com?subject=Book a Call with Phel Arts"
-                  className="px-4 py-2 bg-[#016952] text-white rounded-lg shadow hover:opacity-90 transition-opacity font-medium"
+                  href="/book-call"
+                  className="phel-btn px-8 py-4 text-lg"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

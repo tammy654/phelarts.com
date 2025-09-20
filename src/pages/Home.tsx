@@ -81,7 +81,7 @@ const Home = () => {
       </ParallaxSection>
 
       {/* CTA Section */}
-      <ParallaxSection direction="up" intensity={25}>
+      <ParallaxSection direction="right" intensity={25}>
         <section className="py-24 bg-gradient-to-r from-[#242424] to-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
           
@@ -108,8 +108,8 @@ const Home = () => {
               View Our Work
             </motion.a>
             <motion.a
-              href="mailto:pheldesignstudios@gmail.com?subject=Book a Call with Phel Arts"
-              className="px-4 py-2 bg-[#016952] text-white rounded-lg shadow hover:opacity-90 transition-opacity font-medium"
+              href="/book-call"
+              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-6 py-2 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
