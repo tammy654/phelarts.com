@@ -105,31 +105,32 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Section */}
-        <div className="bg-[#016952] rounded-2xl px-6 py-10 md:px-12 md:py-16 mb-12 shadow-lg max-w-4xl mx-auto">
-  <div className="text-center mb-8">
-    <h3 className="text-2xl md:text-3xl font-bold text-[#ff9a1d] mb-3">
-      Stay in the Loop
-    </h3>
-    <p className="text-[#fefefe] text-base md:text-lg leading-relaxed">
-      Get the latest animation trends, tips, and project updates delivered to your inbox.
-    </p>
-  </div>
+        <div className="bg-gradient-to-r from-[#016952] to-[#016952]/90 rounded-2xl px-6 py-10 md:px-12 md:py-16 mb-12 shadow-lg max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl md:text-3xl font-bold text-[#ff9a1d] mb-3">
+              Stay in the Loop
+            </h3>
+            <p className="text-[#fefefe] text-base md:text-lg leading-relaxed">
+              Get the latest animation trends, tips, and project updates delivered to your inbox.
+            </p>
+          </div>
 
-  <div className="bg-[#fefefe] rounded-xl overflow-hidden shadow-md">
-    <iframe 
-      src="https://docs.google.com/forms/d/e/1FAIpQLScwu_rbqz3itky1arUn_SBkYTWaAe3DCaAopaQ1vs6EPYo61g/viewform?embedded=true" 
-      width="100%" 
-      height="520" 
-      frameBorder="0" 
-      marginHeight={0} 
-      marginWidth={0}
-      className="w-full border-none"
-      title="Newsletter Subscription Form"
-    >
-      Loading…
-    </iframe>
-  </div>
-</div>
+          <div className="bg-[#fefefe] rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            <iframe 
+              src="https://docs.google.com/forms/d/e/1FAIpQLScwu_rbqz3itky1arUn_SBkYTWaAe3DCaAopaQ1vs6EPYo61g/viewform?embedded=true" 
+              width="100%" 
+              height="451" 
+              frameBorder="0" 
+              marginHeight={0} 
+              marginWidth={0}
+              className="w-full border-none rounded-2xl"
+              title="Newsletter Subscription Form"
+              style={{ minHeight: '451px' }}
+            >
+              Loading newsletter form...
+            </iframe>
+          </div>
+        </div>
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8">

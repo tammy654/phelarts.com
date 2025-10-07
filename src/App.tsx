@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Header from './components/Header';
@@ -39,6 +40,32 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#fefefe',
+            color: '#242424',
+            border: '1px solid #e5e7eb',
+            borderRadius: '12px',
+            fontSize: '14px',
+            fontWeight: '500',
+          },
+          success: {
+            iconTheme: {
+              primary: '#016952',
+              secondary: '#fefefe',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fefefe',
+            },
+          },
+        }}
+      />
       <div className="min-h-screen bg-[#fefefe]">
         <Header />
         <Routes>

@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle, Users } from 'lucide-react';
+import { submitContactForm, ContactData } from '../services/emailService';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
+    subject: '',
     budget: '',
     message: '',
     projectType: '',
@@ -14,43 +19,51 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create form data for submission
-    const submitData = new FormData();
-    submitData.append('name', formData.name);
-    submitData.append('email', formData.email);
-    submitData.append('company', formData.company);
-    submitData.append('budget', formData.budget);
-    submitData.append('projectType', formData.projectType);
-    submitData.append('message', formData.message);
-    submitData.append('_subject', 'Contact Form Submission - Phel Arts');
-    submitData.append('_next', 'https://phelarts.com/thank-you');
-    
-    // Submit to Formspree
-    fetch('https://formspree.io/f/xpwzgqvr', {
-      method: 'POST',
-      body: submitData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(response => {
-      if (response.ok) {
-        alert('Message sent successfully! We\'ll get back to you within 24 hours.');
+    // Validation
+    if (!formData.name.trim()) {
+      toast.error('Please enter your name');
+      return;
+    }
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    if (!formData.message.trim()) {
+      toast.error('Please enter a message');
+      return;
+    }
+
+    const submitContact = async () => {
+      setIsSubmitting(true);
+      try {
+        const contactData: ContactData = {
+          ...formData
+        };
+
+        await submitContactForm(contactData);
+        
+        toast.success('Message sent successfully! We\'ll get back to you within 24 hours.');
+        
         // Reset form
         setFormData({
           name: '',
           email: '',
           company: '',
+          subject: '',
           budget: '',
           message: '',
           projectType: '',
         });
-      } else {
-        alert('There was an error sending your message. Please try again.');
+        
+      } catch (error) {
+        console.error('Error submitting contact form:', error);
+        toast.error('Failed to send message. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
-    }).catch(error => {
-      console.error('Error:', error);
-      alert('There was an error sending your message. Please try again.');
-    });
+    };
+
+    submitContact();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -289,6 +302,21 @@ const Contact = () => {
                   </div>
 
                   <div>
+                    <label htmlFor="subject" className="block text-sm font-semibold text-[#242424] mb-3">
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      className="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-[#242424] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ff9a1d] focus:border-transparent transition-all"
+                      placeholder="What's this about?"
+                    />
+                  </div>
+
+                  <div>
                     <label htmlFor="projectType" className="block text-sm font-semibold text-[#242424] mb-3">
                       Project Type
                     </label>
@@ -347,16 +375,52 @@ const Contact = () => {
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3"
                 >
-                  <span>Send Message</span>
-                  <Send className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <LoadingSpinner size="sm" color="#fefefe" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Send Message</span>
+                      <Send className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
 
                 <p className="text-sm text-gray-500 mt-4 text-center">
                   We'll get back to you within 24 hours.
                 </p>
               </form>
+              <Toaster 
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: '#fefefe',
+                    color: '#242424',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '12px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                  },
+                  success: {
+                    iconTheme: {
+                      primary: '#016952',
+                      secondary: '#fefefe',
+                    },
+                  },
+                  error: {
+                    iconTheme: {
+                      primary: '#ef4444',
+                      secondary: '#fefefe',
+                    },
+                  },
+                }}
+              />
             </div>
           </div>
         </div>

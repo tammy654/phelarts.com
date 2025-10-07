@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Calendar, Clock, Video, Phone, MessageCircle, Check, ArrowRight } from 'lucide-react';
+import { submitBookingForm, BookingData } from '../services/emailService';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const BookCall = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [callType, setCallType] = useState('video');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
+    phone: '',
     projectType: '',
     budget: '',
     message: '',
@@ -37,34 +42,48 @@ const BookCall = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create form data for submission
-    const submitData = new FormData();
-    submitData.append('name', formData.name);
-    submitData.append('email', formData.email);
-    submitData.append('company', formData.company);
-    submitData.append('projectType', formData.projectType);
-    submitData.append('selectedDate', selectedDate);
-    submitData.append('selectedTime', selectedTime);
-    submitData.append('callType', callType);
-    submitData.append('message', formData.message);
-    submitData.append('_subject', 'Book a Call Request - Phel Arts');
-    submitData.append('_next', 'https://phelarts.com/thank-you');
-    
-    // Submit to Formspree
-    fetch('https://formspree.io/f/xpwzgqvr', {
-      method: 'POST',
-      body: submitData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(response => {
-      if (response.ok) {
-        alert('Call booking submitted successfully! We\'ll contact you within 24 hours.');
+    // Validation
+    if (!formData.name.trim()) {
+      toast.error('Please enter your name');
+      return;
+    }
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    if (!formData.message.trim()) {
+      toast.error('Please enter a message');
+      return;
+    }
+    if (!selectedDate) {
+      toast.error('Please select a preferred date');
+      return;
+    }
+    if (!selectedTime) {
+      toast.error('Please select a preferred time');
+      return;
+    }
+
+    const submitBooking = async () => {
+      setIsSubmitting(true);
+      try {
+        const bookingData: BookingData = {
+          ...formData,
+          selectedDate,
+          selectedTime,
+          callType
+        };
+
+        await submitBookingForm(bookingData);
+        
+        toast.success('Booking submitted successfully! We\'ll contact you within 24 hours.');
+        
         // Reset form
         setFormData({
           name: '',
           email: '',
           company: '',
+          phone: '',
           projectType: '',
           budget: '',
           message: '',
@@ -72,13 +91,16 @@ const BookCall = () => {
         setSelectedDate('');
         setSelectedTime('');
         setCallType('video');
-      } else {
-        alert('There was an error submitting your request. Please try again.');
+        
+      } catch (error) {
+        console.error('Error submitting booking:', error);
+        toast.error('Failed to submit booking. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
-    }).catch(error => {
-      console.error('Error:', error);
-      alert('There was an error submitting your request. Please try again.');
-    });
+    };
+
+    submitBooking();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -212,6 +234,21 @@ const BookCall = () => {
                 </div>
 
                 <div>
+                  <label htmlFor="phone" className="block text-sm font-semibold text-[#242424] mb-3">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-[#242424] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ff9a1d] focus:border-transparent transition-all"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+
+                <div>
                   <label htmlFor="projectType" className="block text-sm font-semibold text-[#242424] mb-3">
                     Project Type
                   </label>
@@ -322,17 +359,52 @@ const BookCall = () => {
 
             <button
               type="submit"
-              disabled={!selectedDate || !selectedTime}
-              className="phel-btn w-full px-8 py-4 rounded-xl text-lg space-x-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              disabled={!selectedDate || !selectedTime || isSubmitting}
+              className="w-full bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              <span>Book Your Call</span>
-              <ArrowRight className="w-5 h-5" />
+              {isSubmitting ? (
+                <>
+                  <LoadingSpinner size="sm" color="#fefefe" />
+                  <span>Submitting...</span>
+                </>
+              ) : (
+                <>
+                  <span>Book Your Call</span>
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
             </button>
 
             <p className="text-sm text-gray-500 mt-4 text-center">
               You'll receive a confirmation email with call details within 5 minutes.
             </p>
           </form>
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#fefefe',
+                color: '#242424',
+                border: '1px solid #e5e7eb',
+                borderRadius: '12px',
+                fontSize: '14px',
+                fontWeight: '500',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#016952',
+                  secondary: '#fefefe',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fefefe',
+                },
+              },
+            }}
+          />
         </div>
       </section>
 

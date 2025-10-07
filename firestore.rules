@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read and write access to bookings collection
+    match /bookings/{document} {
+      allow read, write: if true;
+    }
+    
+    // Allow read and write access to contacts collection
+    match /contacts/{document} {
+      allow read, write: if true;
+    }
+    
+    // Allow read and write access to newsletter collection
+    match /newsletter/{document} {
+      allow read, write: if true;
+    }
+  }
+}
