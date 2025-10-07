@@ -1,6 +1,5 @@
 import emailjs from 'emailjs-com';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { supabase } from '../config/supabase';
 
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -39,14 +38,34 @@ emailjs.init(EMAILJS_PUBLIC_KEY);
 
 export const submitBookingForm = async (data: BookingData): Promise<void> => {
   try {
-    // Store in Firestore
-    await addDoc(collection(db, 'bookings'), {
-      ...data,
-      timestamp: serverTimestamp(),
-      status: 'pending'
-    });
+    // Store in Supabase
+    const { error: dbError } = await supabase
+      .from('bookings')
+      .insert({
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        phone: data.phone,
+        project_type: data.projectType,
+        budget: data.budget,
+        message: data.message,
+        selected_date: data.selectedDate,
+        selected_time: data.selectedTime,
+        call_type: data.callType,
+        status: 'pending'
+      });
 
-    // Send email notification
+    if (dbError) {
+      console.error('Database error:', dbError);
+      throw new Error('Failed to save booking to database');
+    }
+
+    // Send email notification if EmailJS is configured
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      console.warn('EmailJS not configured, skipping email notifications');
+      return;
+    }
+
     const emailData = {
       to_email: 'pheldesignstudios@gmail.com',
       from_name: data.name,
@@ -54,7 +73,7 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
       subject: 'New Booking from Phel Arts Website',
       message: `
         New booking request received:
-        
+
         Name: ${data.name}
         Email: ${data.email}
         Company: ${data.company || 'Not provided'}
@@ -64,7 +83,7 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
         Preferred Date: ${data.selectedDate || 'Not specified'}
         Preferred Time: ${data.selectedTime || 'Not specified'}
         Call Type: ${data.callType || 'Not specified'}
-        
+
         Message:
         ${data.message}
       `,
@@ -82,16 +101,16 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
       subject: 'Booking Confirmation - Phel Arts',
       message: `
         Hi ${data.name},
-        
+
         Thank you for booking a call with Phel Arts! We've received your request and will get back to you within 24 hours.
-        
+
         Your booking details:
         - Date: ${data.selectedDate || 'To be confirmed'}
         - Time: ${data.selectedTime || 'To be confirmed'}
         - Call Type: ${data.callType || 'Video call'}
-        
+
         We're excited to discuss your project and explore how we can bring your vision to life.
-        
+
         Best regards,
         The Phel Arts Team
       `,
@@ -108,14 +127,31 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
 
 export const submitContactForm = async (data: ContactData): Promise<void> => {
   try {
-    // Store in Firestore
-    await addDoc(collection(db, 'contacts'), {
-      ...data,
-      timestamp: serverTimestamp(),
-      status: 'pending'
-    });
+    // Store in Supabase
+    const { error: dbError } = await supabase
+      .from('contacts')
+      .insert({
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        subject: data.subject,
+        project_type: data.projectType,
+        budget: data.budget,
+        message: data.message,
+        status: 'pending'
+      });
 
-    // Send email notification
+    if (dbError) {
+      console.error('Database error:', dbError);
+      throw new Error('Failed to save contact to database');
+    }
+
+    // Send email notification if EmailJS is configured
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      console.warn('EmailJS not configured, skipping email notifications');
+      return;
+    }
+
     const emailData = {
       to_email: 'pheldesignstudios@gmail.com',
       from_name: data.name,
@@ -123,14 +159,14 @@ export const submitContactForm = async (data: ContactData): Promise<void> => {
       subject: data.subject || 'New Contact Form Submission - Phel Arts',
       message: `
         New contact form submission:
-        
+
         Name: ${data.name}
         Email: ${data.email}
         Company: ${data.company || 'Not provided'}
         Subject: ${data.subject || 'General Inquiry'}
         Project Type: ${data.projectType || 'Not specified'}
         Budget: ${data.budget || 'Not specified'}
-        
+
         Message:
         ${data.message}
       `,
@@ -148,13 +184,13 @@ export const submitContactForm = async (data: ContactData): Promise<void> => {
       subject: 'Message Received - Phel Arts',
       message: `
         Hi ${data.name},
-        
+
         Thank you for contacting Phel Arts! We've received your message and will respond within 24 hours.
-        
+
         Your inquiry: ${data.subject || 'General Inquiry'}
-        
+
         We appreciate your interest in our services and look forward to discussing your project.
-        
+
         Best regards,
         The Phel Arts Team
       `,
@@ -171,14 +207,25 @@ export const submitContactForm = async (data: ContactData): Promise<void> => {
 
 export const subscribeToNewsletter = async (data: NewsletterData): Promise<void> => {
   try {
-    // Store in Firestore
-    await addDoc(collection(db, 'newsletter'), {
-      ...data,
-      timestamp: serverTimestamp(),
-      status: 'subscribed'
-    });
+    // Store in Supabase
+    const { error: dbError } = await supabase
+      .from('newsletter')
+      .insert({
+        email: data.email,
+        status: 'subscribed'
+      });
 
-    // Send welcome email
+    if (dbError) {
+      console.error('Database error:', dbError);
+      throw new Error('Failed to save newsletter subscription');
+    }
+
+    // Send welcome email if EmailJS is configured
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      console.warn('EmailJS not configured, skipping email notifications');
+      return;
+    }
+
     const emailData = {
       to_email: data.email,
       to_name: 'Valued Subscriber',
@@ -187,15 +234,15 @@ export const subscribeToNewsletter = async (data: NewsletterData): Promise<void>
       subject: 'Welcome to Phel Arts Newsletter!',
       message: `
         Welcome to the Phel Arts community!
-        
+
         Thank you for subscribing to our newsletter. You'll now receive:
         - Latest animation trends and tips
         - Behind-the-scenes project updates
         - Exclusive offers and early access to new services
         - Industry insights and creative inspiration
-        
+
         We're excited to have you on board!
-        
+
         Best regards,
         The Phel Arts Team
       `,
