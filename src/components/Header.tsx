@@ -1,214 +1,161 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Play, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowUpRight } from 'lucide-react';
 
-const Header = () => {
+interface DropdownItem {
+  href: string;
+  label: string;
+  description: string;
+}
+
+interface NavItem {
+  href: string;
+  label: string;
+  dropdown?: DropdownItem[];
+}
+
+const navItems: NavItem[] = [
+  { href: '/', label: 'Home' },
+  {
+    href: '/services',
+    label: 'Services',
+    dropdown: [
+      { href: '/services', label: '2D Animation', description: 'Character-driven stories and explainer videos.' },
+      { href: '/services', label: 'Motion Graphics', description: 'Dynamic visuals that bring brands to life.' },
+      { href: '/services', label: 'Visual Effects', description: 'Cinematic VFX and compositing.' },
+      { href: '/services', label: 'Web & App Animation', description: 'Interactive motion for digital products.' },
+      { href: '/services', label: 'Video Production', description: 'End-to-end video, concept to delivery.' },
+    ],
+  },
+  {
+    href: '/our-work',
+    label: 'Work',
+    dropdown: [
+      { href: '/our-work', label: 'Portfolio', description: 'A showcase of selected projects.' },
+      { href: '/case-studies', label: 'Case Studies', description: 'Deep dives into client results.' },
+    ],
+  },
+  { href: '/about', label: 'About' },
+  { href: '/pricing', label: 'Pricing' },
+  {
+    href: '/contact',
+    label: 'Contact',
+    dropdown: [
+      { href: '/contact', label: 'General Inquiry', description: 'Tell us about your project.' },
+      { href: '/book-call', label: 'Book a Call', description: 'Free 30-minute consultation.' },
+    ],
+  },
+];
+
+export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 30);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('.dropdown-container')) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setActiveDropdown(null);
       }
     };
-
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  const navItems = [
-    { href: '/', label: 'Home' },
-    {
-      href: '/services',
-      label: 'Services',
-      dropdown: [
-        {
-          href: '/services/2d-animation',
-          label: '2D Animation',
-          description: 'Character-driven stories and explainer videos that engage audiences.'
-        },
-        {
-          href: '/services/motion-graphics',
-          label: 'Motion Graphics',
-          description: 'Dynamic visual elements that bring your brand to life.'
-        },
-        {
-          href: '/services/visual-effects',
-          label: 'Visual Effects',
-          description: 'Cutting-edge VFX and compositing for cinematic quality.'
-        },
-        {
-          href: '/services/web-animation',
-          label: 'Web Animation',
-          description: 'Interactive animations for websites and digital platforms.'
-        },
-        {
-          href: '/services/app-animation',
-          label: 'App Animation',
-          description: 'UI/UX motion designs for mobile and web applications.'
-        },
-        {
-          href: '/services/video-production',
-          label: 'Video Production',
-          description: 'End-to-end video creation and professional editing.'
-        }
-      ]
-    },
-    {
-      href: '/our-work',
-      label: 'Our Work',
-      dropdown: [
-        {
-          href: '/portfolio',
-          label: 'Portfolio',
-          description: 'Showcase of our best creative work and projects.'
-        },
-        {
-          href: '/case-studies',
-          label: 'Case Studies',
-          description: 'In-depth analysis of our successful client projects.'
-        }
-      ]
-    },
-    {
-      href: '/about',
-      label: 'About',
-      dropdown: [
-        {
-          href: '/about/about-us',
-          label: 'About Us',
-          description: 'Learn about our story, mission, and values.'
-        },
-        {
-          href: '/about/our-team',
-          label: 'Our Team',
-          description: 'Meet the creative minds behind Phel Arts.'
-        },
-        {
-          href: '/about/testimonials',
-          label: 'Testimonials',
-          description: 'What our clients say about working with us.'
-        }
-      ]
-    },
-    { href: '/pricing', label: 'Pricing' },
-    {
-      href: '/contact',
-      label: 'Contact',
-      dropdown: [
-        {
-          href: '/book-call',
-          label: 'Book a Call',
-          description: 'Schedule a free consultation with our team.'
-        },
-        {
-          href: '/contact/support',
-          label: 'Support',
-          description: 'Get help with your existing projects.'
-        }
-      ]
-    },
-  ];
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setActiveDropdown(null);
+    setMobileDropdown(null);
+  }, [location.pathname]);
+
+  const isHome = location.pathname === '/';
+  const useDarkText = isScrolled || !isHome;
 
   const isActive = (path: string) => location.pathname === path;
 
-  const toggleDropdown = (label: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setActiveDropdown(activeDropdown === label ? null : label);
-  };
-
-  const toggleMobileDropdown = (label: string) => {
-    setMobileDropdown(mobileDropdown === label ? null : label);
-  };
-
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      isScrolled ? 'bg-[#fefefe]/95 backdrop-blur-xl border-b border-gray-100' : 'bg-transparent'
-    }`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        useDarkText ? 'bg-[#f7f5f1]/85 backdrop-blur-xl border-b border-black/[0.06]' : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-20" ref={navRef as never}>
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <img 
-              src="/phelarts_logo.png" 
-              alt="Phel Arts" 
-              className="w-24 h-24 group-hover:scale-105 transition-transform"
-            />
+          <Link to="/" className="flex items-center gap-3 group">
+            <img src="/phelarts_logo.png" alt="Phel Arts" className="h-11 w-11 object-contain" />
+            <span
+              className={`font-display font-bold text-xl tracking-tight transition-colors ${
+                useDarkText ? 'text-[#16161a]' : 'text-[#f7f5f1]'
+              }`}
+            >
+              Phel Arts
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
-              <div
-                key={item.href}
-                className="relative dropdown-container"
-              >
+              <div key={item.label} className="relative">
                 {item.dropdown ? (
                   <button
-                    onClick={(e) => toggleDropdown(item.label, e)}
-                    className={`text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 relative flex items-center space-x-1 ${
-                      isActive(item.href) || activeDropdown === item.label
-                        ? 'text-[#ff9a1d]'
-                        : isScrolled || location.pathname !== '/'
-                        ? 'text-[#242424] hover:text-[#ff9a1d]'
-                        : 'text-[#fefefe]/90 hover:text-[#ff9a1d]'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveDropdown(activeDropdown === item.label ? null : item.label);
+                    }}
+                    className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-colors ${
+                      activeDropdown === item.label
+                        ? 'text-[#f59e0b]'
+                        : useDarkText
+                        ? 'text-[#3a3a42] hover:text-[#16161a]'
+                        : 'text-[#f7f5f1]/85 hover:text-[#f7f5f1]'
                     }`}
                   >
-                    <span>{item.label}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${
-                      activeDropdown === item.label ? 'rotate-180' : ''
-                    }`} />
+                    {item.label}
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform ${activeDropdown === item.label ? 'rotate-180' : ''}`}
+                    />
                   </button>
                 ) : (
                   <Link
                     to={item.href}
-                    className={`text-sm font-medium tracking-wide transition-all duration-300 hover:scale-105 relative flex items-center space-x-1 ${
+                    className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                       isActive(item.href)
-                        ? 'text-[#ff9a1d]'
-                        : isScrolled || location.pathname !== '/'
-                        ? 'text-[#242424] hover:text-[#ff9a1d]'
-                        : 'text-[#fefefe]/90 hover:text-[#ff9a1d]'
+                        ? 'text-[#f59e0b]'
+                        : useDarkText
+                        ? 'text-[#3a3a42] hover:text-[#16161a]'
+                        : 'text-[#f7f5f1]/85 hover:text-[#f7f5f1]'
                     }`}
                   >
-                    <span>{item.label}</span>
+                    {item.label}
                   </Link>
                 )}
-                
-                {isActive(item.href) && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#ff9a1d] rounded-full"></div>
-                )}
 
-                {/* Dropdown Menu */}
+                {/* Dropdown */}
                 {item.dropdown && activeDropdown === item.label && (
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-[#fefefe] shadow-2xl border border-gray-100 rounded-2xl py-4 z-50">
-                    {item.dropdown.map((dropdownItem, index) => (
+                  <div className="absolute top-full left-0 mt-3 w-[300px] bg-white rounded-2xl shadow-2xl border border-black/[0.06] p-3 reveal">
+                    {item.dropdown.map((d, i) => (
                       <Link
-                        key={index}
-                        to={dropdownItem.href}
-                        className="flex flex-col p-4 hover:bg-gray-50 transition-colors group"
-                        onClick={() => setActiveDropdown(null)}
+                        key={i}
+                        to={d.href}
+                        className="block px-4 py-3 rounded-xl hover:bg-[#f7f5f1] transition-colors group"
                       >
-                        <div className="font-semibold text-[#242424] group-hover:text-[#ff9a1d] transition-colors mb-1">
-                          {dropdownItem.label}
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-[#16161a] text-sm group-hover:text-[#f59e0b] transition-colors">
+                            {d.label}
+                          </span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-[#9a9a9a] group-hover:text-[#f59e0b] transition-colors" />
                         </div>
-                        <div className="text-sm text-gray-600 leading-relaxed">
-                          {dropdownItem.description}
-                        </div>
+                        <p className="text-xs text-[#6b6b73] mt-1 leading-relaxed">{d.description}</p>
                       </Link>
                     ))}
                   </div>
@@ -217,96 +164,75 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA */}
           <div className="hidden lg:block">
-            <Link
-              to="/book-call"
-              className="phel-btn text-sm px-6 py-3"
-            >
+            <Link to="/book-call" className="btn-primary">
               Book a Call
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2"
+            className="lg:hidden p-2 -mr-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className={`w-6 h-6 ${
-                isScrolled || location.pathname !== '/' ? 'text-[#242424]' : 'text-[#fefefe]'
-              }`} />
+              <X className={`w-6 h-6 ${useDarkText ? 'text-[#16161a]' : 'text-[#f7f5f1]'}`} />
             ) : (
-              <Menu className={`w-6 h-6 ${
-                isScrolled || location.pathname !== '/' ? 'text-[#242424]' : 'text-[#fefefe]'
-              }`} />
+              <Menu className={`w-6 h-6 ${useDarkText ? 'text-[#16161a]' : 'text-[#f7f5f1]'}`} />
             )}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden bg-[#fefefe] rounded-2xl shadow-2xl mt-4 py-6 border border-gray-100">
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-[#f7f5f1] border-t border-black/[0.06] max-h-[80vh] overflow-y-auto">
+          <div className="px-6 py-6 space-y-1">
             {navItems.map((item) => (
-              <div key={item.href}>
+              <div key={item.label}>
                 {item.dropdown ? (
-                  <div>
+                  <>
                     <button
-                      onClick={() => toggleMobileDropdown(item.label)}
-                      className={`w-full text-left px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors flex items-center justify-between ${
-                        isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
-                      }`}
+                      onClick={() => setMobileDropdown(mobileDropdown === item.label ? null : item.label)}
+                      className="w-full flex items-center justify-between py-3 font-medium text-[#16161a]"
                     >
-                      <span>{item.label}</span>
-                      <ChevronDown className={`w-4 h-4 transition-transform ${
-                        mobileDropdown === item.label ? 'rotate-180' : ''
-                      }`} />
+                      {item.label}
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${mobileDropdown === item.label ? 'rotate-180' : ''}`}
+                      />
                     </button>
                     {mobileDropdown === item.label && (
-                      <div className="bg-gray-50 border-l-4 border-[#ff9a1d] ml-4">
-                        {item.dropdown.map((dropdownItem, index) => (
+                      <div className="pl-4 border-l-2 border-[#f59e0b]/30 space-y-1 pb-2">
+                        {item.dropdown.map((d, i) => (
                           <Link
-                            key={index}
-                            to={dropdownItem.href}
-                            className="block px-6 py-3 text-sm text-gray-600 hover:text-[#ff9a1d] hover:bg-[#ff9a1d]/5 transition-colors"
-                            onClick={() => {
-                              setIsMenuOpen(false);
-                              setMobileDropdown(null);
-                            }}
+                            key={i}
+                            to={d.href}
+                            className="block py-2 text-sm text-[#6b6b73] hover:text-[#f59e0b] transition-colors"
                           >
-                            {dropdownItem.label}
+                            {d.label}
                           </Link>
                         ))}
                       </div>
                     )}
-                  </div>
+                  </>
                 ) : (
                   <Link
                     to={item.href}
-                    className={`block px-6 py-3 font-medium hover:bg-[#ff9a1d]/10 transition-colors ${
-                      isActive(item.href) ? 'text-[#ff9a1d]' : 'text-[#242424] hover:text-[#ff9a1d]'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    className="block py-3 font-medium text-[#16161a] hover:text-[#f59e0b] transition-colors"
                   >
                     {item.label}
                   </Link>
                 )}
               </div>
             ))}
-            <div className="px-6 pt-4">
-              <Link
-                to="/book-call"
-                className="phel-btn block text-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Book a Call
-              </Link>
-            </div>
+            <Link to="/book-call" className="btn-primary w-full mt-4">
+              Book a Call
+            </Link>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
-};
-
-export default Header;
+}

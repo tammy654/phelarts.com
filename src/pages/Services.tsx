@@ -1,205 +1,183 @@
-import React from 'react';
+import { motion } from 'framer-motion';
 import { Video, Palette, Zap, Globe, Film, Smartphone, ArrowRight, Check } from 'lucide-react';
 
-const Services = () => {
-  const services = [
-    {
-      icon: Video,
-      title: '2D Animation',
-      description: 'Character-driven stories and explainer videos that engage and educate your audience with compelling narratives.',
-      features: ['Character Animation', 'Explainer Videos', 'Educational Content', 'Storyboarding'],
-      price: 'Starting at $2,500',
-      timeline: '2-4 weeks'
-    },
-    {
-      icon: Palette,
-      title: 'Motion Graphics',
-      description: 'Dynamic visual elements that bring your brand to life with style, sophistication, and memorable impact.',
-      features: ['Logo Animation', 'Brand Videos', 'Title Sequences', 'Social Media Content'],
-      price: 'Starting at $1,500',
-      timeline: '1-3 weeks'
-    },
-    {
-      icon: Zap,
-      title: 'Visual Effects',
-      description: 'Cutting-edge VFX and compositing that elevate your content to cinematic quality and professional standards.',
-      features: ['Compositing', 'Green Screen', 'Post-Production', 'Color Grading'],
-      price: 'Starting at $3,000',
-      timeline: '3-5 weeks'
-    },
-    {
-      icon: Globe,
-      title: 'Web Animation',
-      description: 'Interactive animations that enhance user experience and drive engagement across digital platforms.',
-      features: ['UI Animations', 'Interactive Elements', 'Micro-interactions', 'Loading Animations'],
-      price: 'Starting at $1,200',
-      timeline: '1-2 weeks'
-    },
-    {
-      icon: Film,
-      title: 'Video Production',
-      description: 'End-to-end video production from concept development to final delivery with professional quality.',
-      features: ['Concept Development', 'Scriptwriting', 'Production', 'Post-Production'],
-      price: 'Starting at $4,000',
-      timeline: '4-6 weeks'
-    },
-    {
-      icon: Smartphone,
-      title: 'App Animations',
-      description: 'Smooth, delightful animations that make mobile experiences memorable and user-friendly.',
-      features: ['App Transitions', 'Loading Animations', 'UI Elements', 'Onboarding Flows'],
-      price: 'Starting at $1,800',
-      timeline: '2-3 weeks'
-    },
-  ];
+const services = [
+  {
+    icon: Video,
+    title: '2D Animation',
+    description: 'Character-driven stories and explainer videos that engage and educate your audience with compelling narratives.',
+    features: ['Character Animation', 'Explainer Videos', 'Educational Content', 'Storyboarding'],
+    price: 'Starting at $2,500',
+    timeline: '2–4 weeks',
+  },
+  {
+    icon: Palette,
+    title: 'Motion Graphics',
+    description: 'Dynamic visual elements that bring your brand to life with style, sophistication, and memorable impact.',
+    features: ['Logo Animation', 'Brand Videos', 'Title Sequences', 'Social Content'],
+    price: 'Starting at $1,500',
+    timeline: '1–3 weeks',
+  },
+  {
+    icon: Zap,
+    title: 'Visual Effects',
+    description: 'Cutting-edge VFX and compositing that elevate your content to cinematic quality and professional standards.',
+    features: ['Compositing', 'Green Screen', 'Post-Production', 'Color Grading'],
+    price: 'Starting at $3,000',
+    timeline: '3–5 weeks',
+  },
+  {
+    icon: Globe,
+    title: 'Web Animation',
+    description: 'Interactive animations that enhance user experience and drive engagement across digital platforms.',
+    features: ['UI Animations', 'Interactive Elements', 'Micro-interactions', 'Loaders'],
+    price: 'Starting at $1,200',
+    timeline: '1–2 weeks',
+  },
+  {
+    icon: Film,
+    title: 'Video Production',
+    description: 'End-to-end video production from concept development to final delivery with professional quality.',
+    features: ['Concept Development', 'Scriptwriting', 'Production', 'Post-Production'],
+    price: 'Starting at $4,000',
+    timeline: '4–6 weeks',
+  },
+  {
+    icon: Smartphone,
+    title: 'App Animations',
+    description: 'Smooth, delightful animations that make mobile experiences memorable and user-friendly.',
+    features: ['App Transitions', 'Loading Animations', 'UI Elements', 'Onboarding'],
+    price: 'Starting at $1,800',
+    timeline: '2–3 weeks',
+  },
+];
 
-  const process = [
-    {
-      step: '01',
-      title: 'Discovery',
-      description: 'We start by understanding your goals, target audience, and project requirements.'
-    },
-    {
-      step: '02',
-      title: 'Concept',
-      description: 'Our team develops creative concepts and storyboards that align with your vision.'
-    },
-    {
-      step: '03',
-      title: 'Production',
-      description: 'We bring your project to life with meticulous attention to detail and quality.'
-    },
-    {
-      step: '04',
-      title: 'Delivery',
-      description: 'Final delivery with all necessary formats and ongoing support for your project.'
-    }
-  ];
+const process = [
+  { step: '01', title: 'Discovery', description: 'We start by understanding your goals, target audience, and project requirements.' },
+  { step: '02', title: 'Concept', description: 'Our team develops creative concepts and storyboards that align with your vision.' },
+  { step: '03', title: 'Production', description: 'We bring your project to life with meticulous attention to detail and quality.' },
+  { step: '04', title: 'Delivery', description: 'Final delivery with all necessary formats and ongoing support for your project.' },
+];
 
+export default function Services() {
   return (
     <div className="pt-20">
-      {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
-          <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
-            Our Services
-          </h1>
-          <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
-            From concept to completion, we offer comprehensive animation and motion graphics 
-            services that bring your vision to life.
-          </p>
-          <a
-            href="/book-call"
-            className="bg-gradient-to-r from-[#ff9a1d] to-[#016952] text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center space-x-2"
-          >
-            <span>Start a Project</span>
-            <ArrowRight className="w-5 h-5" />
-          </a>
+      {/* Hero */}
+      <section className="py-28 bg-[#16161a] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#f59e0b]/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#0f5132]/30 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <span className="eyebrow text-[#f59e0b]">Our Services</span>
+            <h1 className="font-display font-bold text-5xl lg:text-7xl text-[#f7f5f1] mt-5">
+              Everything we create.
+            </h1>
+            <p className="text-xl text-[#f7f5f1]/60 max-w-2xl mx-auto mt-6 leading-relaxed">
+              From concept to completion, we offer comprehensive animation and motion graphics
+              services that bring your vision to life.
+            </p>
+            <div className="mt-10">
+              <a href="/book-call" className="btn-light">
+                Start a Project
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-24 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8" data-aos="fade-up">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="group p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-gray-100"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
+      {/* Services grid */}
+      <section className="py-28 bg-[#f7f5f1]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-6">
+            {services.map((s, i) => (
+              <motion.div
+                key={s.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: (i % 2) * 0.1 }}
+                viewport={{ once: true }}
+                className="group lift p-8 rounded-3xl bg-white border border-black/[0.06]"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <service.icon className="w-8 h-8 text-[#fefefe]" />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-[#242424] mb-4">{service.title}</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
-                
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <h4 className="font-semibold text-[#242424] mb-3">What's included:</h4>
-                    <ul className="space-y-2">
-                      {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center text-gray-700">
-                          <Check className="w-4 h-4 text-[#016952] mr-2 flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                <div className="flex items-start justify-between mb-6">
+                  <div className="w-14 h-14 rounded-2xl bg-[#16161a] flex items-center justify-center group-hover:bg-[#f59e0b] transition-colors duration-300">
+                    <s.icon className="w-6 h-6 text-[#f7f5f1] group-hover:text-[#16161a] transition-colors duration-300" />
                   </div>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Price</div>
-                      <div className="text-lg font-bold text-[#242424]">{service.price}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Timeline</div>
-                      <div className="text-lg font-bold text-[#242424]">{service.timeline}</div>
-                    </div>
+                  <div className="text-right">
+                    <div className="font-display font-bold text-lg text-[#16161a]">{s.price}</div>
+                    <div className="text-sm text-[#6b6b73]">{s.timeline}</div>
                   </div>
                 </div>
-                
-                <a
-                  href="/book-call"
-                  className="text-[#ff9a1d] font-semibold flex items-center space-x-2 group-hover:text-[#016952] transition-colors"
-                >
-                  <span>Get Quote</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <h3 className="font-display font-bold text-2xl text-[#16161a] mb-3">{s.title}</h3>
+                <p className="text-[#6b6b73] leading-relaxed mb-6">{s.description}</p>
+                <ul className="grid grid-cols-2 gap-2 mb-6">
+                  {s.features.map((f) => (
+                    <li key={f} className="flex items-center text-sm text-[#3a3a42]">
+                      <Check className="w-4 h-4 text-[#0f5132] mr-2 flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a href="/book-call" className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all">
+                  Get a Quote
+                  <ArrowRight className="w-4 h-4" />
                 </a>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-24 bg-gray-50">
+      {/* Process */}
+      <section className="py-28 bg-white border-y border-black/[0.06]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#242424] mb-6">
-              Our Process
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="eyebrow">How we work</span>
+            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a] mt-4">
+              A proven methodology.
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A proven methodology that ensures exceptional results for every project.
+            <p className="text-lg text-[#6b6b73] mt-5">
+              A clear path that ensures exceptional results for every project.
             </p>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {process.map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl font-bold text-[#fefefe]">{item.step}</span>
-                </div>
-                <h3 className="text-xl font-bold text-[#242424] mb-4">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-              </div>
+            {process.map((p, i) => (
+              <motion.div
+                key={p.step}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="font-display font-extrabold text-5xl text-[#f59e0b]/20 mb-4">{p.step}</div>
+                <h3 className="font-display font-bold text-xl text-[#16161a] mb-2">{p.title}</h3>
+                <p className="text-[#6b6b73] leading-relaxed">{p.description}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[#242424] to-gray-800">
+      {/* CTA */}
+      <section className="py-28 bg-[#f7f5f1]">
         <div className="max-w-4xl mx-auto text-center px-6 lg:px-8">
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#fefefe] mb-6">
+          <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a]">
             Ready to get started?
           </h2>
-          <p className="text-xl text-gray-300 mb-8">
+          <p className="text-xl text-[#6b6b73] mt-5">
             Let's discuss your project and create something extraordinary together.
           </p>
-          <a
-            href="/book-call"
-            className="phel-btn px-10 py-4 text-lg space-x-3"
-          >
-            <span>Book a Call</span>
-            <ArrowRight className="w-5 h-5" />
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+            <a href="/book-call" className="btn-primary">
+              Book a Call
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="/pricing" className="btn-ghost">
+              View Pricing
+            </a>
+          </div>
         </div>
       </section>
     </div>
   );
-};
-
-export default Services;
+}

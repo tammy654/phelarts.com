@@ -1,261 +1,199 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, Users, Clock, Target, Award, ExternalLink } from 'lucide-react';
-import ParallaxSection from '../components/ParallaxSection';
+import { ArrowRight, TrendingUp, Users, Clock, Target, Award } from 'lucide-react';
 
-const CaseStudies = () => {
-  const caseStudies = [
-    {
-      title: 'TechCorp Brand Revolution',
-      client: 'TechCorp Inc.',
-      category: 'Motion Graphics & Branding',
-      image: 'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg?auto=compress&cs=tinysrgb&w=800',
-      challenge: 'TechCorp needed to modernize their brand identity and create engaging content that would resonate with a younger, tech-savvy audience while maintaining their professional credibility.',
-      solution: 'We developed a comprehensive motion graphics package including logo animations, brand videos, and social media content that balanced innovation with professionalism.',
-      results: [
-        { metric: 'Brand Recognition', value: '+300%', icon: TrendingUp },
-        { metric: 'Social Engagement', value: '+450%', icon: Users },
-        { metric: 'Lead Generation', value: '+200%', icon: Target },
-        { metric: 'Project Duration', value: '3 weeks', icon: Clock }
-      ],
-      testimonial: {
-        text: "Phel Arts transformed our brand identity beyond our expectations. The motion graphics they created perfectly captured our vision and significantly boosted our market presence.",
-        author: "Sarah Johnson",
-        position: "Marketing Director, TechCorp Inc."
-      },
-      tags: ['Motion Graphics', 'Brand Identity', 'Social Media', 'Logo Animation']
+const caseStudies = [
+  {
+    title: 'TechCorp Brand Revolution',
+    client: 'TechCorp Inc.',
+    category: 'Motion Graphics & Branding',
+    image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=800',
+    challenge: 'TechCorp needed to modernize their brand identity and create engaging content that would resonate with a younger, tech-savvy audience while maintaining professional credibility.',
+    solution: 'We developed a comprehensive motion graphics package including logo animations, brand videos, and social media content that balanced innovation with professionalism.',
+    results: [
+      { metric: 'Brand Recognition', value: '+300%', icon: TrendingUp },
+      { metric: 'Social Engagement', value: '+450%', icon: Users },
+      { metric: 'Lead Generation', value: '+200%', icon: Target },
+      { metric: 'Project Duration', value: '3 weeks', icon: Clock },
+    ],
+    testimonial: {
+      text: 'Phel Arts transformed our brand identity beyond our expectations. The motion graphics perfectly captured our vision and significantly boosted our market presence.',
+      author: 'Sarah Johnson',
+      position: 'Marketing Director, TechCorp Inc.',
     },
-    {
-      title: 'EduLearn Engagement Boost',
-      client: 'EduLearn Platform',
-      category: '2D Animation & Educational Content',
-      image: 'https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800',
-      challenge: 'EduLearn\'s educational content had low engagement rates and high dropout rates. Students found the material boring and difficult to understand.',
-      solution: 'We created a series of character-driven 2D animations that simplified complex concepts and made learning fun and engaging through storytelling.',
-      results: [
-        { metric: 'User Engagement', value: '+250%', icon: TrendingUp },
-        { metric: 'Course Completion', value: '+180%', icon: Target },
-        { metric: 'Student Satisfaction', value: '95%', icon: Users },
-        { metric: 'Content Series', value: '12 episodes', icon: Award }
-      ],
-      testimonial: {
-        text: "The animated series revolutionized our platform. Students are now excited about learning, and our completion rates have never been higher.",
-        author: "Dr. Michael Chen",
-        position: "CEO, EduLearn Platform"
-      },
-      tags: ['2D Animation', 'Character Design', 'Educational Content', 'Storytelling']
+    tags: ['Motion Graphics', 'Brand Identity', 'Social Media'],
+  },
+  {
+    title: 'EduLearn Engagement Boost',
+    client: 'EduLearn Platform',
+    category: '2D Animation & Educational Content',
+    image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=800',
+    challenge: 'EduLearn\'s educational content had low engagement and high dropout rates. Students found the material boring and difficult to understand.',
+    solution: 'We created a series of character-driven 2D animations that simplified complex concepts and made learning fun through storytelling.',
+    results: [
+      { metric: 'User Engagement', value: '+250%', icon: TrendingUp },
+      { metric: 'Course Completion', value: '+180%', icon: Target },
+      { metric: 'Student Satisfaction', value: '95%', icon: Users },
+      { metric: 'Content Series', value: '12 episodes', icon: Award },
+    ],
+    testimonial: {
+      text: 'The animated series revolutionized our platform. Students are now excited about learning, and our completion rates have never been higher.',
+      author: 'Dr. Michael Chen',
+      position: 'CEO, EduLearn Platform',
     },
-    {
-      title: 'InnovateTech Product Launch',
-      client: 'InnovateTech Solutions',
-      category: 'Visual Effects & Product Demo',
-      image: 'https://images.pexels.com/photos/3945312/pexels-photo-3945312.jpeg?auto=compress&cs=tinysrgb&w=800',
-      challenge: 'InnovateTech needed to launch their complex software product with a compelling demonstration that would clearly communicate its value proposition to potential customers.',
-      solution: 'We created a cinematic product demonstration using advanced visual effects, 3D elements, and clear messaging to showcase the software\'s capabilities.',
-      results: [
-        { metric: 'Conversion Rate', value: '+400%', icon: TrendingUp },
-        { metric: 'Demo Requests', value: '+350%', icon: Target },
-        { metric: 'Sales Qualified Leads', value: '+280%', icon: Users },
-        { metric: 'Video Views', value: '500K+', icon: Award }
-      ],
-      testimonial: {
-        text: "The product demo video exceeded all our expectations. It perfectly captured our software's complexity in a simple, engaging way that drove incredible results.",
-        author: "Alex Rodriguez",
-        position: "Product Manager, InnovateTech"
-      },
-      tags: ['Visual Effects', 'Product Demo', 'VFX', 'Marketing']
-    }
-  ];
+    tags: ['2D Animation', 'Character Design', 'Educational'],
+  },
+  {
+    title: 'InnovateTech Product Launch',
+    client: 'InnovateTech Solutions',
+    category: 'Visual Effects & Product Demo',
+    image: 'https://images.pexels.com/photos/11894290/pexels-photo-11894290.jpeg?auto=compress&cs=tinysrgb&w=800',
+    challenge: 'InnovateTech needed to launch their complex software product with a compelling demonstration that clearly communicated its value proposition.',
+    solution: 'We created a cinematic product demonstration using advanced visual effects, 3D elements, and clear messaging to showcase the software\'s capabilities.',
+    results: [
+      { metric: 'Conversion Rate', value: '+400%', icon: TrendingUp },
+      { metric: 'Demo Requests', value: '+350%', icon: Target },
+      { metric: 'Qualified Leads', value: '+280%', icon: Users },
+      { metric: 'Video Views', value: '500K+', icon: Award },
+    ],
+    testimonial: {
+      text: 'The product demo video exceeded all our expectations. It perfectly captured our software\'s complexity in a simple, engaging way that drove incredible results.',
+      author: 'Alex Rodriguez',
+      position: 'Product Manager, InnovateTech',
+    },
+    tags: ['Visual Effects', 'Product Demo', 'Marketing'],
+  },
+];
 
+export default function CaseStudies() {
   return (
     <div className="pt-20">
-      {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952] relative overflow-hidden">
-        <ParallaxSection direction="swirl" intensity={40}>
-          <div className="absolute top-10 right-10 w-40 h-40 bg-[#ff9a1d]/20 rounded-full blur-2xl"></div>
-        </ParallaxSection>
-        <ParallaxSection direction="left" intensity={30}>
-          <div className="absolute bottom-10 left-10 w-32 h-32 bg-[#016952]/30 rounded-full blur-xl"></div>
-        </ParallaxSection>
-        
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
-              Case Studies
+      {/* Hero */}
+      <section className="py-28 bg-[#16161a] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#f59e0b]/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#0f5132]/30 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <span className="eyebrow text-[#f59e0b]">Case Studies</span>
+            <h1 className="font-display font-bold text-5xl lg:text-7xl text-[#f7f5f1] mt-5">
+              Results that speak.
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
-              Deep dives into our most successful projects, showcasing the challenges we solved, 
-              the creative solutions we implemented, and the measurable results we achieved.
+            <p className="text-xl text-[#f7f5f1]/60 max-w-2xl mx-auto mt-6 leading-relaxed">
+              Deep dives into our most successful projects — the challenges we solved, the solutions
+              we built, and the measurable results we achieved.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Case Studies */}
-      <section className="py-24 bg-[#fefefe]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      {/* Case studies */}
+      <section className="py-28 bg-[#f7f5f1]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24">
           {caseStudies.map((study, index) => (
-            <ParallaxSection 
-              key={index} 
-              direction={index % 2 === 0 ? 'right' : 'left'} 
-              intensity={25}
+            <motion.div
+              key={study.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true }}
+              className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}
             >
-              <motion.div
-                className="mb-32 last:mb-0"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className={`grid lg:grid-cols-2 gap-16 items-center ${
-                  index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''
-                }`}>
-                  {/* Image */}
-                  <div className={`relative group ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-                    <div className="relative overflow-hidden rounded-3xl aspect-[4/3]">
-                      <img
-                        src={study.image}
-                        alt={study.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#242424]/60 to-transparent"></div>
-                      <div className="absolute bottom-6 left-6 right-6">
-                        <div className="text-[#fefefe] font-semibold text-lg">{study.client}</div>
-                        <div className="text-[#ff9a1d] text-sm">{study.category}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className={`space-y-8 ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-                    <div>
-                      <h2 className="text-4xl lg:text-5xl font-bold text-[#242424] mb-4">
-                        {study.title}
-                      </h2>
-                      <div className="text-[#ff9a1d] font-semibold text-lg mb-6">
-                        {study.category}
-                      </div>
-                    </div>
-
-                    <div className="space-y-6">
-                      <div>
-                        <h3 className="text-xl font-bold text-[#242424] mb-3">The Challenge</h3>
-                        <p className="text-gray-600 leading-relaxed">{study.challenge}</p>
-                      </div>
-
-                      <div>
-                        <h3 className="text-xl font-bold text-[#242424] mb-3">Our Solution</h3>
-                        <p className="text-gray-600 leading-relaxed">{study.solution}</p>
-                      </div>
-                    </div>
-
-                    {/* Results Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {study.results.map((result, resultIndex) => (
-                        <motion.div
-                          key={resultIndex}
-                          className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100"
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <div className="flex items-center space-x-3 mb-2">
-                            <div className="w-8 h-8 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-lg flex items-center justify-center">
-                              <result.icon className="w-4 h-4 text-[#fefefe]" />
-                            </div>
-                            <div className="text-sm font-medium text-gray-600">{result.metric}</div>
-                          </div>
-                          <div className="text-2xl font-bold text-[#242424]">{result.value}</div>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    {/* Testimonial */}
-                    <div className="bg-gradient-to-r from-[#ff9a1d]/10 to-[#016952]/10 rounded-2xl p-8">
-                      <div className="text-lg text-[#242424] mb-4 italic leading-relaxed">
-                        "{study.testimonial.text}"
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#ff9a1d] to-[#016952] rounded-full flex items-center justify-center">
-                          <Users className="w-6 h-6 text-[#fefefe]" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-[#242424]">{study.testimonial.author}</div>
-                          <div className="text-gray-600 text-sm">{study.testimonial.position}</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-3">
-                      {study.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <motion.button 
-                      className="flex items-center space-x-2 text-[#ff9a1d] hover:text-[#016952] font-semibold text-lg transition-colors group"
-                      whileHover={{ x: 5 }}
-                    >
-                      <span>View Full Case Study</span>
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
+              {/* Image */}
+              <div className={`relative group ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+                <div className="relative overflow-hidden rounded-3xl aspect-[4/3]">
+                  <img
+                    src={study.image}
+                    alt={study.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#16161a]/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <div className="text-[#f7f5f1] font-semibold">{study.client}</div>
+                    <div className="text-[#f59e0b] text-sm">{study.category}</div>
                   </div>
                 </div>
-              </motion.div>
-            </ParallaxSection>
+              </div>
+
+              {/* Content */}
+              <div className={`space-y-6 ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+                <div>
+                  <h2 className="font-display font-bold text-3xl lg:text-4xl text-[#16161a]">{study.title}</h2>
+                  <div className="text-[#f59e0b] font-semibold mt-2">{study.category}</div>
+                </div>
+
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="font-display font-bold text-lg text-[#16161a] mb-2">The Challenge</h3>
+                    <p className="text-[#6b6b73] leading-relaxed">{study.challenge}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-display font-bold text-lg text-[#16161a] mb-2">Our Solution</h3>
+                    <p className="text-[#6b6b73] leading-relaxed">{study.solution}</p>
+                  </div>
+                </div>
+
+                {/* Results */}
+                <div className="grid grid-cols-2 gap-3">
+                  {study.results.map((r) => (
+                    <div key={r.metric} className="bg-white rounded-2xl p-4 border border-black/[0.06]">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-7 h-7 rounded-lg bg-[#16161a] flex items-center justify-center">
+                          <r.icon className="w-3.5 h-3.5 text-[#f7f5f1]" />
+                        </div>
+                        <span className="text-xs text-[#6b6b73]">{r.metric}</span>
+                      </div>
+                      <div className="font-display font-bold text-xl text-[#16161a]">{r.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Testimonial */}
+                <div className="bg-white rounded-2xl p-6 border border-black/[0.06]">
+                  <p className="text-[#3a3a42] italic leading-relaxed mb-4">"{study.testimonial.text}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f59e0b] to-[#0f5132] flex items-center justify-center">
+                      <Users className="w-4 h-4 text-[#f7f5f1]" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-[#16161a] text-sm">{study.testimonial.author}</div>
+                      <div className="text-xs text-[#6b6b73]">{study.testimonial.position}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {study.tags.map((t) => (
+                    <span key={t} className="px-3 py-1.5 bg-white text-[#3a3a42] rounded-full text-xs border border-black/[0.06]">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <ParallaxSection direction="up" intensity={40}>
-        <section className="py-24 bg-gradient-to-r from-[#242424] to-gray-800">
-          <div className="max-w-4xl mx-auto text-center px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold text-[#fefefe] mb-6">
-                Ready to Write Your Success Story?
-              </h2>
-              <p className="text-xl text-gray-300 mb-8">
-                Let's create a case study that showcases your brand's transformation and measurable results.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.a
-                  href="/book-call"
-                  className="phel-btn px-8 py-4 text-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Start Your Project
-                </motion.a>
-                <motion.a
-                  href="/portfolio"
-                  className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  View Portfolio
-                </motion.a>
-              </div>
-            </motion.div>
+      {/* CTA */}
+      <section className="py-28 bg-[#16161a] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-80 h-80 bg-[#f59e0b]/15 rounded-full blur-[120px] -translate-x-1/3 -translate-y-1/3" />
+        <div className="relative max-w-4xl mx-auto text-center px-6 lg:px-8">
+          <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#f7f5f1]">
+            Ready to write your success story?
+          </h2>
+          <p className="text-xl text-[#f7f5f1]/60 mt-5">
+            Let's create a case study that showcases your brand's transformation.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+            <a href="/book-call" className="btn-light">
+              Start Your Project
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="/our-work" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5">
+              View Portfolio
+            </a>
           </div>
-        </section>
-      </ParallaxSection>
+        </div>
+      </section>
     </div>
   );
-};
-
-export default CaseStudies;
+}

@@ -2,36 +2,158 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font pairing: Luxora Grotesk for headings, Quan for body text */
-h1, h2, h3, h4, h5, h6, .heading {
-  font-family: 'Luxora Grotesk', sans-serif;
-  font-weight: 700;
+:root {
+  --ink: #16161a;
+  --ink-soft: #3a3a42;
+  --cream: #f7f5f1;
+  --cream-deep: #efece6;
+  --amber: #f59e0b;
+  --amber-deep: #d97706;
+  --forest: #0f5132;
+  --forest-soft: #167049;
+  --line: rgba(22, 22, 26, 0.08);
 }
 
-p, span, div, button, input, textarea, label, .body-text {
-  font-family: 'Quan', sans-serif;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Unified Button Styling */
-.phel-btn {
-  background-color: #ff9a1d;
-  color: #fefefe;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background-color: var(--amber);
+  color: var(--ink);
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--cream-deep); }
+::-webkit-scrollbar-thumb { background: #c9c4ba; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #b0aa9d; }
+
+/* Button system */
+.btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--ink);
+  color: var(--cream);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid var(--ink);
+  cursor: pointer;
   text-decoration: none;
 }
+.btn-primary:hover {
+  background-color: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(245, 158, 11, 0.5);
+}
 
-.phel-btn:hover {
-  background-color: #016952;
-  transform: scale(1.05);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--ink);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+  background-color: var(--ink);
+  color: var(--cream);
+  transform: translateY(-2px);
+}
+
+.btn-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--cream);
+  color: var(--ink);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid var(--cream);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-light:hover {
+  background-color: var(--amber);
+  border-color: var(--amber);
+  transform: translateY(-2px);
+}
+
+/* Section label */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-deep);
+}
+
+/* Card hover lift */
+.lift {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+.lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px -24px rgba(22, 22, 26, 0.25);
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 32s linear infinite;
+}
+
+/* Subtle float */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.float-slow { animation: float 6s ease-in-out infinite; }
+
+/* Fade-up reveal */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  animation: reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
