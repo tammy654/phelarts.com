@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { subscribeToNewsletter } from '../services/emailService';
 
@@ -77,11 +77,14 @@ export default function Footer() {
               and drive results.
             </p>
             <div className="mt-8 space-y-3">
-              <a href="mailto:hello@phelarts.studio" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
-                <Mail className="w-4 h-4" /> hello@phelarts.studio
+              <a href="mailto:phelarts@gmail.com" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
+                <Mail className="w-4 h-4" /> phelarts@gmail.com
               </a>
               <a href="tel:+2349067556062" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
                 <Phone className="w-4 h-4" /> +234 906 755 6062
+              </a>
+              <a href="https://wa.me/2347086613704" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
+                <MessageCircle className="w-4 h-4" /> +234 708 661 3704
               </a>
               <div className="flex items-center gap-3 text-[#f7f5f1]/70">
                 <MapPin className="w-4 h-4" /> Port Harcourt, Nigeria

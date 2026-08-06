@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Mail, Phone, MapPin, Send, Clock, Users, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, Send, Clock, Users } from 'lucide-react';
 import { submitContactForm, ContactData } from '../services/emailService';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const contactMethods = [
-  { icon: Mail, title: 'Email us', description: 'We respond within 24 hours', contact: 'hello@phelarts.studio', action: 'mailto:hello@phelarts.studio' },
-  { icon: Phone, title: 'Call us', description: 'Speak directly with our team', contact: '+234 (906) 755-6062', action: 'tel:+2349067556062' },
-  { icon: MessageCircle, title: 'Live chat', description: 'Quick questions, real-time', contact: 'Available 9AM–6PM WAT', action: '#' },
+  { icon: Mail, title: 'Email us', description: 'We respond within 24 hours', contact: 'phelarts@gmail.com', action: 'mailto:phelarts@gmail.com' },
+  { icon: Phone, title: 'Call us', description: 'Speak directly with our team', contact: '+234 906 755 6062', action: 'tel:+2349067556062' },
+  { icon: MessageCircle, title: 'WhatsApp', description: 'Chat with us anytime', contact: '+234 708 661 3704', action: 'https://wa.me/2347086613704' },
 ];
 
 const budgetOptions = ['Under $5,000', '$5,000 – $15,000', '$15,000 – $30,000', '$30,000 – $50,000', '$50,000+'];
@@ -108,8 +108,9 @@ export default function Contact() {
               <h2 className="font-display font-bold text-3xl text-[#16161a] mb-8">Let's start a conversation</h2>
               <div className="space-y-5">
                 {[
-                  { icon: Mail, label: 'Email us', value: 'hello@phelarts.studio' },
-                  { icon: Phone, label: 'Call us', value: '+234 (906) 755-6062' },
+                  { icon: Mail, label: 'Email us', value: 'phelarts@gmail.com' },
+                  { icon: Phone, label: 'Call us', value: '+234 906 755 6062' },
+                  { icon: MessageCircle, label: 'WhatsApp', value: '+234 708 661 3704' },
                   { icon: MapPin, label: 'Visit us', value: 'Port Harcourt, Nigeria' },
                 ].map((c) => (
                   <div key={c.label} className="flex items-start gap-4">
