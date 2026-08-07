@@ -92,7 +92,7 @@ export default function Header() {
         <div className="flex justify-between items-center h-20" ref={navRef as never}>
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="/phelarts_logo.png" alt="Phel Arts" className="h-20 w-20 object-contain" />
+            <img src="/phelarts_logo.png" alt="Phel Arts" className="h-22 w-22 object-contain" />
             {/* <span
               className={`font-display font-bold text-xl tracking-tight transition-colors ${
                 useDarkText ? 'text-[#16161a]' : 'text-[#f7f5f1]'
