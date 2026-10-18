@@ -26,7 +26,6 @@ const linkGroups = [
     links: [
       { href: '/services', label: '2D Animation' },
       { href: '/services', label: 'Motion Graphics' },
-      { href: '/services', label: 'Visual Effects' },
       { href: '/services', label: 'Video Production' },
     ],
   },

@@ -11,7 +11,7 @@ const contactMethods = [
 ];
 
 const budgetOptions = ['Under $5,000', '$5,000 – $15,000', '$15,000 – $30,000', '$30,000 – $50,000', '$50,000+'];
-const projectTypes = ['2D Animation', 'Motion Graphics', 'Visual Effects', 'Web Animation', 'Video Production', 'App Animations', 'Other'];
+const projectTypes = ['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'];
 
 const faqs = [
   { question: 'What is your typical project timeline?', answer: 'Timelines vary by complexity, but most projects take 2–6 weeks from concept to completion.' },

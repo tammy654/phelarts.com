@@ -15,9 +15,9 @@ const services = [
     image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
   {
-    title: 'Visual Effects',
-    description: 'Cinematic VFX and compositing that elevate content to the next level.',
-    image: 'https://images.pexels.com/photos/11894290/pexels-photo-11894290.jpeg?auto=compress&cs=tinysrgb&w=600',
+    title: 'Video Production',
+    description: 'End-to-end video production from concept to final delivery.',
+    image: 'https://images.pexels.com/photos/8102676/pexels-photo-8102676.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
 ];
 

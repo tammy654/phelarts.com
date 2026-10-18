@@ -162,7 +162,6 @@ export default function BookCall() {
                     <option value="">Select project type</option>
                     <option value="2d-animation">2D Animation</option>
                     <option value="motion-graphics">Motion Graphics</option>
-                    <option value="visual-effects">Visual Effects</option>
                     <option value="web-animation">Web Animation</option>
                     <option value="video-production">Video Production</option>
                     <option value="app-animations">App Animations</option>

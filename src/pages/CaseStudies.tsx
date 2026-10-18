@@ -45,10 +45,10 @@ const caseStudies = [
   {
     title: 'InnovateTech Product Launch',
     client: 'InnovateTech Solutions',
-    category: 'Visual Effects & Product Demo',
-    image: 'https://images.pexels.com/photos/11894290/pexels-photo-11894290.jpeg?auto=compress&cs=tinysrgb&w=800',
+    category: 'Motion Graphics & Product Demo',
+    image: 'https://images.pexels.com/photos/12833265/pexels-photo-12833265.jpeg?auto=compress&cs=tinysrgb&w=800',
     challenge: 'InnovateTech needed to launch their complex software product with a compelling demonstration that clearly communicated its value proposition.',
-    solution: 'We created a cinematic product demonstration using advanced visual effects, 3D elements, and clear messaging to showcase the software\'s capabilities.',
+    solution: 'We created a dynamic product demonstration using motion graphics, 3D elements, and clear messaging to showcase the software\'s capabilities.',
     results: [
       { metric: 'Conversion Rate', value: '+400%', icon: TrendingUp },
       { metric: 'Demo Requests', value: '+350%', icon: Target },
@@ -60,7 +60,7 @@ const caseStudies = [
       author: 'Alex Rodriguez',
       position: 'Product Manager, InnovateTech',
     },
-    tags: ['Visual Effects', 'Product Demo', 'Marketing'],
+    tags: ['Motion Graphics', 'Product Demo', 'Marketing'],
   },
 ];
 

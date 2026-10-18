@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Calendar, Users, X, Play } from 'lucide-react';
 import ClientLogos from '../components/ClientLogos';
 
-const filters = ['All', '2D Animation', 'Motion Graphics', 'Visual Effects', 'Web Animation', 'Video Production'];
+const filters = ['All', '2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production'];
 
 const projects = [
   {
@@ -55,16 +55,6 @@ const projects = [
     tags: ['Video Production', 'Corporate'],
     year: '2023',
     client: 'GlobalTech',
-  },
-  {
-    title: 'Cinematic VFX Reel',
-    category: 'Visual Effects',
-    image: 'https://images.pexels.com/photos/11894290/pexels-photo-11894290.jpeg?auto=compress&cs=tinysrgb&w=800',
-    video: 'https://cdn.coverr.co/videos/coverr-smoke-and-fire-1572/1080p.mp4',
-    description: 'Cinematic visual effects and compositing work for a film production studio.',
-    tags: ['VFX', 'Compositing'],
-    year: '2024',
-    client: 'CineStudio',
   },
 ];
 

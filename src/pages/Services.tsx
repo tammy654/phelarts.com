@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Video, Palette, Zap, Globe, Film, Smartphone, ArrowRight, Check } from 'lucide-react';
+import { Video, Palette, Globe, Film, Smartphone, ArrowRight, Check } from 'lucide-react';
 
 const services = [
   {
@@ -17,14 +17,6 @@ const services = [
     features: ['Logo Animation', 'Brand Videos', 'Title Sequences', 'Social Content'],
     price: 'Starting at $1,500',
     timeline: '1–3 weeks',
-  },
-  {
-    icon: Zap,
-    title: 'Visual Effects',
-    description: 'Cutting-edge VFX and compositing that elevate your content to cinematic quality and professional standards.',
-    features: ['Compositing', 'Green Screen', 'Post-Production', 'Color Grading'],
-    price: 'Starting at $3,000',
-    timeline: '3–5 weeks',
   },
   {
     icon: Globe,

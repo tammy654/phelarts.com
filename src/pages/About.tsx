@@ -18,7 +18,6 @@ const values = [
 const team = [
   { name: 'Alex Chen', role: 'Creative Director', image: 'https://images.pexels.com/photos/3777931/pexels-photo-3777931.jpeg?auto=compress&cs=tinysrgb&w=600', bio: '10+ years in animation and motion graphics with a passion for storytelling.' },
   { name: 'Sarah Johnson', role: 'Lead Animator', image: 'https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=600', bio: 'Specialist in character animation and bringing personalities to life through motion.' },
-  { name: 'Mike Rodriguez', role: 'VFX Artist', image: 'https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=600', bio: 'Expert in visual effects and compositing with a background in film production.' },
   { name: 'Emma Davis', role: 'Motion Designer', image: 'https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=600', bio: 'Specializes in brand animation and creating compelling visual identities.' },
 ];
 
