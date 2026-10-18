@@ -1,7 +1,111 @@
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Play, X } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import Hero from '../components/Hero';
 import ClientLogos from '../components/ClientLogos';
+
+type Reel = {
+  title: string;
+  client: string;
+  category: string;
+  image: string;
+  video: string;
+};
+
+const featuredReels: Reel[] = [
+  {
+    title: 'Brand Animation Series',
+    client: 'TechCorp',
+    category: 'Motion Graphics',
+    image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    video: 'https://cdn.coverr.co/videos/coverr-abstract-motion-graphics-1572/1080p.mp4',
+  },
+  {
+    title: 'Character Animation Short',
+    client: 'StoryTech',
+    category: '2D Animation',
+    image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    video: 'https://cdn.coverr.co/videos/coverr-drawing-on-a-tablet-1572/1080p.mp4',
+  },
+  {
+    title: 'Corporate Video Series',
+    client: 'GlobalTech',
+    category: 'Video Production',
+    image: 'https://images.pexels.com/photos/8102676/pexels-photo-8102676.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    video: 'https://cdn.coverr.co/videos/coverr-working-in-an-office-1572/1080p.mp4',
+  },
+];
+
+function FeaturedReel({ reel, onPlay }: { reel: Reel; onPlay: (r: Reel) => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hovered, setHovered] = useState(false);
+
+  const enter = () => {
+    setHovered(true);
+    const v = videoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+  const leave = () => {
+    setHovered(false);
+    const v = videoRef.current;
+    if (v) v.pause();
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+      viewport={{ once: true, margin: '-60px' }}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      onClick={() => onPlay(reel)}
+      className="group relative aspect-[21/9] overflow-hidden bg-[#16161a] cursor-pointer"
+    >
+      <img
+        src={reel.image}
+        alt={reel.title}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+          hovered ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+      <video
+        ref={videoRef}
+        src={reel.video}
+        muted
+        loop
+        playsInline
+        preload="none"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+          hovered ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#16161a]/80 via-[#16161a]/10 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-10 flex items-end justify-between gap-6">
+        <div>
+          <div className="text-[11px] uppercase tracking-[0.2em] text-[#f59e0b] mb-2 font-semibold">
+            {reel.category}
+          </div>
+          <h3 className="font-display font-bold text-[#f7f5f1] text-2xl lg:text-4xl leading-tight">
+            {reel.title}
+          </h3>
+          <div className="text-[#f7f5f1]/55 text-sm mt-2 font-medium">{reel.client}</div>
+        </div>
+        <div
+          className={`shrink-0 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-[#f59e0b] flex items-center justify-center shadow-2xl transition-all duration-500 ${
+            hovered ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
+          }`}
+        >
+          <Play className="w-5 h-5 text-[#16161a] fill-[#16161a] ml-0.5" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 const services = [
   {
@@ -29,9 +133,33 @@ const process = [
 ];
 
 export default function Home() {
+  const [selected, setSelected] = useState<Reel | null>(null);
+
   return (
     <div>
       <Hero />
+
+      {/* Featured reels — full bleed cinematic showcase */}
+      <section className="bg-[#16161a] py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-10 lg:mb-14 flex items-end justify-between gap-6">
+          <div>
+            <span className="eyebrow text-[#f59e0b]">Featured Work</span>
+            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#f7f5f1] mt-4">
+              Recent reels.
+            </h2>
+          </div>
+          <a href="/our-work" className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
+            View all
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+        <div className="space-y-1">
+          {featuredReels.map((reel) => (
+            <FeaturedReel key={reel.title} reel={reel} onPlay={setSelected} />
+          ))}
+        </div>
+      </section>
+
       <ClientLogos />
 
       {/* Services preview */}
@@ -152,6 +280,49 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Reel modal */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setSelected(null)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 lg:p-12"
+          >
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-6xl bg-[#16161a] rounded-2xl overflow-hidden shadow-2xl"
+            >
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-[#f59e0b] flex items-center justify-center transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5 text-[#f7f5f1]" />
+              </button>
+              <div className="aspect-video">
+                <video src={selected.video} autoPlay controls className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 lg:p-8">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-[#f59e0b] mb-1.5 font-semibold">
+                  {selected.category}
+                </div>
+                <h3 className="font-display font-bold text-xl lg:text-2xl text-[#f7f5f1]">
+                  {selected.title}
+                </h3>
+                <div className="text-[#f7f5f1]/50 text-sm mt-1">{selected.client}</div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
