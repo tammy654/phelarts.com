@@ -306,7 +306,7 @@ export default function Home() {
       </section>
 
       {/* Process */}
-      <section className="relative overflow-hidden bg-[#16161a] py-24 lg:py-32">
+      <section className="relative overflow-hidden bg-[#16161a] py-16 lg:py-20">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f59e0b]/10" />
           <div className="absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#0f5132]/30" />
@@ -315,7 +315,7 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-2xl mb-16 lg:mb-20">
+          <div className="max-w-2xl mb-12 lg:mb-14">
             <span className="eyebrow text-[#f59e0b]">How we work</span>
             <h2 className="font-display font-bold text-4xl lg:text-6xl text-[#f7f5f1] mt-4 leading-[1.05]">
               A proven path to exceptional results.
@@ -334,7 +334,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 viewport={{ once: true, margin: '-80px' }}
-                className={`group relative z-10 rounded-3xl border p-6 lg:p-7 min-h-[285px] flex flex-col transition-all duration-500 ${
+                className={`group relative z-10 rounded-3xl border p-5 lg:p-6 min-h-[240px] flex flex-col transition-all duration-500 ${
                   i === 2
                     ? 'border-[#f59e0b]/70 bg-gradient-to-br from-[#f59e0b]/20 via-[#242424] to-[#0f5132]/30 shadow-[0_0_50px_rgba(245,158,11,0.12)]'
                     : 'border-white/10 bg-white/[0.055] hover:border-[#f59e0b]/40 hover:bg-white/[0.09]'
