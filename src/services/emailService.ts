@@ -51,8 +51,7 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
         message: data.message,
         selected_date: data.selectedDate,
         selected_time: data.selectedTime,
-        call_type: data.callType,
-        status: 'pending'
+        call_type: data.callType
       });
 
     if (dbError) {
@@ -137,8 +136,7 @@ export const submitContactForm = async (data: ContactData): Promise<void> => {
         subject: data.subject,
         project_type: data.projectType,
         budget: data.budget,
-        message: data.message,
-        status: 'pending'
+        message: data.message
       });
 
     if (dbError) {
@@ -208,12 +206,9 @@ export const submitContactForm = async (data: ContactData): Promise<void> => {
 export const subscribeToNewsletter = async (data: NewsletterData): Promise<void> => {
   try {
     // Store in Supabase
-    const { error: dbError } = await supabase
-      .from('newsletter')
-      .insert({
-        email: data.email,
-        status: 'subscribed'
-      });
+    const { error: dbError } = await supabase.rpc('subscribe_to_newsletter', {
+      subscriber_email: data.email,
+    });
 
     if (dbError) {
       console.error('Database error:', dbError);
