@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { Video, Palette, Globe, Film, Smartphone, ArrowRight, Check } from 'lucide-react';
 
 const services = [
   {
+    id: '2d-animation',
     icon: Video,
     title: '2D Animation',
     description: 'Character-driven stories and explainer videos that engage and educate your audience with compelling narratives.',
@@ -11,6 +14,7 @@ const services = [
     timeline: '2–4 weeks',
   },
   {
+    id: 'motion-graphics',
     icon: Palette,
     title: 'Motion Graphics',
     description: 'Dynamic visual elements that bring your brand to life with style, sophistication, and memorable impact.',
@@ -19,6 +23,7 @@ const services = [
     timeline: '1–3 weeks',
   },
   {
+    id: 'web-animation',
     icon: Globe,
     title: 'Web Animation',
     description: 'Interactive animations that enhance user experience and drive engagement across digital platforms.',
@@ -27,6 +32,7 @@ const services = [
     timeline: '1–2 weeks',
   },
   {
+    id: 'video-production',
     icon: Film,
     title: 'Video Production',
     description: 'End-to-end video production from concept development to final delivery with professional quality.',
@@ -35,6 +41,7 @@ const services = [
     timeline: '4–6 weeks',
   },
   {
+    id: 'app-animations',
     icon: Smartphone,
     title: 'App Animations',
     description: 'Smooth, delightful animations that make mobile experiences memorable and user-friendly.',
@@ -52,6 +59,28 @@ const process = [
 ];
 
 export default function Services() {
+  const location = useLocation();
+  const [highlightedService, setHighlightedService] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const serviceId = decodeURIComponent(location.hash.slice(1));
+    const target = document.getElementById(serviceId);
+    if (!target) return;
+
+    const scrollTimer = window.setTimeout(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setHighlightedService(serviceId);
+    }, 50);
+    const highlightTimer = window.setTimeout(() => setHighlightedService(null), 2400);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(highlightTimer);
+    };
+  }, [location.hash]);
+
   return (
     <div className="pt-28">
       {/* Hero */}
@@ -89,7 +118,12 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: (i % 2) * 0.1 }}
                 viewport={{ once: true }}
-                className="group lift p-8 rounded-3xl bg-white border border-black/[0.06]"
+                id={s.id}
+                className={`group lift scroll-mt-28 rounded-3xl border bg-white p-8 transition-all duration-500 ${
+                  highlightedService === s.id
+                    ? 'border-[#f59e0b] ring-4 ring-[#f59e0b]/20 shadow-[0_18px_45px_rgba(245,158,11,0.2)]'
+                    : 'border-black/[0.06]'
+                }`}
               >
                 <div className="flex items-start justify-between mb-6">
                   <div className="w-14 h-14 rounded-2xl bg-[#16161a] flex items-center justify-center group-hover:bg-[#f59e0b] transition-colors duration-300">

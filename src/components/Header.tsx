@@ -20,10 +20,10 @@ const navItems: NavItem[] = [
     href: '/services',
     label: 'Services',
     dropdown: [
-      { href: '/services', label: '2D Animation', description: 'Character-driven stories and explainer videos.' },
-      { href: '/services', label: 'Motion Graphics', description: 'Dynamic visuals that bring brands to life.' },
-      { href: '/services', label: 'Web & App Animation', description: 'Interactive motion for digital products.' },
-      { href: '/services', label: 'Video Production', description: 'End-to-end video, concept to delivery.' },
+      { href: '/services#2d-animation', label: '2D Animation', description: 'Character-driven stories and explainer videos.' },
+      { href: '/services#motion-graphics', label: 'Motion Graphics', description: 'Dynamic visuals that bring brands to life.' },
+      { href: '/services#web-animation', label: 'Web & App Animation', description: 'Interactive motion for digital products.' },
+      { href: '/services#video-production', label: 'Video Production', description: 'End-to-end video, concept to delivery.' },
     ],
   },
   {
