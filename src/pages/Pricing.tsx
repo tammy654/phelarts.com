@@ -129,24 +129,24 @@ const Pricing = () => {
   return (
     <div className="pt-28">
       {/* Hero Section */}
-      <section className="pricing-hero">
-        <div className="relative z-10 mx-auto flex min-h-[600px] max-w-7xl items-center justify-center px-6 py-24 text-center lg:px-8" data-aos="fade-up">
-          <h1 className="font-display text-6xl font-bold tracking-tight text-[#fefefe] lg:text-8xl">
+      <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
+          <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             Pricing
           </h1>
-          <p className="mx-auto mb-12 max-w-4xl text-xl leading-relaxed text-[#f7f5f1]/80 lg:text-2xl">
+          <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
             Transparent pricing for exceptional animation services. Choose the package 
             that fits your project needs and budget.
           </p>
           <div className="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
-            <div className="rounded-full border border-[#d8c77a]/70 bg-[#fefefe]/[0.08] px-6 py-3 shadow-[0_0_24px_rgba(216,199,122,0.12)] backdrop-blur-sm">
-              <span className="text-sm font-semibold text-[#f7f5f1]/90 lg:text-base">No Hidden Fees</span>
+            <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
+              <span className="text-sm font-medium text-[#fefefe]/90">No Hidden Fees</span>
             </div>
-            <div className="rounded-full border border-[#d8c77a]/70 bg-[#fefefe]/[0.08] px-6 py-3 shadow-[0_0_24px_rgba(216,199,122,0.12)] backdrop-blur-sm">
-              <span className="text-sm font-semibold text-[#f7f5f1]/90 lg:text-base">Flexible Payment Plans</span>
+            <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
+              <span className="text-sm font-medium text-[#fefefe]/90">Flexible Payment Plans</span>
             </div>
-            <div className="rounded-full border border-[#d8c77a]/70 bg-[#fefefe]/[0.08] px-6 py-3 shadow-[0_0_24px_rgba(216,199,122,0.12)] backdrop-blur-sm">
-              <span className="text-sm font-semibold text-[#f7f5f1]/90 lg:text-base">100% Satisfaction Guarantee</span>
+            <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
+              <span className="text-sm font-medium text-[#fefefe]/90">100% Satisfaction Guarantee</span>
             </div>
           </div>
         </div>
