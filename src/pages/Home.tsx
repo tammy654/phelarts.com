@@ -142,7 +142,7 @@ export default function Home() {
       <Hero />
 
       {/* Hero statement — below the showreel */}
-      <section className="relative overflow-hidden bg-[#16161a] py-24 lg:py-32">
+      <section className="relative overflow-hidden bg-[#16161a] py-20 lg:py-28">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -left-48 top-0 h-[32rem] w-[32rem] rounded-full bg-[#f59e0b]/10 blur-[140px]" />
           <div className="absolute -right-48 bottom-0 h-[30rem] w-[30rem] rounded-full bg-[#0f5132]/30 blur-[140px]" />
