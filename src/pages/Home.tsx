@@ -63,7 +63,7 @@ function FeaturedReel({ reel, onPlay }: { reel: Reel; onPlay: (r: Reel) => void 
       onMouseEnter={enter}
       onMouseLeave={leave}
       onClick={() => onPlay(reel)}
-      className="group relative aspect-[21/9] overflow-hidden bg-[#16161a] cursor-pointer rounded-2xl"
+      className="group relative aspect-[16/9] sm:aspect-[21/9] max-h-[520px] overflow-hidden bg-[#16161a] cursor-pointer rounded-2xl"
     >
       <img
         src={reel.image}

@@ -104,8 +104,8 @@ function ReelCard({ reel, onPlay }: { reel: Reel; onPlay: (r: Reel) => void }) {
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onClick={() => onPlay(reel)}
-      className={`group relative overflow-hidden bg-[#16161a] cursor-pointer ${
-        reel.featured ? 'aspect-[21/9]' : 'aspect-[16/9]'
+      className={`group relative overflow-hidden bg-[#16161a] cursor-pointer rounded-2xl max-h-[520px] ${
+        reel.featured ? 'aspect-[16/9] lg:aspect-[21/9]' : 'aspect-[16/9]'
       }`}
     >
       {/* Poster */}
@@ -193,9 +193,9 @@ export default function OurWork() {
         </div>
       </section>
 
-      {/* Featured reels — full bleed */}
+      {/* Featured reels — contained */}
       {featured.length > 0 && (
-        <section className="space-y-1">
+        <section className="max-w-7xl mx-auto px-6 lg:px-8 space-y-5">
           {featured.map((reel) => (
             <ReelCard key={reel.title} reel={reel} onPlay={setSelected} />
           ))}
@@ -224,8 +224,8 @@ export default function OurWork() {
       </section>
 
       {/* Standard reels — two column wide grid */}
-      <section className="bg-[#16161a]">
-        <div className="grid md:grid-cols-2 gap-1">
+      <section className="bg-[#16161a] pt-5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-5">
           {standard.map((reel) => (
             <ReelCard key={reel.title} reel={reel} onPlay={setSelected} />
           ))}
