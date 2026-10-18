@@ -142,57 +142,80 @@ export default function Home() {
       <Hero />
 
       {/* Hero statement — below the showreel */}
-      <section className="bg-[#16161a] relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-80 bg-[#f59e0b]/10 rounded-full blur-[140px] -translate-y-1/2" />
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="eyebrow text-[#f59e0b]">Motion Graphics & 2D Animation Studio</span>
-            <h1 className="font-display font-extrabold text-[#f7f5f1] text-5xl lg:text-7xl leading-[1.05] mt-6 max-w-4xl mx-auto">
-              We craft{' '}
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent">
-                  visual stories
-                </span>
-                <svg
-                  className="absolute -bottom-2 left-0 w-full"
-                  viewBox="0 0 300 12"
-                  fill="none"
-                  preserveAspectRatio="none"
+      <section className="relative overflow-hidden bg-[#16161a] py-24 lg:py-32">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -left-48 top-0 h-[32rem] w-[32rem] rounded-full bg-[#f59e0b]/10 blur-[140px]" />
+          <div className="absolute -right-48 bottom-0 h-[30rem] w-[30rem] rounded-full bg-[#0f5132]/30 blur-[140px]" />
+          <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-14 lg:gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <span className="eyebrow text-[#f59e0b]">Motion Graphics & 2D Animation Studio</span>
+              <h1 className="font-display font-extrabold text-[#f7f5f1] text-5xl sm:text-6xl lg:text-8xl leading-[0.96] mt-6 tracking-[-0.04em]">
+                We craft
+                <span className="block text-[#f59e0b]">visual stories</span>
+                <span className="block">that move</span>
+                <span className="block text-[#f7f5f1]/55">people.</span>
+              </h1>
+              <p className="text-lg text-[#f7f5f1]/60 max-w-xl leading-relaxed mt-8">
+                From concept to completion, we create motion graphics and 2D animations that captivate audiences and drive results for forward-thinking brands.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-10">
+                <a href="/our-work" className="btn-light">
+                  <Play className="w-4 h-4" />
+                  View Our Work
+                </a>
+                <a
+                  href="/book-call"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:border-[#f59e0b]/60 hover:bg-[#f59e0b]/10 transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  <path
-                    d="M2 9C75 3 225 3 298 9"
-                    stroke="#f59e0b"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    opacity="0.5"
-                  />
-                </svg>
-              </span>
-              <br />
-              that move people.
-            </h1>
-            <p className="text-lg text-[#f7f5f1]/60 max-w-xl mx-auto leading-relaxed mt-8">
-              From concept to completion, we create motion graphics and 2D animations that
-              captivate audiences and drive results for forward-thinking brands.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-              <a href="/our-work" className="btn-light">
-                <Play className="w-4 h-4" />
-                View Our Work
-              </a>
-              <a
-                href="/book-call"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Start a Project
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          </motion.div>
+                  Start a Project
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.15 }}
+              viewport={{ once: true }}
+              className="relative min-h-[420px] lg:min-h-[520px] flex items-center justify-center"
+            >
+              <div className="absolute inset-8 rounded-[2.5rem] border border-white/10 rotate-6" />
+              <div className="absolute inset-8 rounded-[2.5rem] border border-[#f59e0b]/25 -rotate-6" />
+              <div className="relative w-full max-w-[30rem] aspect-[4/5] rounded-[2.5rem] border border-white/15 bg-white/[0.055] backdrop-blur-sm p-5 shadow-2xl overflow-hidden">
+                <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-[#f59e0b]/30" />
+                <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-[#f59e0b]/20 blur-2xl" />
+                <div className="absolute -left-20 bottom-0 h-52 w-52 rounded-full bg-[#0f5132]/50 blur-3xl" />
+                <div className="relative flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-[#f7f5f1]/45">
+                  <span>Story / 001</span>
+                  <span className="text-[#f59e0b]">In motion</span>
+                </div>
+                <div className="relative mt-8 h-[15rem] overflow-hidden rounded-3xl bg-[#242424]">
+                  <div className="absolute inset-0 bg-[linear-gradient(135deg,transparent_45%,rgba(245,158,11,0.8)_46%,rgba(245,158,11,0.08)_58%,transparent_59%)]" />
+                  <div className="absolute left-8 top-10 h-28 w-28 rounded-full border-[18px] border-[#f59e0b] shadow-[0_0_45px_rgba(245,158,11,0.45)]" />
+                  <div className="absolute bottom-[-4rem] right-[-2rem] h-52 w-52 rounded-full border-[22px] border-[#0f5132] opacity-90" />
+                  <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+                    <span className="font-display text-3xl font-bold text-[#f7f5f1]">Ideas<br />in motion.</span>
+                    <span className="mb-1 h-3 w-3 rounded-full bg-[#f59e0b] shadow-[0_0_18px_#f59e0b]" />
+                  </div>
+                </div>
+                <div className="relative mt-7 grid grid-cols-3 gap-3 text-[10px] uppercase tracking-[0.16em] text-[#f7f5f1]/45">
+                  <div><span className="mb-2 block h-1 w-8 bg-[#f59e0b]" />Concept</div>
+                  <div><span className="mb-2 block h-1 w-8 bg-[#0f5132]" />Craft</div>
+                  <div><span className="mb-2 block h-1 w-8 bg-[#f7f5f1]/40" />Impact</div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
