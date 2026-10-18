@@ -180,16 +180,19 @@ export default function OurWork() {
       <section className="page-hero">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#f59e0b]/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#0f5132]/30 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4" />
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8">
+          <motion.div className="text-left" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <span className="eyebrow text-[#f59e0b]">Our Work</span>
             <h1 className="font-display font-bold text-5xl lg:text-7xl text-[#f7f5f1] mt-5">
               The reel.
             </h1>
-            <p className="text-lg text-[#f7f5f1]/55 max-w-xl mx-auto mt-6 leading-relaxed">
+            <p className="max-w-xl text-lg leading-relaxed text-[#f7f5f1]/55 lg:mr-auto">
               A selection of recent work. Hover to play, click to watch in full.
             </p>
           </motion.div>
+          <div className="page-hero-visual">
+            <img src="/image.png" alt="Phel Arts creative direction preview" />
+          </div>
         </div>
       </section>
 

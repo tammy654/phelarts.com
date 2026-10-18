@@ -57,16 +57,17 @@ export default function Contact() {
       <section className="page-hero">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#f59e0b]/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#0f5132]/30 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4" />
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8">
+          <div className="text-left">
           <span className="eyebrow text-[#f59e0b]">Contact</span>
           <h1 className="font-display font-bold text-5xl lg:text-7xl text-[#f7f5f1] mt-5">
             Get in touch.
           </h1>
-          <p className="text-xl text-[#f7f5f1]/60 max-w-2xl mx-auto mt-6 leading-relaxed">
+          <p className="max-w-2xl text-xl leading-relaxed text-[#f7f5f1]/60 lg:mr-auto">
             Ready to bring your vision to life? We'd love to hear about your project and explore
             how we can help you achieve your goals.
           </p>
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
+          <div className="mt-8 flex flex-wrap justify-start gap-3">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/10">
               <Clock className="w-4 h-4 text-[#f59e0b]" />
               <span className="text-sm text-[#f7f5f1]/80">24h Response</span>
@@ -75,6 +76,10 @@ export default function Contact() {
               <Users className="w-4 h-4 text-[#f59e0b]" />
               <span className="text-sm text-[#f7f5f1]/80">Dedicated Project Manager</span>
             </div>
+          </div>
+          </div>
+          <div className="page-hero-visual">
+            <img src="/image.png" alt="Phel Arts creative direction preview" />
           </div>
         </div>
       </section>
