@@ -1,157 +1,31 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Box, Clapperboard, PenTool, Sparkles, Play } from 'lucide-react';
 import Hero from '../components/Hero';
-import ClientLogos from '../components/ClientLogos';
 
-const services = [
-  {
-    title: '2D Animation',
-    description: 'Character-driven stories and explainer videos that engage and educate.',
-    image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    title: 'Motion Graphics',
-    description: 'Dynamic visual elements that bring your brand to life with style.',
-    image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    title: 'Video Production',
-    description: 'End-to-end video production from concept to final delivery.',
-    image: 'https://images.pexels.com/photos/8102676/pexels-photo-8102676.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
+const capabilities = [
+  { icon: PenTool, title: '2D Traditional & Vector', text: 'Fluid frame-by-frame animation, Toon Boom Harmony rigs, and vector explainer videos tailored for brands.', color: 'bg-[#ffd000]' },
+  { icon: Box, title: '3D Character Animation', text: 'High-end modeling, rigging, texturing, and cinematic lighting in Maya and Blender for games and films.', color: 'bg-[#ff6500]' },
+  { icon: Sparkles, title: 'Visual Effects & Compositing', text: 'Advanced particle simulations, dynamic lighting, color grading, and seamless live-action compositing.', color: 'bg-[#ffd000]' },
 ];
 
-const process = [
-  { step: '01', title: 'Discovery', description: 'We learn your goals, audience, and project requirements.' },
-  { step: '02', title: 'Concept', description: 'We develop creative concepts and storyboards aligned to your vision.' },
-  { step: '03', title: 'Production', description: 'We bring the project to life with meticulous craft and detail.' },
-  { step: '04', title: 'Delivery', description: 'Final delivery in all formats, with ongoing support.' },
+const work = [
+  { title: 'Forest Guardian Tale', category: '2D Animation', image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=900' },
+  { title: 'Cyberpunk Cityscape', category: '3D Rendering', image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=900' },
+  { title: 'Detective Fox Rig', category: 'Character Design', image: 'https://images.pexels.com/photos/11894290/pexels-photo-11894290.jpeg?auto=compress&cs=tinysrgb&w=900' },
+];
+
+const characters = [
+  { name: 'Kevin', role: 'Lead Stunt Character', description: 'A tall two-eyed companion who loves leading chaotic missions across animated cityscapes.', image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=500' },
+  { name: 'Bob', role: 'Heart & Soul', description: 'Short and bold with multi-colored eyes, always accompanied by his beloved teddy bear Tim.', image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=500' },
 ];
 
 export default function Home() {
-  return (
-    <div>
-      <Hero />
-      <ClientLogos />
-
-      {/* Services preview */}
-      <section className="py-28 bg-[#f7f5f1]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-2xl mb-16">
-            <span className="eyebrow">What we create</span>
-            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a] mt-4">
-              Animation that moves your audience.
-            </h2>
-            <p className="text-lg text-[#6b6b73] mt-5 leading-relaxed">
-              From concept to completion, we bring your vision to life through stunning animation
-              and motion design.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {services.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="group lift rounded-3xl overflow-hidden bg-white border border-black/[0.06] cursor-pointer"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#16161a]/50 to-transparent" />
-                  <h3 className="absolute bottom-5 left-5 font-display font-bold text-xl text-[#f7f5f1]">
-                    {s.title}
-                  </h3>
-                </div>
-                <p className="p-6 text-[#6b6b73] leading-relaxed">{s.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12">
-            <a href="/services" className="btn-ghost">
-              Explore all services
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-28 bg-white border-y border-black/[0.06]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="eyebrow">How we work</span>
-            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a] mt-4">
-              A proven path to exceptional results.
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {process.map((p, i) => (
-              <motion.div
-                key={p.step}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                <div className="font-display font-extrabold text-5xl text-[#f59e0b]/20 mb-4">
-                  {p.step}
-                </div>
-                <h3 className="font-display font-bold text-xl text-[#16161a] mb-2">{p.title}</h3>
-                <p className="text-[#6b6b73] leading-relaxed">{p.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-28 bg-[#f7f5f1]">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="relative rounded-[2.5rem] bg-[#16161a] overflow-hidden p-12 lg:p-20 text-center"
-          >
-            <div className="absolute top-0 left-0 w-64 h-64 bg-[#f59e0b]/15 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3" />
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#0f5132]/30 rounded-full blur-[100px] translate-x-1/4 translate-y-1/4" />
-            <div className="relative">
-              <span className="inline-flex items-center gap-2 text-[#f59e0b] mb-6">
-                <Sparkles className="w-4 h-4" />
-                <span className="text-xs font-semibold tracking-[0.18em] uppercase">Let's build together</span>
-              </span>
-              <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#f7f5f1] max-w-2xl mx-auto">
-                Ready to create something amazing?
-              </h2>
-              <p className="text-lg text-[#f7f5f1]/60 mt-5 max-w-xl mx-auto">
-                Let's discuss your project and bring your vision to life.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-                <a href="/book-call" className="btn-light">
-                  Book a Call
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-                <a
-                  href="/our-work"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  View Our Work
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
-  );
+  return <main className="bg-[#0b1b2b]">
+    <Hero />
+    <section className="section-shell border-y border-white/10 py-24"><div className="mx-auto max-w-7xl px-6 lg:px-8"><div className="mb-14 text-center"><span className="eyebrow">What we do</span><h2 className="mt-4 text-5xl text-white sm:text-6xl">Studio capabilities</h2></div><div className="grid gap-6 lg:grid-cols-3">{capabilities.map((item, i) => <motion.article key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .1 }} className="lift rounded-3xl border border-white/10 bg-[#1a3046] p-8"><div className={`mb-7 flex h-14 w-14 items-center justify-center rounded-2xl ${item.color} text-[#07111c]`}><item.icon className="h-7 w-7" /></div><h3 className="text-3xl text-white">{item.title}</h3><p className="mt-4 leading-relaxed text-[#91a9c1]">{item.text}</p></motion.article>)}</div></div></section>
+    <section className="bg-[#10253b] py-24"><div className="mx-auto max-w-7xl px-6 lg:px-8"><div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end"><div><span className="eyebrow">Selected work</span><h2 className="mt-4 text-5xl text-white sm:text-6xl">Stills & animation cuts</h2></div><a href="/our-work" className="btn-ghost">View all work <ArrowRight className="h-4 w-4" /></a></div><div className="mt-12 grid gap-6 lg:grid-cols-3">{work.map((item) => <article key={item.title} className="group relative h-[390px] overflow-hidden rounded-3xl border border-white/10 bg-[#1a3046]"><img src={item.image} alt={item.title} className="h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#07111c] via-transparent to-transparent" /><span className="absolute left-5 top-5 rounded-full bg-[#07111c]/90 px-3 py-1 text-xs font-bold text-[#ffd000]">{item.category}</span><div className="absolute bottom-6 left-6"><h3 className="text-3xl text-white">{item.title}</h3><p className="mt-1 text-sm text-[#91a9c1]">Original studio production</p></div>{item.title === 'Cyberpunk Cityscape' && <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#ffd000]/80 text-[#07111c]"><Play className="ml-1 h-5 w-5 fill-current" /></span>}</article>)}</div></div></section>
+    <section className="section-shell py-24"><div className="mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2 lg:px-8"><div><span className="eyebrow rounded-full border border-[#ffd000]/20 bg-[#1a3046] px-4 py-2">About the production</span><h2 className="mt-7 text-5xl text-white sm:text-7xl">Inside the studio & pipeline</h2><p className="mt-7 max-w-xl text-lg leading-relaxed text-[#b9c8d8]">From initial storyboard sketch to final IMAX 60FPS render, we blend hand-drawn expressiveness with cutting-edge 3D rigging.</p><div className="mt-10 grid max-w-xl grid-cols-2 gap-5"><div className="rounded-2xl border border-white/10 bg-[#1a3046] p-6"><strong className="font-display text-4xl text-[#ffd000]">100+</strong><p className="mt-2 text-xs uppercase tracking-wider text-[#91a9c1]">Custom character rigs</p></div><div className="rounded-2xl border border-white/10 bg-[#1a3046] p-6"><strong className="font-display text-4xl text-[#ffd000]">4K / 60FPS</strong><p className="mt-2 text-xs uppercase tracking-wider text-[#91a9c1]">Broadcast quality output</p></div></div></div><div className="relative overflow-hidden rounded-3xl border-2 border-[#ffd000]/50"><img src="https://images.pexels.com/photos/6044300/pexels-photo-6044300.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Animation studio workspace" className="h-[390px] w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-[#07111c]/80 to-transparent" /><div className="absolute bottom-7 left-7"><span className="eyebrow">Official featurette</span><h3 className="mt-2 text-3xl text-white">Behind the scenes of animation</h3></div><span className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#ffd000] text-[#07111c]"><Play className="ml-1 h-7 w-7 fill-current" /></span></div></div></section>
+    <section className="relative overflow-hidden bg-[#ffd000] py-24 text-[#07111c]"><div className="absolute right-0 top-0 font-display text-[16rem] leading-none text-[#ff6500]/10">BOB</div><div className="relative mx-auto max-w-7xl px-6 lg:px-8"><div className="text-center"><span className="inline-flex rounded-full bg-[#ff6500] px-4 py-2 text-xs font-bold tracking-wider text-white">Character spotlight</span><h2 className="mt-5 text-6xl sm:text-8xl">Meet the stars</h2><p className="mx-auto mt-4 max-w-2xl text-lg font-medium">Click on any character to watch their exclusive studio interview and hear their voice lines.</p></div><div className="mt-14 grid gap-8 lg:grid-cols-2">{characters.map((character) => <article key={character.name} className="grid gap-7 rounded-3xl border-4 border-orange-200 bg-white p-7 shadow-xl sm:grid-cols-[175px_1fr] sm:items-center"><img src={character.image} alt={character.name} className="h-44 w-full rounded-2xl object-cover sm:w-44" /><div><span className="rounded-lg bg-[#fff0ae] px-3 py-2 text-xs font-bold text-[#ff6500]">{character.role}</span><h3 className="mt-4 text-4xl text-[#07111c]">Meet {character.name}</h3><p className="mt-3 leading-relaxed text-[#52677d]">{character.description}</p><button className="btn-primary mt-5 bg-[#ff6500] text-white"><Clapperboard className="h-4 w-4" /> Watch an interview</button></div></article>)}</div></div></section>
+    <section className="bg-[#07111c] px-6 py-24 text-center"><Sparkles className="mx-auto h-8 w-8 text-[#ffd000]" /><h2 className="mx-auto mt-5 max-w-3xl text-5xl text-white sm:text-7xl">Ready to bring your characters to life?</h2><p className="mx-auto mt-5 max-w-xl text-lg text-[#91a9c1]">Let’s build a world your audience will never forget.</p><a href="/book-call" className="btn-primary mt-8">Book a screening <ArrowRight className="h-4 w-4" /></a></section>
+  </main>;
 }
