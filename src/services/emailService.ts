@@ -33,8 +33,9 @@ export interface NewsletterData {
   email: string;
 }
 
-// Initialize EmailJS
-emailjs.init(EMAILJS_PUBLIC_KEY);
+if (EMAILJS_PUBLIC_KEY) {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
 
 export const submitBookingForm = async (data: BookingData): Promise<void> => {
   try {
