@@ -42,6 +42,53 @@ h1, h2, h3, h4, h5, h6, .font-display {
 ::-webkit-scrollbar-thumb { background: #c9c4ba; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: #b0aa9d; }
 
+.page-hero {
+  position: relative;
+  display: flex;
+  min-height: 540px;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(circle at 92% 8%, rgba(245, 158, 11, 0.14), transparent 34%),
+    radial-gradient(circle at 4% 92%, rgba(15, 81, 50, 0.24), transparent 32%),
+    linear-gradient(115deg, rgba(255, 255, 255, 0.02), transparent 42%, rgba(245, 158, 11, 0.035));
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background-image: linear-gradient(rgba(247, 245, 241, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(247, 245, 241, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+.page-hero::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  right: 8%;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 9999px;
+  box-shadow: 0 0 0 18px rgba(245, 158, 11, 0.025), 0 0 0 38px rgba(245, 158, 11, 0.018);
+}
+.page-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .page-hero {
+    min-height: 500px;
+  }
+  .page-hero::after {
+    right: -72px;
+    top: 8%;
+  }
+}
+
 /* Button system */
 .btn-primary {
   display: inline-flex;
