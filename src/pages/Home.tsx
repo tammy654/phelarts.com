@@ -169,7 +169,7 @@ export default function Home() {
           <div className="absolute left-[13%] bottom-[20%] h-1.5 w-1.5 rounded-full bg-[#f59e0b]/80 shadow-[0_0_16px_5px_rgba(245,158,11,0.35)] animate-pulse" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="relative max-w-6xl mx-auto px-5 lg:px-7">
           <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-14 lg:gap-20 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -207,7 +207,7 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.9, delay: 0.15 }}
               viewport={{ once: true }}
-              className="relative min-h-[420px] lg:min-h-[520px] flex items-center justify-center"
+              className="relative min-h-[320px] lg:min-h-[420px] flex items-center justify-center"
             >
               <div className="absolute inset-8 rounded-[2.5rem] border border-white/10 rotate-6" />
               <div className="absolute inset-8 rounded-[2.5rem] border border-[#f59e0b]/25 -rotate-6" />
