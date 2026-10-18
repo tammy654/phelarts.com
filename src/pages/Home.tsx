@@ -109,17 +109,20 @@ function FeaturedReel({ reel, onPlay }: { reel: Reel; onPlay: (r: Reel) => void 
 const services = [
   {
     title: '2D Animation',
-    description: 'Character-driven stories and explainer videos that engage and educate.',
+    level: 'Character & Explainer Films',
+    description: 'Create memorable character-driven stories and explainer videos with expressive movement, thoughtful pacing, and a distinct visual style.',
     image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
   {
     title: 'Motion Graphics',
-    description: 'Dynamic visual elements that bring your brand to life with style.',
+    level: 'Brand & Campaign Visuals',
+    description: 'Bring your brand to life with dynamic visual systems, bold transitions, and polished motion built for campaigns, launches, and digital platforms.',
     image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
   {
     title: 'Video Production',
-    description: 'End-to-end video production from concept to final delivery.',
+    level: 'Concept to Final Delivery',
+    description: 'Produce engaging films from first idea to final cut with creative direction, cinematography, editing, colour, and sound handled with care.',
     image: 'https://images.pexels.com/photos/8102676/pexels-photo-8102676.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
 ];
@@ -240,20 +243,32 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="group lift rounded-3xl overflow-hidden bg-white border border-black/[0.06] cursor-pointer"
+                className="group lift rounded-3xl overflow-hidden bg-white border border-black/[0.06] flex flex-col"
               >
+                <div className="px-6 py-7 text-center min-h-[132px] flex flex-col justify-center">
+                  <h3 className="font-display font-bold text-2xl text-[#16161a] leading-tight">
+                    {s.title}
+                  </h3>
+                  <p className="text-[#6b6b73] text-sm mt-2">{s.level}</p>
+                </div>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src={s.image}
                     alt={s.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#16161a]/50 to-transparent" />
-                  <h3 className="absolute bottom-5 left-5 font-display font-bold text-xl text-[#f7f5f1]">
-                    {s.title}
-                  </h3>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#16161a]/20 to-transparent" />
                 </div>
-                <p className="p-6 text-[#6b6b73] leading-relaxed">{s.description}</p>
+                <div className="p-7 flex flex-col flex-1">
+                  <p className="text-[#6b6b73] leading-relaxed flex-1">{s.description}</p>
+                  <a
+                    href="/services"
+                    className="inline-flex items-center justify-center gap-2 mt-7 w-full rounded-xl bg-[#f59e0b] px-5 py-3.5 text-[#16161a] font-bold hover:bg-[#d97706] hover:-translate-y-0.5 transition-all duration-300"
+                  >
+                    Explore service
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
               </motion.div>
             ))}
           </div>
