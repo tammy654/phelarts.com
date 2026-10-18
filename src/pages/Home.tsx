@@ -147,6 +147,26 @@ export default function Home() {
           <div className="absolute -left-48 top-0 h-[32rem] w-[32rem] rounded-full bg-[#f59e0b]/10 blur-[140px]" />
           <div className="absolute -right-48 bottom-0 h-[30rem] w-[30rem] rounded-full bg-[#0f5132]/30 blur-[140px]" />
           <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+          <div className="absolute -right-24 -top-32 h-[34rem] w-[18rem] rotate-[34deg] bg-gradient-to-b from-[#f59e0b]/25 via-[#f59e0b]/[0.06] to-transparent blur-3xl" />
+          <svg className="absolute inset-0 h-full w-full opacity-80" viewBox="0 0 1200 720" fill="none" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <filter id="hero-glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="8" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <path d="M-80 650C180 510 260 470 470 500C720 535 860 405 1280 80" stroke="#f59e0b" strokeWidth="18" opacity="0.08" filter="url(#hero-glow)" />
+            <path d="M-80 650C180 510 260 470 470 500C720 535 860 405 1280 80" stroke="#f59e0b" strokeWidth="2" opacity="0.38" />
+            <path d="M650 420C790 360 900 270 1010 145C1080 65 1150 30 1280 -20" stroke="#fbbf24" strokeWidth="5" opacity="0.25" filter="url(#hero-glow)" />
+            <path d="M700 455C820 400 930 290 1040 155C1100 80 1170 42 1280 5" stroke="#f59e0b" strokeWidth="1.5" opacity="0.65" />
+          </svg>
+          <div className="absolute left-[28%] top-[42%] h-2 w-2 rounded-full bg-[#fbbf24] shadow-[0_0_18px_6px_rgba(245,158,11,0.45)] animate-pulse" />
+          <div className="absolute right-[19%] top-[24%] h-1.5 w-1.5 rounded-full bg-[#f7f5f1]/80 shadow-[0_0_14px_5px_rgba(247,245,241,0.25)] animate-pulse" />
+          <div className="absolute right-[12%] top-[17%] h-1 w-1 rounded-full bg-[#f59e0b] shadow-[0_0_12px_4px_rgba(245,158,11,0.5)]" />
+          <div className="absolute left-[13%] bottom-[20%] h-1.5 w-1.5 rounded-full bg-[#f59e0b]/80 shadow-[0_0_16px_5px_rgba(245,158,11,0.35)] animate-pulse" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
