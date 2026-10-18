@@ -129,7 +129,12 @@ const Pricing = () => {
   return (
     <div className="pt-28">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
+      <section
+        className="relative overflow-hidden bg-cover bg-center py-24"
+        style={{
+          backgroundImage: "linear-gradient(rgba(10, 24, 34, 0.18), rgba(10, 24, 34, 0.18)), url('/Pricing.jpg')",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
             Pricing
