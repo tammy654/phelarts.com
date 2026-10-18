@@ -88,10 +88,10 @@ export default function Header() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20" ref={navRef as never}>
+        <div className="flex justify-between items-center h-28" ref={navRef as never}>
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="/phelarts_logo.png" alt="Phel Arts" className="h-20 w-20 object-contain" />
+            <img src="/phelarts_logo.png" alt="Phel Arts" className="h-28 w-28 object-contain transition-transform duration-300 group-hover:scale-105" />
             {/* <span
               className={`font-display font-bold text-xl tracking-tight transition-colors ${
                 useDarkText ? 'text-[#16161a]' : 'text-[#f7f5f1]'

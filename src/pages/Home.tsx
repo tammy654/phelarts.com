@@ -4,7 +4,6 @@ import { ArrowRight, Sparkles, Play, X } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import Hero from '../components/Hero';
 import ClientLogos from '../components/ClientLogos';
-
 type Reel = {
   title: string;
   client: string;
@@ -64,7 +63,7 @@ function FeaturedReel({ reel, onPlay }: { reel: Reel; onPlay: (r: Reel) => void 
       onMouseEnter={enter}
       onMouseLeave={leave}
       onClick={() => onPlay(reel)}
-      className="group relative aspect-[21/9] overflow-hidden bg-[#16161a] cursor-pointer"
+      className="group relative aspect-[21/9] overflow-hidden bg-[#16161a] cursor-pointer rounded-2xl"
     >
       <img
         src={reel.image}
@@ -139,8 +138,63 @@ export default function Home() {
     <div>
       <Hero />
 
-      {/* Featured reels — full bleed cinematic showcase */}
-      <section className="bg-[#16161a] py-16 lg:py-24">
+      {/* Hero statement — below the showreel */}
+      <section className="bg-[#16161a] relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-80 bg-[#f59e0b]/10 rounded-full blur-[140px] -translate-y-1/2" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="eyebrow text-[#f59e0b]">Motion Graphics & 2D Animation Studio</span>
+            <h1 className="font-display font-extrabold text-[#f7f5f1] text-5xl lg:text-7xl leading-[1.05] mt-6 max-w-4xl mx-auto">
+              We craft{' '}
+              <span className="relative inline-block">
+                <span className="bg-gradient-to-r from-[#f59e0b] to-[#fbbf24] bg-clip-text text-transparent">
+                  visual stories
+                </span>
+                <svg
+                  className="absolute -bottom-2 left-0 w-full"
+                  viewBox="0 0 300 12"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M2 9C75 3 225 3 298 9"
+                    stroke="#f59e0b"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    opacity="0.5"
+                  />
+                </svg>
+              </span>
+              <br />
+              that move people.
+            </h1>
+            <p className="text-lg text-[#f7f5f1]/60 max-w-xl mx-auto leading-relaxed mt-8">
+              From concept to completion, we create motion graphics and 2D animations that
+              captivate audiences and drive results for forward-thinking brands.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+              <a href="/our-work" className="btn-light">
+                <Play className="w-4 h-4" />
+                View Our Work
+              </a>
+              <a
+                href="/book-call"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Start a Project
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Featured reels — contained with side margins */}
+      <section className="bg-[#16161a] py-16 lg:py-24 border-t border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-10 lg:mb-14 flex items-end justify-between gap-6">
           <div>
             <span className="eyebrow text-[#f59e0b]">Featured Work</span>
@@ -153,9 +207,11 @@ export default function Home() {
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>
-        <div className="space-y-1">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-6">
           {featuredReels.map((reel) => (
-            <FeaturedReel key={reel.title} reel={reel} onPlay={setSelected} />
+            <div key={reel.title} className="relative rounded-2xl overflow-hidden">
+              <FeaturedReel reel={reel} onPlay={setSelected} />
+            </div>
           ))}
         </div>
       </section>

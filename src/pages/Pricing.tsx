@@ -127,7 +127,7 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="pt-20">
+    <div className="pt-28">
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-[#242424] via-gray-800 to-[#016952]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">

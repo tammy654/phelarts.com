@@ -175,7 +175,7 @@ export default function OurWork() {
   const standard = filtered.filter((r) => !r.featured);
 
   return (
-    <div className="pt-20 bg-[#16161a]">
+    <div className="pt-28 bg-[#16161a]">
       {/* Hero */}
       <section className="py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#f59e0b]/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4" />
