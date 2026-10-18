@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Play, X } from 'lucide-react';
+import { ArrowRight, Sparkles, Play, X, Target, Layers3, SlidersHorizontal, Truck } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import Hero from '../components/Hero';
 import ClientLogos from '../components/ClientLogos';
@@ -128,10 +128,10 @@ const services = [
 ];
 
 const process = [
-  { step: '01', title: 'Discovery', description: 'We learn your goals, audience, and project requirements.' },
-  { step: '02', title: 'Concept', description: 'We develop creative concepts and storyboards aligned to your vision.' },
-  { step: '03', title: 'Production', description: 'We bring the project to life with meticulous craft and detail.' },
-  { step: '04', title: 'Delivery', description: 'Final delivery in all formats, with ongoing support.' },
+  { step: '01', title: 'Discovery', description: 'We learn your goals, audience, and project requirements.', icon: Target },
+  { step: '02', title: 'Concept', description: 'We develop creative concepts and storyboards aligned to your vision.', icon: Layers3 },
+  { step: '03', title: 'Production', description: 'We bring the project to life with meticulous craft and detail.', icon: SlidersHorizontal },
+  { step: '04', title: 'Delivery', description: 'Final delivery in all formats, with ongoing support.', icon: Truck },
 ];
 
 export default function Home() {
@@ -283,31 +283,60 @@ export default function Home() {
       </section>
 
       {/* Process */}
-      <section className="py-28 bg-white border-y border-black/[0.06]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="eyebrow">How we work</span>
-            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a] mt-4">
+      <section className="relative overflow-hidden bg-[#16161a] py-24 lg:py-32">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f59e0b]/10" />
+          <div className="absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#0f5132]/30" />
+          <div className="absolute -left-40 bottom-0 h-80 w-80 rounded-full bg-[#0f5132]/20 blur-[120px]" />
+          <div className="absolute -right-40 top-0 h-80 w-80 rounded-full bg-[#f59e0b]/10 blur-[120px]" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-2xl mb-16 lg:mb-20">
+            <span className="eyebrow text-[#f59e0b]">How we work</span>
+            <h2 className="font-display font-bold text-4xl lg:text-6xl text-[#f7f5f1] mt-4 leading-[1.05]">
               A proven path to exceptional results.
             </h2>
+            <p className="text-lg text-[#f7f5f1]/55 mt-6 max-w-xl leading-relaxed">
+              Every project moves through a considered creative process, keeping the big picture clear while we obsess over every frame.
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          <div className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+            <div className="hidden lg:block absolute left-[10%] right-[10%] top-1/2 h-px bg-gradient-to-r from-[#f59e0b]/30 via-[#f59e0b] to-[#0f5132]" />
             {process.map((p, i) => (
               <motion.div
                 key={p.step}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="relative"
+                viewport={{ once: true, margin: '-80px' }}
+                className={`group relative z-10 rounded-3xl border p-6 lg:p-7 min-h-[285px] flex flex-col transition-all duration-500 ${
+                  i === 2
+                    ? 'border-[#f59e0b]/70 bg-gradient-to-br from-[#f59e0b]/20 via-[#242424] to-[#0f5132]/30 shadow-[0_0_50px_rgba(245,158,11,0.12)]'
+                    : 'border-white/10 bg-white/[0.055] hover:border-[#f59e0b]/40 hover:bg-white/[0.09]'
+                }`}
               >
-                <div className="font-display font-extrabold text-5xl text-[#f59e0b]/20 mb-4">
-                  {p.step}
+                <div className="flex items-start justify-between">
+                  <span className={`font-display font-extrabold text-5xl leading-none ${i === 2 ? 'text-[#f59e0b]' : 'text-[#f7f5f1]/25 group-hover:text-[#f59e0b]/70'} transition-colors`}>
+                    {p.step}
+                  </span>
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${i === 2 ? 'border-[#f59e0b]/50 bg-[#f59e0b] text-[#16161a]' : 'border-white/15 bg-white/[0.06] text-[#f7f5f1]/60 group-hover:border-[#f59e0b]/50 group-hover:text-[#f59e0b]'} transition-colors`}>
+                    <p.icon className="h-5 w-5" />
+                  </div>
                 </div>
-                <h3 className="font-display font-bold text-xl text-[#16161a] mb-2">{p.title}</h3>
-                <p className="text-[#6b6b73] leading-relaxed">{p.description}</p>
+                <div className="mt-auto">
+                  <div className="mb-3 h-px w-10 bg-[#f59e0b]" />
+                  <h3 className="font-display font-bold text-2xl text-[#f7f5f1]">{p.title}</h3>
+                  <p className="text-[#f7f5f1]/55 leading-relaxed mt-3">{p.description}</p>
+                </div>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-10 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#f7f5f1]/40">
+            <span className="h-px w-10 bg-[#f59e0b]" />
+            <span>Our production pipeline</span>
           </div>
         </div>
       </section>
