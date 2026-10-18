@@ -385,39 +385,49 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-28 bg-[#f7f5f1]">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-[#16161a] py-20 lg:py-28">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -left-32 bottom-[-10rem] h-[30rem] w-[30rem] rounded-full bg-[#0f5132]/25 blur-[120px]" />
+          <div className="absolute -right-24 top-[-8rem] h-[28rem] w-[28rem] rounded-full bg-[#f59e0b]/15 blur-[120px]" />
+          <div className="absolute left-[12%] top-[22%] h-1.5 w-1.5 rounded-full bg-[#f7f5f1]/70 shadow-[0_0_14px_5px_rgba(247,245,241,0.25)]" />
+          <div className="absolute right-[18%] bottom-[25%] h-1 w-1 rounded-full bg-[#f59e0b] shadow-[0_0_14px_5px_rgba(245,158,11,0.4)] animate-pulse" />
+          <div className="absolute right-[8%] top-[18%] h-1 w-1 rounded-full bg-[#f7f5f1]/60" />
+          <div className="absolute left-[21%] bottom-[16%] h-1 w-1 rounded-full bg-[#f59e0b]/80 animate-pulse" />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="relative rounded-[2.5rem] bg-[#16161a] overflow-hidden p-12 lg:p-20 text-center"
+            className="relative rounded-[2.5rem] bg-gradient-to-br from-[#f59e0b]/70 via-white/20 to-[#0f5132]/80 p-px shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
           >
-            <div className="absolute top-0 left-0 w-64 h-64 bg-[#f59e0b]/15 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3" />
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#0f5132]/30 rounded-full blur-[100px] translate-x-1/4 translate-y-1/4" />
-            <div className="relative">
-              <span className="inline-flex items-center gap-2 text-[#f59e0b] mb-6">
-                <Sparkles className="w-4 h-4" />
-                <span className="text-xs font-semibold tracking-[0.18em] uppercase">Let's build together</span>
-              </span>
-              <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#f7f5f1] max-w-2xl mx-auto">
-                Ready to create something amazing?
-              </h2>
-              <p className="text-lg text-[#f7f5f1]/60 mt-5 max-w-xl mx-auto">
-                Let's discuss your project and bring your vision to life.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-                <a href="/book-call" className="btn-light">
-                  Book a Call
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-                <a
-                  href="/our-work"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  View Our Work
-                </a>
+            <div className="relative overflow-hidden rounded-[2.45rem] bg-[#242424]/90 px-6 py-14 text-center backdrop-blur-xl sm:px-10 lg:px-20 lg:py-20">
+              <div className="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-[#f59e0b]/10 blur-[90px]" />
+              <div className="absolute -left-24 bottom-[-12rem] h-96 w-96 rounded-full bg-[#0f5132]/25 blur-[100px]" />
+              <div className="relative">
+                <span className="mb-6 inline-flex items-center gap-2 text-[#f59e0b]">
+                  <Sparkles className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em]">Let's build together</span>
+                </span>
+                <h2 className="mx-auto max-w-3xl font-display text-4xl font-bold leading-[1.05] text-[#f7f5f1] sm:text-5xl lg:text-6xl">
+                  Ready to create something amazing?
+                </h2>
+                <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-[#f7f5f1]/60">
+                  Let's discuss your project and bring your vision to life.
+                </p>
+                <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+                  <a href="/book-call" className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f59e0b] bg-[#f59e0b] px-7 py-3.5 font-bold text-[#16161a] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#fbbf24] hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.7)]">
+                    Book a Call
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                  <a
+                    href="/our-work"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f7f5f1]/50 px-7 py-3.5 font-semibold text-[#f7f5f1] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f59e0b] hover:bg-[#f59e0b]/10"
+                  >
+                    View Our Work
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>
