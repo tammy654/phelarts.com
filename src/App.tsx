@@ -27,18 +27,18 @@ function App() {
         toastOptions={{
           duration: 4000,
           style: {
-            background: '#1a3046',
-            color: '#f7f8fb',
-            border: '1px solid rgba(177, 201, 224, 0.16)',
+            background: '#f7f5f1',
+            color: '#16161a',
+            border: '1px solid rgba(22, 22, 26, 0.08)',
             borderRadius: '12px',
             fontSize: '14px',
             fontWeight: '500',
           },
-          success: { iconTheme: { primary: '#ffd000', secondary: '#07111c' } },
-          error: { iconTheme: { primary: '#ff6500', secondary: '#07111c' } },
+          success: { iconTheme: { primary: '#0f5132', secondary: '#f7f5f1' } },
+          error: { iconTheme: { primary: '#ef4444', secondary: '#f7f5f1' } },
         }}
       />
-      <div className="min-h-screen bg-[#0b1b2b]">
+      <div className="min-h-screen bg-[#f7f5f1]">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

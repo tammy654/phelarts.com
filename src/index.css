@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --navy-950: #07111c;
-  --navy-900: #0b1b2b;
-  --navy-800: #10253b;
-  --navy-700: #1a3046;
-  --blue-muted: #91a9c1;
-  --white: #f7f8fb;
-  --yellow: #ffd000;
-  --orange: #ff6500;
-  --line: rgba(177, 201, 224, 0.16);
+  --navy-950: #16161a;
+  --navy-900: #f7f5f1;
+  --navy-800: #efece6;
+  --navy-700: #3a3a42;
+  --blue-muted: #6b6b73;
+  --white: #f7f5f1;
+  --yellow: #f59e0b;
+  --orange: #d97706;
+  --line: rgba(22, 22, 26, 0.08);
 }
 
 html { scroll-behavior: smooth; }
@@ -24,7 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 h1, h2, h3, h4, h5, h6, .font-display {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 800;
   letter-spacing: -0.025em;
   text-transform: uppercase;
@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6, .font-display {
 .eyebrow { color: var(--yellow); font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .lift { transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
 .lift:hover { transform: translateY(-6px); border-color: rgba(255,208,0,.4); box-shadow: 0 18px 45px rgba(0,0,0,.22); }
-.section-shell { background: var(--navy-900); }
+.section-shell { background: var(--ink, #16161a); }
 .reveal { animation: reveal .7s ease both; }
 @keyframes reveal { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
