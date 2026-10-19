@@ -118,7 +118,7 @@ const Pricing = () => {
     },
     {
       question: 'Do you offer payment plans?',
-      answer: 'Yes, we offer flexible payment plans for all projects. Typically, we require 50% upfront and 50% upon completion, but we can work with you on a schedule that fits your needs.'
+      answer: 'Yes, we offer flexible payment plans for all projects. We require 70% upfront and the remaining 30% upon completion, and we can work with you on a schedule that fits your needs.'
     },
     {
       question: 'What if I need something not listed in the packages?',
