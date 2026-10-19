@@ -11,6 +11,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import BookCall from './pages/BookCall';
 import Pricing from './pages/Pricing';
+import Admin from './pages/Admin';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -29,11 +30,14 @@ function ScrollToTop() {
   return null;
 }
 
-function App() {
+function AppContent() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname === '/admin';
+
   return (
-    <Router>
+    <>
       <ScrollToTop />
-      <Toaster
+      {!isAdmin && <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
@@ -48,21 +52,31 @@ function App() {
           success: { iconTheme: { primary: '#0f5132', secondary: '#f7f5f1' } },
           error: { iconTheme: { primary: '#ef4444', secondary: '#f7f5f1' } },
         }}
-      />
-      <div className="min-h-screen bg-[#f7f5f1]">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/our-work" element={<OurWork />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/book-call" element={<BookCall />} />
-          <Route path="/pricing" element={<Pricing />} />
-        </Routes>
-        <Footer />
-      </div>
+      />}
+      {isAdmin ? <Routes><Route path="/admin" element={<Admin />} /></Routes> : (
+        <div className="min-h-screen bg-[#f7f5f1]">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/our-work" element={<OurWork />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/book-call" element={<BookCall />} />
+            <Route path="/pricing" element={<Pricing />} />
+          </Routes>
+          <Footer />
+        </div>
+      )}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
