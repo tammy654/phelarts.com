@@ -43,7 +43,7 @@ const Pricing = () => {
         'Dedicated project manager'
       ],
       popular: true,
-      cta: 'Most Popular'
+      cta: 'Choose Professional'
     },
     {
       name: 'Enterprise',
@@ -163,7 +163,7 @@ const Pricing = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`relative p-8 rounded-3xl transition-all duration-300 ${
+                className={`relative flex flex-col p-8 rounded-3xl transition-all duration-300 ${
                   plan.popular
                     ? 'bg-gradient-to-br from-[#ff9a1d]/5 to-[#016952]/5 border-2 border-[#ff9a1d] shadow-2xl scale-105'
                     : 'bg-gray-50 border border-gray-200 hover:shadow-xl hover:scale-105'
@@ -197,7 +197,7 @@ const Pricing = () => {
                   </div>
                 </div>
 
-                <ul className="space-y-4 mb-8">
+                <ul className="flex-1 space-y-4 mb-8">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <Check className="w-5 h-5 text-[#016952] mr-3 mt-0.5 flex-shrink-0" />
@@ -208,10 +208,18 @@ const Pricing = () => {
 
                 <a
                   href="/book-call"
-                  className="phel-btn w-full py-4 px-6 rounded-xl space-x-2"
+                  className={`group/cta mt-auto flex w-full items-center justify-between rounded-2xl border px-5 py-4 font-semibold transition-all duration-300 hover:-translate-y-1 ${
+                    plan.popular
+                      ? 'border-[#f59e0b] bg-[#f59e0b] text-[#242424] shadow-lg shadow-[#f59e0b]/20 hover:bg-[#ffb347] hover:shadow-xl hover:shadow-[#f59e0b]/30'
+                      : 'border-[#242424]/15 bg-transparent text-[#242424] hover:border-[#016952] hover:bg-[#016952] hover:text-[#fefefe] hover:shadow-lg hover:shadow-[#016952]/15'
+                  }`}
                 >
                   <span>{plan.cta}</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <span className={`flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-300 group-hover/cta:translate-x-1 ${
+                    plan.popular ? 'bg-[#242424] text-[#fefefe]' : 'bg-[#242424]/[0.06] group-hover/cta:bg-[#fefefe]/15'
+                  }`}>
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                 </a>
               </div>
             ))}
