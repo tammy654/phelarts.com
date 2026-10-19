@@ -79,7 +79,7 @@ const Pricing = () => {
     {
       name: 'Additional Revisions',
       description: 'Extra revision rounds beyond the included amount',
-      price: '$200 per round'
+      price: '$150 per round'
     },
     {
       name: 'Extended Length',
@@ -89,17 +89,17 @@ const Pricing = () => {
     {
       name: 'Voice Over',
       description: 'Professional voice over recording and integration',
-      price: '$500 - $1,500'
+      price: '$300 - $1,500'
     },
     {
       name: 'Original Music',
       description: 'Custom music composition for your animation',
-      price: '$800 - $2,000'
+      price: '$500 - $1,000'
     },
     {
       name: 'Multi-Language',
       description: 'Additional language versions of your animation',
-      price: '$300 per language'
+      price: '$170 per language'
     }
   ];
 
