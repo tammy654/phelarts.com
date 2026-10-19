@@ -59,13 +59,12 @@ export default function About() {
           >
             <span className="eyebrow">Our Story</span>
             <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a]">
-              A studio built on craft.
+              A Studio Built on Craft. Driven by Purpose.
             </h2>
             <div className="space-y-5 text-lg text-[#6b6b73] leading-relaxed">
               <p>
-                Founded in 2019 with a vision to transform how brands communicate through motion,
-                Phel Arts has grown into a trusted partner for companies seeking to tell their
-                stories through compelling visual narratives.
+              Founded in 2021, Phel Arts was built on a simple belief: great stories deserve extraordinary visuals.
+What began as a passion for creative expression has evolved into a motion design and animation studio helping brands bring their ideas to life.
               </p>
               <p>
                 Our multidisciplinary team combines artistic vision with technical expertise,
@@ -73,8 +72,10 @@ export default function About() {
                 objectives and drives meaningful results.
               </p>
               <p>
-                From Fortune 500 companies to innovative startups, we've helped brands across
-                industries connect with their audiences through the power of animation.
+                We combine artistic vision, technical precision, and strategic storytelling to create work that goes beyond aesthetics. From emerging startups to established organizations, we craft visual experiences that communicate ideas, build connections, and deliver meaningful impact.
+               </p>
+              <p>
+                 Our philosophy is simple: Visual Stories. Real Connections.
               </p>
             </div>
             <a href="/contact" className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold hover:gap-3 transition-all">
