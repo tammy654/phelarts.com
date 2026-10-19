@@ -73,7 +73,7 @@ export default function AdminDashboard() {
         navigate('/admin/login', { replace: true });
         return;
       }
-      if (data.session.user.email !== 'phelarts@gmail.com') {
+      if (data.session.user.email?.toLowerCase() !== 'phelarts@gmail.com') {
         await supabase.auth.signOut();
         toast.error('This account does not have admin access.');
         navigate('/admin/login', { replace: true });

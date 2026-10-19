@@ -19,9 +19,13 @@ export default function AdminLogin() {
       const { data } = await supabase.auth.getSession();
       if (!mounted) return;
       if (data.session) {
-        const sessionEmail = data.session.user.email;
-        if (sessionEmail === ADMIN_EMAIL) navigate('/admin', { replace: true });
-        else supabase.auth.signOut();
+        const sessionEmail = data.session.user.email?.toLowerCase();
+        if (sessionEmail === ADMIN_EMAIL) {
+          navigate('/admin', { replace: true });
+        } else {
+          await supabase.auth.signOut();
+          toast.error('This account does not have admin access.');
+        }
       }
     })();
     return () => { mounted = false; };
@@ -32,13 +36,12 @@ export default function AdminLogin() {
     if (!email.trim() || !password) return toast.error('Enter your email and password');
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
       });
       if (error) throw error;
-      const { data: userData } = await supabase.auth.getUser();
-      if (userData.user?.email !== ADMIN_EMAIL) {
+      if (data.user?.email?.toLowerCase() !== ADMIN_EMAIL) {
         await supabase.auth.signOut();
         toast.error('This account does not have admin access.');
         return;
