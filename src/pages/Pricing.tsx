@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Check, ArrowRight, Star, Zap, Crown } from 'lucide-react';
 
 const Pricing = () => {
+  const [currency, setCurrency] = useState<'USD' | 'NGN'>('USD');
+
   const plans = [
     {
       name: 'Starter',
       icon: Star,
-      price: '$299.99',
+      usdPrice: '$299.99',
+      ngnPrice: '₦450,000',
       period: 'per project',
       description: 'Your first animated project, built for small businesses and startups that need quality content without agency costs.',
       features: [
@@ -26,7 +29,8 @@ const Pricing = () => {
     {
       name: 'Professional',
       icon: Zap,
-      price: '$899.99',
+      usdPrice: '$899.99',
+      ngnPrice: '₦1,350,000',
       period: 'per project',
       description: 'For established businesses that want animation with the polish to stand out in a crowded market.',
       features: [
@@ -48,7 +52,8 @@ const Pricing = () => {
     {
       name: 'Enterprise',
       icon: Crown,
-      price: 'Custom',
+      usdPrice: 'Custom',
+      ngnPrice: 'Custom',
       period: 'quote',
       description: 'End to end animation production for large organizations, with the scale and coordination complex projects demand.',
       features: [
@@ -74,32 +79,38 @@ const Pricing = () => {
     {
       name: 'Rush Delivery',
       description: 'Get your project completed in half the standard time',
-      price: '+50% of project cost'
+      usdPrice: '+50% of project cost',
+      ngnPrice: '+50% of project cost'
     },
     {
       name: 'Additional Revisions',
       description: 'Extra revision rounds beyond the included amount',
-      price: '$150 per round'
+      usdPrice: '$150 per round',
+      ngnPrice: '₦225,000 per round'
     },
     {
       name: 'Extended Length',
       description: 'Additional animation time beyond package limits',
-      price: '$50 per additional second'
+      usdPrice: '$50 per additional second',
+      ngnPrice: '₦75,000 per additional second'
     },
     {
       name: 'Voice Over',
       description: 'Professional voice over recording and integration',
-      price: '$300 - $600'
+      usdPrice: '$300 - $600',
+      ngnPrice: '₦450,000 - ₦900,000'
     },
     {
       name: 'Original Music',
       description: 'Custom music composition for your animation',
-      price: '$500 - $1,000'
+      usdPrice: '$500 - $1,000',
+      ngnPrice: '₦750,000 - ₦1,500,000'
     },
     {
       name: 'Multi-Language',
       description: 'Additional language versions of your animation',
-      price: '$170 per language'
+      usdPrice: '$170 per language',
+      ngnPrice: '₦255,000 per language'
     }
   ];
 
@@ -128,6 +139,25 @@ const Pricing = () => {
 
   return (
     <div className="pt-28">
+      <div className="fixed right-4 top-24 z-40 sm:right-6" role="group" aria-label="Choose pricing currency">
+        <div className="flex items-center gap-1 rounded-full border border-[#242424]/10 bg-[#fefefe]/95 p-1 shadow-xl shadow-[#242424]/10 backdrop-blur-md">
+          {(['USD', 'NGN'] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setCurrency(option)}
+              aria-pressed={currency === option}
+              className={`rounded-full px-3 py-2 text-xs font-bold tracking-[0.12em] transition-all duration-300 sm:px-4 ${
+                currency === option
+                  ? 'bg-[#016952] text-[#fefefe] shadow-md shadow-[#016952]/20'
+                  : 'text-[#242424]/55 hover:bg-[#242424]/[0.06] hover:text-[#242424]'
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
       {/* Hero Section */}
       <section
         className="relative overflow-hidden bg-cover bg-center py-24"
@@ -192,7 +222,7 @@ const Pricing = () => {
                   <p className="text-gray-600 mb-6">{plan.description}</p>
                   
                   <div className="mb-6">
-                    <span className="text-4xl lg:text-5xl font-bold text-[#242424]">{plan.price}</span>
+                    <span className="text-4xl lg:text-5xl font-bold text-[#242424]">{currency === 'USD' ? plan.usdPrice : plan.ngnPrice}</span>
                     <span className="text-gray-500 ml-2">{plan.period}</span>
                   </div>
                 </div>
@@ -249,7 +279,7 @@ const Pricing = () => {
               >
                 <h3 className="text-xl font-bold text-[#242424] mb-3">{addon.name}</h3>
                 <p className="text-gray-600 mb-4">{addon.description}</p>
-                <div className="text-lg font-semibold text-[#ff9a1d]">{addon.price}</div>
+                <div className="text-lg font-semibold text-[#ff9a1d]">{currency === 'USD' ? addon.usdPrice : addon.ngnPrice}</div>
               </div>
             ))}
           </div>
