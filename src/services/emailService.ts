@@ -67,7 +67,7 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
     }
 
     const emailData = {
-      to_email: 'pheldesignstudios@gmail.com',
+      to_email: 'phelarts@gmail.com',
       from_name: data.name,
       from_email: data.email,
       subject: 'New Booking from Phel Arts Website',
