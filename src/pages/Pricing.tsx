@@ -1,8 +1,67 @@
 import React, { useState } from 'react';
-import { Check, ArrowRight, Star, Zap, Crown } from 'lucide-react';
+import { Check, ArrowRight, Star, Zap, Crown, X, Calendar, Clock, Send } from 'lucide-react';
+import toast from 'react-hot-toast';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { submitBookingForm, BookingData, submitContactForm, ContactData } from '../services/emailService';
 
 const Pricing = () => {
   const [currency, setCurrency] = useState<'USD' | 'NGN'>('USD');
+  const [activeModal, setActiveModal] = useState<'call' | 'enquiry' | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [callForm, setCallForm] = useState({ name: '', email: '', date: '', time: '', message: '' });
+  const [enquiryForm, setEnquiryForm] = useState({ name: '', email: '', projectType: '', budget: '', message: '' });
+
+  const updateCallForm = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setCallForm({ ...callForm, [event.target.name]: event.target.value });
+  };
+
+  const updateEnquiryForm = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setEnquiryForm({ ...enquiryForm, [event.target.name]: event.target.value });
+  };
+
+  const closeModal = () => {
+    if (!isSubmitting) setActiveModal(null);
+  };
+
+  const handleCallSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!callForm.name.trim() || !callForm.email.trim() || !callForm.date || !callForm.time) {
+      toast.error('Please complete your name, email, date, and time.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await submitBookingForm({ ...callForm, company: '', phone: '', projectType: '', budget: '', selectedDate: callForm.date, selectedTime: callForm.time, callType: 'video' } as BookingData);
+      toast.success("Call request sent! We'll contact you within 24 hours.");
+      setCallForm({ name: '', email: '', date: '', time: '', message: '' });
+      setActiveModal(null);
+    } catch {
+      toast.error('Failed to submit your call request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEnquirySubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!enquiryForm.name.trim() || !enquiryForm.email.trim() || !enquiryForm.message.trim()) {
+      toast.error('Please complete your name, email, and project details.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await submitContactForm({ ...enquiryForm, company: '', subject: 'Enterprise Project Enquiry' } as ContactData);
+      toast.success("Enquiry sent! We'll get back to you within 24 hours.");
+      setEnquiryForm({ name: '', email: '', projectType: '', budget: '', message: '' });
+      setActiveModal(null);
+    } catch {
+      toast.error('Failed to send your enquiry. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const plans = [
     {
@@ -238,9 +297,10 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <a
-                  href={plan.name === 'Enterprise' ? '/contact#enquiry' : '/book-call'}
-                  className={`group/cta mt-auto flex w-full items-center justify-between rounded-2xl border px-5 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 ${
+                <button
+                  type="button"
+                  onClick={() => setActiveModal(plan.name === 'Enterprise' ? 'enquiry' : 'call')}
+                  className={`group/cta mt-auto flex w-full items-center justify-between rounded-2xl border px-5 py-3 text-left font-semibold transition-all duration-300 hover:-translate-y-1 ${
                     plan.popular
                       ? 'border-[#f59e0b] bg-[#f59e0b] text-[#242424] shadow-lg shadow-[#f59e0b]/20 hover:bg-[#ffb347] hover:shadow-xl hover:shadow-[#f59e0b]/30'
                       : 'border-[#242424]/15 bg-transparent text-[#242424] hover:border-[#016952] hover:bg-[#016952] hover:text-[#fefefe] hover:shadow-lg hover:shadow-[#016952]/15'
@@ -252,12 +312,53 @@ const Pricing = () => {
                   }`}>
                     <ArrowRight className="h-4 w-4" />
                   </span>
-                </a>
+                </button>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {activeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#16161a]/75 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="pricing-modal-title">
+          <div className="relative my-8 max-h-[calc(100vh-4rem)] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[#f7f5f1] p-6 shadow-2xl sm:p-10">
+            <button type="button" onClick={closeModal} aria-label="Close dialog" className="absolute right-5 top-5 rounded-full p-2 text-[#242424]/60 transition-colors hover:bg-[#242424]/10 hover:text-[#242424]"><X className="h-5 w-5" /></button>
+            {activeModal === 'call' ? (
+              <form onSubmit={handleCallSubmit}>
+                <div className="mb-8 pr-8">
+                  <span className="eyebrow text-[#016952]">Schedule your call</span>
+                  <h2 id="pricing-modal-title" className="mt-3 text-3xl font-bold text-[#242424]">Let’s find the right fit.</h2>
+                  <p className="mt-2 text-[#6b6b73]">Book a free 30-minute consultation with our team.</p>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <input required name="name" value={callForm.name} onChange={updateCallForm} placeholder="Your name *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
+                  <input required type="email" name="email" value={callForm.email} onChange={updateCallForm} placeholder="Your email *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
+                  <label className="text-sm font-semibold text-[#242424]">Preferred date<input required type="date" name="date" value={callForm.date} onChange={updateCallForm} className="mt-2 w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 font-normal" /></label>
+                  <label className="text-sm font-semibold text-[#242424]">Preferred time<select required name="time" value={callForm.time} onChange={updateCallForm} className="mt-2 w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 font-normal"><option value="">Select time</option>{['9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM', '5:00 PM'].map((time) => <option key={time}>{time}</option>)}</select></label>
+                </div>
+                <textarea name="message" rows={4} value={callForm.message} onChange={updateCallForm} placeholder="What would you like to discuss?" className="mt-5 w-full resize-none rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
+                <button type="submit" disabled={isSubmitting} className="btn-primary mt-6 w-full disabled:opacity-60">{isSubmitting ? <><LoadingSpinner size="sm" color="#f7f5f1" /><span>Sending...</span></> : <><span>Schedule Your Call</span><Calendar className="h-4 w-4" /></>}</button>
+              </form>
+            ) : (
+              <form onSubmit={handleEnquirySubmit}>
+                <div className="mb-8 pr-8">
+                  <span className="eyebrow text-[#016952]">Project enquiry</span>
+                  <h2 id="pricing-modal-title" className="mt-3 text-3xl font-bold text-[#242424]">Tell us about your project.</h2>
+                  <p className="mt-2 text-[#6b6b73]">Share a few details and we’ll prepare a custom quote.</p>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <input required name="name" value={enquiryForm.name} onChange={updateEnquiryForm} placeholder="Full name *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
+                  <input required type="email" name="email" value={enquiryForm.email} onChange={updateEnquiryForm} placeholder="Email *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
+                  <select name="projectType" value={enquiryForm.projectType} onChange={updateEnquiryForm} className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a]"><option value="">Project type</option>{['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'].map((type) => <option key={type}>{type}</option>)}</select>
+                  <select name="budget" value={enquiryForm.budget} onChange={updateEnquiryForm} className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a]"><option value="">Budget range</option>{['Under $5,000', '$5,000 – $15,000', '$15,000 – $30,000', '$30,000+'].map((budget) => <option key={budget}>{budget}</option>)}</select>
+                </div>
+                <textarea required name="message" rows={5} value={enquiryForm.message} onChange={updateEnquiryForm} placeholder="Tell us about your project, goals, and timeline *" className="mt-5 w-full resize-none rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
+                <button type="submit" disabled={isSubmitting} className="btn-primary mt-6 w-full disabled:opacity-60">{isSubmitting ? <><LoadingSpinner size="sm" color="#f7f5f1" /><span>Sending...</span></> : <><span>Get Custom Quote</span><Send className="h-4 w-4" /></>}</button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Add-ons Section */}
       <section className="py-24 bg-gray-50">
