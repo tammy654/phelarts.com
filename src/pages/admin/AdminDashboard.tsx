@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck } from 'lucide-react';
-import { supabase } from '../../config/supabase';
+import { supabase } from '../../lib/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getCurrentAdmin, AdminUser } from './AdminLogin';
 

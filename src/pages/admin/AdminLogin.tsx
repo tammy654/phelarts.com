@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Lock, Mail, ArrowRight, KeyRound } from 'lucide-react';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { supabase } from '../../config/supabase';
+import { supabase } from '../../lib/supabase';
 
 export const SUPER_ADMIN_EMAIL = 'phelarts@gmail.com';
 
@@ -51,10 +51,11 @@ export default function AdminLogin() {
 
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       if (error) {
         console.error('Supabase sign-in error:', error);
-        throw error;
+        toast.error('Invalid email or password.');
+        return;
       }
       if (!data.user) throw new Error('No user returned');
       const role = roleFromEmail(data.user.email);
@@ -62,7 +63,7 @@ export default function AdminLogin() {
       navigate('/admin', { replace: true });
     } catch (err) {
       console.error('Admin login failed:', err);
-      toast.error(err instanceof Error ? err.message : 'Invalid email or password.');
+      toast.error('Invalid email or password.');
     } finally {
       setIsSubmitting(false);
     }
