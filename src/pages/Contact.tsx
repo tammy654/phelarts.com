@@ -105,7 +105,7 @@ export default function Contact() {
       </section>
 
       {/* Form + info */}
-      <section className="py-20 bg-white border-y border-black/[0.06]">
+      <section id="enquiry" className="scroll-mt-28 py-20 bg-white border-y border-black/[0.06]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-5 gap-12">
           {/* Info */}
           <div className="lg:col-span-2 space-y-10">

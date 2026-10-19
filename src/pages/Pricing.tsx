@@ -333,7 +333,7 @@ const Pricing = () => {
               Book a Call
             </a>
             <a
-              href="/contact"
+              href="/contact#enquiry"
               className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
             >
               Get Custom Quote
