@@ -89,7 +89,7 @@ const Pricing = () => {
     {
       name: 'Voice Over',
       description: 'Professional voice over recording and integration',
-      price: '$300 - $1,500'
+      price: '$300 - $600'
     },
     {
       name: 'Original Music',
