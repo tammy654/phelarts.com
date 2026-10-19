@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { LogOut, Search, Download, Calendar, Inbox, Mail } from 'lucide-react';
+import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2 } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const ADMIN_EMAIL = 'phelarts@gmail.com';
 const ADMIN_SESSION_KEY = 'phelarts_admin_session';
 
-type TabKey = 'bookings' | 'inquiries' | 'newsletter';
+type TabKey = 'bookings' | 'inquiries' | 'newsletter' | 'projects';
+type ProjectStatus = 'ongoing' | 'completed' | 'canceled';
 
 interface LeadRow {
   id: string;
@@ -30,11 +31,36 @@ interface NewsletterRow {
   created_at: string;
 }
 
+interface ProjectRow {
+  id: string;
+  source_type: 'booking' | 'inquiry';
+  source_id: string | null;
+  full_name: string | null;
+  email: string | null;
+  company: string | null;
+  phone: string | null;
+  project_type: string | null;
+  call_type: string | null;
+  preferred_date: string | null;
+  preferred_time: string | null;
+  project_details: string | null;
+  status: ProjectStatus;
+  created_at: string;
+  updated_at: string;
+}
+
 const TABS: { key: TabKey; label: string; icon: typeof Calendar }[] = [
   { key: 'bookings', label: 'Bookings', icon: Calendar },
   { key: 'inquiries', label: 'Inquiries', icon: Inbox },
+  { key: 'projects', label: 'Projects', icon: FolderKanban },
   { key: 'newsletter', label: 'Newsletter Subscribers', icon: Mail },
 ];
+
+const STATUS_STYLES: Record<ProjectStatus, { label: string; badge: string; dot: string }> = {
+  ongoing: { label: 'Ongoing', badge: 'bg-[#f59e0b]/15 text-[#b45309] border-[#f59e0b]/30', dot: 'bg-[#f59e0b]' },
+  completed: { label: 'Completed', badge: 'bg-[#0f5132]/15 text-[#0f5132] border-[#0f5132]/30', dot: 'bg-[#0f5132]' },
+  canceled: { label: 'Canceled', badge: 'bg-red-500/10 text-red-600 border-red-500/30', dot: 'bg-red-500' },
+};
 
 const fmtDate = (iso: string) => new Date(iso).toLocaleString('en-US', {
   year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -66,6 +92,9 @@ export default function AdminDashboard() {
   const [bookings, setBookings] = useState<LeadRow[]>([]);
   const [inquiries, setInquiries] = useState<LeadRow[]>([]);
   const [subscribers, setSubscribers] = useState<NewsletterRow[]>([]);
+  const [projects, setProjects] = useState<ProjectRow[]>([]);
+  const [projectFilter, setProjectFilter] = useState<ProjectStatus | 'all'>('all');
+  const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const session = localStorage.getItem(ADMIN_SESSION_KEY);
@@ -76,6 +105,15 @@ export default function AdminDashboard() {
     }
     setReady(true);
   }, [navigate]);
+
+  // Track which source rows have been moved to projects
+  const movedSources = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of projects) {
+      if (p.source_id) set.add(`${p.source_type}:${p.source_id}`);
+    }
+    return set;
+  }, [projects]);
 
   useEffect(() => {
     if (!ready) return;
@@ -97,13 +135,20 @@ export default function AdminDashboard() {
             .order('created_at', { ascending: false });
           if (error) throw error;
           if (mounted) setInquiries((data as LeadRow[]) ?? []);
-        } else {
+        } else if (activeTab === 'newsletter') {
           const { data, error } = await supabase
             .from('newsletter_subscribers')
             .select('*')
             .order('created_at', { ascending: false });
           if (error) throw error;
           if (mounted) setSubscribers((data as NewsletterRow[]) ?? []);
+        } else if (activeTab === 'projects') {
+          const { data, error } = await supabase
+            .from('projects')
+            .select('*')
+            .order('updated_at', { ascending: false });
+          if (error) throw error;
+          if (mounted) setProjects((data as ProjectRow[]) ?? []);
         }
       } catch {
         toast.error('Could not load submissions.');
@@ -113,6 +158,65 @@ export default function AdminDashboard() {
     })();
     return () => { mounted = false; };
   }, [activeTab, ready]);
+
+  const refreshProjects = async () => {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('updated_at', { ascending: false });
+    if (!error && data) setProjects(data as ProjectRow[]);
+  };
+
+  const moveToProjects = async (row: LeadRow, sourceType: 'booking' | 'inquiry') => {
+    const key = `${sourceType}:${row.id}`;
+    if (movedSources.has(key)) {
+      toast.error('Already moved to Projects.');
+      return;
+    }
+    setMovingIds((prev) => new Set(prev).add(row.id));
+    try {
+      const { error } = await supabase.from('projects').insert({
+        source_type: sourceType,
+        source_id: row.id,
+        full_name: row.full_name ?? null,
+        email: row.email,
+        company: row.company ?? null,
+        phone: row.phone ?? null,
+        project_type: row.project_type ?? null,
+        call_type: row.call_type ?? null,
+        preferred_date: row.preferred_date ?? null,
+        preferred_time: row.preferred_time ?? null,
+        project_details: row.project_details ?? null,
+        status: 'ongoing',
+      });
+      if (error) throw error;
+      await refreshProjects();
+      toast.success('Moved to Projects.');
+    } catch {
+      toast.error('Could not move to Projects.');
+    } finally {
+      setMovingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(row.id);
+        return next;
+      });
+    }
+  };
+
+  const updateProjectStatus = async (projectId: string, status: ProjectStatus) => {
+    const prev = projects;
+    setProjects((cur) => cur.map((p) => (p.id === projectId ? { ...p, status } : p)));
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', projectId);
+      if (error) throw error;
+    } catch {
+      setProjects(prev);
+      toast.error('Could not update project status.');
+    }
+  };
 
   const handleLogout = async () => {
     localStorage.removeItem(ADMIN_SESSION_KEY);
@@ -126,13 +230,21 @@ export default function AdminDashboard() {
       if (!q) return rows;
       return rows.filter((r) => r.email.toLowerCase().includes(q));
     }
+    if (activeTab === 'projects') {
+      const byStatus = projectFilter === 'all' ? projects : projects.filter((p) => p.status === projectFilter);
+      if (!q) return byStatus;
+      return byStatus.filter((r) =>
+        (r.full_name ?? '').toLowerCase().includes(q) ||
+        (r.email ?? '').toLowerCase().includes(q),
+      );
+    }
     const rows = activeTab === 'bookings' ? bookings : inquiries;
     if (!q) return rows;
     return rows.filter((r) =>
       (r.full_name ?? '').toLowerCase().includes(q) ||
       r.email.toLowerCase().includes(q),
     );
-  }, [activeTab, query, bookings, inquiries, subscribers]);
+  }, [activeTab, query, bookings, inquiries, subscribers, projects, projectFilter]);
 
   const leadColumns = [
     { key: 'full_name', label: 'Name' },
@@ -163,10 +275,69 @@ export default function AdminDashboard() {
   const totalCount =
     activeTab === 'bookings' ? bookings.length :
     activeTab === 'inquiries' ? inquiries.length :
-    subscribers.length;
+    activeTab === 'newsletter' ? subscribers.length :
+    projects.length;
 
   const currentColumns = activeTab === 'newsletter' ? newsletterColumns : leadColumns;
   const exportName = `${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`;
+
+  const renderLeadRow = (row: LeadRow, sourceType: 'booking' | 'inquiry') => {
+    const moved = movedSources.has(`${sourceType}:${row.id}`);
+    const isMoving = movingIds.has(row.id);
+    return (
+      <div
+        key={row.id}
+        className={`p-5 transition-colors ${
+          moved ? 'bg-[#0f5132]/[0.04] border-l-4 border-[#0f5132]' : ''
+        }`}
+      >
+        <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="font-display font-bold text-lg text-[#16161a]">{row.full_name || '—'}</div>
+              {moved && (
+                <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-[#0f5132]/10 text-[#0f5132] border border-[#0f5132]/20">
+                  <FolderKanban className="w-3 h-3" /> In Projects
+                </span>
+              )}
+            </div>
+            <div className="text-xs text-[#6b6b73]">{fmtDate(row.created_at)}</div>
+          </div>
+          <button
+            onClick={() => moveToProjects(row, sourceType)}
+            disabled={moved || isMoving}
+            className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3.5 py-2 rounded-full border transition-colors ${
+              moved
+                ? 'bg-transparent border-[#0f5132]/30 text-[#0f5132]/60 cursor-default'
+                : 'bg-[#16161a] text-[#f7f5f1] border-[#16161a] hover:bg-[#f59e0b] hover:text-[#16161a] hover:border-[#f59e0b] disabled:opacity-60'
+            }`}
+          >
+            {isMoving ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /><span>Moving...</span></>
+            ) : moved ? (
+              <><FolderKanban className="w-4 h-4" /><span>Moved</span></>
+            ) : (
+              <><ArrowRight className="w-4 h-4" /><span>Move to Project</span></>
+            )}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+          <div><span className="text-[#6b6b73]">Company:</span> <span className="text-[#16161a]">{row.company || '—'}</span></div>
+          <div><span className="text-[#6b6b73]">Phone:</span> <span className="text-[#16161a]">{row.phone || '—'}</span></div>
+          <div><span className="text-[#6b6b73]">Project Type:</span> <span className="text-[#16161a]">{row.project_type || '—'}</span></div>
+          <div><span className="text-[#6b6b73]">Call Type:</span> <span className="text-[#16161a]">{row.call_type || '—'}</span></div>
+          <div><span className="text-[#6b6b73]">Preferred Date:</span> <span className="text-[#16161a]">{row.preferred_date || '—'}</span></div>
+          <div><span className="text-[#6b6b73]">Preferred Time:</span> <span className="text-[#16161a]">{row.preferred_time || '—'}</span></div>
+        </div>
+        {row.project_details && (
+          <div className="mt-3 text-sm">
+            <span className="text-[#6b6b73]">Project Details:</span>
+            <p className="text-[#16161a] mt-1 whitespace-pre-wrap">{row.project_details}</p>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-[#f7f5f1]">
@@ -197,12 +368,13 @@ export default function AdminDashboard() {
             const count =
               tab.key === 'bookings' ? bookings.length :
               tab.key === 'inquiries' ? inquiries.length :
-              subscribers.length;
+              tab.key === 'newsletter' ? subscribers.length :
+              projects.length;
             const active = activeTab === tab.key;
             return (
               <button
                 key={tab.key}
-                onClick={() => { setActiveTab(tab.key); setQuery(''); }}
+                onClick={() => { setActiveTab(tab.key); setQuery(''); setProjectFilter('all'); }}
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors ${
                   active
                     ? 'bg-[#f59e0b] text-[#16161a] border border-[#f59e0b]'
@@ -221,14 +393,37 @@ export default function AdminDashboard() {
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6 items-stretch sm:items-center justify-between">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6b73]" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={activeTab === 'newsletter' ? 'Search by email...' : 'Search by name or email...'}
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-black/[0.08] text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors"
-            />
+          <div className="flex flex-1 gap-3 max-w-xl">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6b73]" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={
+                  activeTab === 'newsletter' ? 'Search by email...' :
+                  activeTab === 'projects' ? 'Search by name or email...' :
+                  'Search by name or email...'
+                }
+                className="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-black/[0.08] text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors"
+              />
+            </div>
+            {activeTab === 'projects' && (
+              <div className="flex gap-1.5 bg-white border border-black/[0.08] rounded-xl p-1">
+                {(['all', 'ongoing', 'completed', 'canceled'] as const).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setProjectFilter(f)}
+                    className={`px-3 py-2 rounded-lg text-sm font-semibold capitalize transition-colors ${
+                      projectFilter === f
+                        ? 'bg-[#16161a] text-[#f7f5f1]'
+                        : 'text-[#6b6b73] hover:text-[#16161a]'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <button
             onClick={() => exportCsv(exportName, filteredRows as unknown as Record<string, unknown>[], currentColumns)}
@@ -241,7 +436,8 @@ export default function AdminDashboard() {
         </div>
 
         <div className="mb-4 text-sm text-[#6b6b73]">
-          Showing {filteredRows.length} of {totalCount} {activeTab === 'newsletter' ? 'subscribers' : 'submissions'}
+          Showing {filteredRows.length} of {totalCount}{' '}
+          {activeTab === 'newsletter' ? 'subscribers' : activeTab === 'projects' ? 'projects' : 'submissions'}
         </div>
 
         {/* Content */}
@@ -261,7 +457,9 @@ export default function AdminDashboard() {
                     ? 'Bookings will appear here once people schedule a call.'
                     : activeTab === 'inquiries'
                       ? 'Inquiries will appear here once people submit the contact form.'
-                      : 'Subscribers will appear here once people sign up for the newsletter.'
+                      : activeTab === 'newsletter'
+                        ? 'Subscribers will appear here once people sign up for the newsletter.'
+                        : 'Projects moved here from Bookings or Inquiries will appear here.'
                   : 'Try a different search term.'}
               </div>
             </div>
@@ -284,33 +482,66 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          ) : activeTab === 'projects' ? (
+            <div className="divide-y divide-black/[0.05]">
+              {(filteredRows as ProjectRow[]).map((p) => {
+                const st = STATUS_STYLES[p.status];
+                return (
+                  <div key={p.id} className="p-5">
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="font-display font-bold text-lg text-[#16161a]">{p.full_name || '—'}</div>
+                          <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full border ${st.badge}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${st.dot}`} />
+                            {st.label}
+                          </span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-black/[0.05] text-[#6b6b73] capitalize">
+                            from {p.source_type}
+                          </span>
+                        </div>
+                        <div className="text-xs text-[#6b6b73] mt-0.5">
+                          Added {fmtDate(p.created_at)} · Updated {fmtDate(p.updated_at)}
+                        </div>
+                      </div>
+                      <div className="flex gap-1.5 bg-[#f7f5f1] border border-black/[0.06] rounded-xl p-1">
+                        {(['ongoing', 'completed', 'canceled'] as const).map((s) => (
+                          <button
+                            key={s}
+                            onClick={() => updateProjectStatus(p.id, s)}
+                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold capitalize transition-colors ${
+                              p.status === s ? STATUS_STYLES[s].badge : 'text-[#6b6b73] hover:text-[#16161a]'
+                            }`}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                      <div><span className="text-[#6b6b73]">Email:</span> <span className="text-[#16161a]">{p.email || '—'}</span></div>
+                      <div><span className="text-[#6b6b73]">Company:</span> <span className="text-[#16161a]">{p.company || '—'}</span></div>
+                      <div><span className="text-[#6b6b73]">Phone:</span> <span className="text-[#16161a]">{p.phone || '—'}</span></div>
+                      <div><span className="text-[#6b6b73]">Project Type:</span> <span className="text-[#16161a]">{p.project_type || '—'}</span></div>
+                      <div><span className="text-[#6b6b73]">Call Type:</span> <span className="text-[#16161a]">{p.call_type || '—'}</span></div>
+                      <div><span className="text-[#6b6b73]">Preferred Date:</span> <span className="text-[#16161a]">{p.preferred_date || '—'}</span></div>
+                      <div><span className="text-[#6b6b73]">Preferred Time:</span> <span className="text-[#16161a]">{p.preferred_time || '—'}</span></div>
+                    </div>
+                    {p.project_details && (
+                      <div className="mt-3 text-sm">
+                        <span className="text-[#6b6b73]">Project Details:</span>
+                        <p className="text-[#16161a] mt-1 whitespace-pre-wrap">{p.project_details}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <div className="divide-y divide-black/[0.05]">
-              {filteredRows.map((row) => (
-                <div key={row.id} className="p-5">
-                  <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                    <div>
-                      <div className="font-display font-bold text-lg text-[#16161a]">{row.full_name || '—'}</div>
-                      <div className="text-sm text-[#f59e0b] font-medium">{row.email}</div>
-                    </div>
-                    <div className="text-xs text-[#6b6b73]">{fmtDate(row.created_at)}</div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
-                    <div><span className="text-[#6b6b73]">Company:</span> <span className="text-[#16161a]">{row.company || '—'}</span></div>
-                    <div><span className="text-[#6b6b73]">Phone:</span> <span className="text-[#16161a]">{row.phone || '—'}</span></div>
-                    <div><span className="text-[#6b6b73]">Project Type:</span> <span className="text-[#16161a]">{row.project_type || '—'}</span></div>
-                    <div><span className="text-[#6b6b73]">Call Type:</span> <span className="text-[#16161a]">{row.call_type || '—'}</span></div>
-                    <div><span className="text-[#6b6b73]">Preferred Date:</span> <span className="text-[#16161a]">{row.preferred_date || '—'}</span></div>
-                    <div><span className="text-[#6b6b73]">Preferred Time:</span> <span className="text-[#16161a]">{row.preferred_time || '—'}</span></div>
-                  </div>
-                  {row.project_details && (
-                    <div className="mt-3 text-sm">
-                      <span className="text-[#6b6b73]">Project Details:</span>
-                      <p className="text-[#16161a] mt-1 whitespace-pre-wrap">{row.project_details}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
+              {(filteredRows as LeadRow[]).map((row) =>
+                renderLeadRow(row, activeTab === 'bookings' ? 'booking' : 'inquiry'),
+              )}
             </div>
           )}
         </div>
