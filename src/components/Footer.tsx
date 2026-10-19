@@ -68,7 +68,7 @@ export default function Footer() {
         <div className="grid lg:grid-cols-2 gap-12 pb-16 border-b border-white/10">
           <div>
             <Link to="/" className="flex items-center gap-3 mb-6">
-              <img src="/phelarts_logo.png" alt="Phel Arts" className="h-30 w-30 object-contain" />
+              <img src="/phelarts_logo.png" alt="Phel Arts" className="h-24 w-24 object-contain" />
               {/* <span className="font-display font-bold text-xl">Phel Arts</span> */}
             </Link>
             <p className="text-[#f7f5f1]/55 max-w-md leading-relaxed">
