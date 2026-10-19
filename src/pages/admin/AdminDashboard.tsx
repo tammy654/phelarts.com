@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2 } from 'lucide-react';
+import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
-
-const ADMIN_EMAIL = 'phelarts@gmail.com';
-const ADMIN_SESSION_KEY = 'phelarts_admin_session';
+import { getAdminSession, clearAdminSession } from './AdminLogin';
 
 type TabKey = 'bookings' | 'inquiries' | 'newsletter' | 'projects';
 type ProjectStatus = 'ongoing' | 'completed' | 'canceled';
+type AdminRole = 'super' | 'manager';
+
+interface AdminSession {
+  email: string;
+  role: AdminRole;
+}
 
 interface LeadRow {
   id: string;
@@ -85,6 +89,7 @@ const exportCsv = (filename: string, rows: Record<string, unknown>[], columns: {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const [session, setSession] = useState<AdminSession | null>(null);
   const [ready, setReady] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>('bookings');
   const [query, setQuery] = useState('');
@@ -95,14 +100,18 @@ export default function AdminDashboard() {
   const [projects, setProjects] = useState<ProjectRow[]>([]);
   const [projectFilter, setProjectFilter] = useState<ProjectStatus | 'all'>('all');
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
+  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  const isSuperAdmin = session?.role === 'super';
 
   useEffect(() => {
-    const session = localStorage.getItem(ADMIN_SESSION_KEY);
-    if (session !== ADMIN_EMAIL) {
-      if (session) toast.error('This account does not have admin access.');
+    const s = getAdminSession();
+    if (!s) {
       navigate('/admin/login', { replace: true });
       return;
     }
+    setSession(s);
     setReady(true);
   }, [navigate]);
 
@@ -122,31 +131,19 @@ export default function AdminDashboard() {
       setLoading(true);
       try {
         if (activeTab === 'bookings') {
-          const { data, error } = await supabase
-            .from('bookings')
-            .select('*')
-            .order('created_at', { ascending: false });
+          const { data, error } = await supabase.from('bookings').select('*').order('created_at', { ascending: false });
           if (error) throw error;
           if (mounted) setBookings((data as LeadRow[]) ?? []);
         } else if (activeTab === 'inquiries') {
-          const { data, error } = await supabase
-            .from('inquiries')
-            .select('*')
-            .order('created_at', { ascending: false });
+          const { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false });
           if (error) throw error;
           if (mounted) setInquiries((data as LeadRow[]) ?? []);
         } else if (activeTab === 'newsletter') {
-          const { data, error } = await supabase
-            .from('newsletter_subscribers')
-            .select('*')
-            .order('created_at', { ascending: false });
+          const { data, error } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
           if (error) throw error;
           if (mounted) setSubscribers((data as NewsletterRow[]) ?? []);
         } else if (activeTab === 'projects') {
-          const { data, error } = await supabase
-            .from('projects')
-            .select('*')
-            .order('updated_at', { ascending: false });
+          const { data, error } = await supabase.from('projects').select('*').order('updated_at', { ascending: false });
           if (error) throw error;
           if (mounted) setProjects((data as ProjectRow[]) ?? []);
         }
@@ -159,11 +156,19 @@ export default function AdminDashboard() {
     return () => { mounted = false; };
   }, [activeTab, ready]);
 
+  // Always load projects on mount so move-state highlighting works across tabs
+  useEffect(() => {
+    if (!ready) return;
+    let mounted = true;
+    (async () => {
+      const { data, error } = await supabase.from('projects').select('*').order('updated_at', { ascending: false });
+      if (!error && data && mounted) setProjects(data as ProjectRow[]);
+    })();
+    return () => { mounted = false; };
+  }, [ready]);
+
   const refreshProjects = async () => {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .order('updated_at', { ascending: false });
+    const { data, error } = await supabase.from('projects').select('*').order('updated_at', { ascending: false });
     if (!error && data) setProjects(data as ProjectRow[]);
   };
 
@@ -207,10 +212,7 @@ export default function AdminDashboard() {
     const prev = projects;
     setProjects((cur) => cur.map((p) => (p.id === projectId ? { ...p, status } : p)));
     try {
-      const { error } = await supabase
-        .from('projects')
-        .update({ status, updated_at: new Date().toISOString() })
-        .eq('id', projectId);
+      const { error } = await supabase.from('projects').update({ status, updated_at: new Date().toISOString() }).eq('id', projectId);
       if (error) throw error;
     } catch {
       setProjects(prev);
@@ -218,8 +220,37 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    localStorage.removeItem(ADMIN_SESSION_KEY);
+  const handleDelete = async () => {
+    if (!confirmDeleteId) return;
+    const id = confirmDeleteId;
+    setConfirmDeleteId(null);
+    setDeletingIds((prev) => new Set(prev).add(id));
+    try {
+      const table =
+        activeTab === 'bookings' ? 'bookings' :
+        activeTab === 'inquiries' ? 'inquiries' :
+        activeTab === 'newsletter' ? 'newsletter_subscribers' :
+        'projects';
+      const { error } = await supabase.from(table).delete().eq('id', id);
+      if (error) throw error;
+      if (activeTab === 'bookings') setBookings((c) => c.filter((r) => r.id !== id));
+      else if (activeTab === 'inquiries') setInquiries((c) => c.filter((r) => r.id !== id));
+      else if (activeTab === 'newsletter') setSubscribers((c) => c.filter((r) => r.id !== id));
+      else setProjects((c) => c.filter((r) => r.id !== id));
+      toast.success('Deleted.');
+    } catch {
+      toast.error('Could not delete.');
+    } finally {
+      setDeletingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    clearAdminSession();
     navigate('/admin/login', { replace: true });
   };
 
@@ -281,6 +312,21 @@ export default function AdminDashboard() {
   const currentColumns = activeTab === 'newsletter' ? newsletterColumns : leadColumns;
   const exportName = `${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`;
 
+  const DeleteButton = ({ id }: { id: string }) => {
+    if (!isSuperAdmin) return null;
+    const isDeleting = deletingIds.has(id);
+    return (
+      <button
+        onClick={() => setConfirmDeleteId(id)}
+        disabled={isDeleting}
+        title="Delete"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-red-500/30 text-red-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors disabled:opacity-50"
+      >
+        {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+      </button>
+    );
+  };
+
   const renderLeadRow = (row: LeadRow, sourceType: 'booking' | 'inquiry') => {
     const moved = movedSources.has(`${sourceType}:${row.id}`);
     const isMoving = movingIds.has(row.id);
@@ -303,23 +349,26 @@ export default function AdminDashboard() {
             </div>
             <div className="text-xs text-[#6b6b73]">{fmtDate(row.created_at)}</div>
           </div>
-          <button
-            onClick={() => moveToProjects(row, sourceType)}
-            disabled={moved || isMoving}
-            className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3.5 py-2 rounded-full border transition-colors ${
-              moved
-                ? 'bg-transparent border-[#0f5132]/30 text-[#0f5132]/60 cursor-default'
-                : 'bg-[#16161a] text-[#f7f5f1] border-[#16161a] hover:bg-[#f59e0b] hover:text-[#16161a] hover:border-[#f59e0b] disabled:opacity-60'
-            }`}
-          >
-            {isMoving ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /><span>Moving...</span></>
-            ) : moved ? (
-              <><FolderKanban className="w-4 h-4" /><span>Moved</span></>
-            ) : (
-              <><ArrowRight className="w-4 h-4" /><span>Move to Project</span></>
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => moveToProjects(row, sourceType)}
+              disabled={moved || isMoving}
+              className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3.5 py-2 rounded-full border transition-colors ${
+                moved
+                  ? 'bg-transparent border-[#0f5132]/30 text-[#0f5132]/60 cursor-default'
+                  : 'bg-[#16161a] text-[#f7f5f1] border-[#16161a] hover:bg-[#f59e0b] hover:text-[#16161a] hover:border-[#f59e0b] disabled:opacity-60'
+              }`}
+            >
+              {isMoving ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /><span>Moving...</span></>
+              ) : moved ? (
+                <><FolderKanban className="w-4 h-4" /><span>Moved</span></>
+              ) : (
+                <><ArrowRight className="w-4 h-4" /><span>Move to Project</span></>
+              )}
+            </button>
+            <DeleteButton id={row.id} />
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
           <div><span className="text-[#6b6b73]">Company:</span> <span className="text-[#16161a]">{row.company || '—'}</span></div>
@@ -347,8 +396,15 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-3">
             <img src="/phelarts_logo.png" alt="Phel Arts" className="h-12 w-12 object-contain" />
             <div>
-              <div className="font-display font-bold text-[#f7f5f1]">Admin Dashboard</div>
-              <div className="text-xs text-[#f7f5f1]/50">phelarts@gmail.com</div>
+              <div className="flex items-center gap-2">
+                <span className="font-display font-bold text-[#f7f5f1]">Admin Dashboard</span>
+                {isSuperAdmin && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/30">
+                    <ShieldCheck className="w-3 h-3" /> Super Admin
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-[#f7f5f1]/50">{session?.email}</div>
             </div>
           </div>
           <button
@@ -470,13 +526,19 @@ export default function AdminDashboard() {
                   <tr className="bg-[#f7f5f1] text-left text-[#6b6b73]">
                     <th className="px-5 py-3 font-semibold">Email</th>
                     <th className="px-5 py-3 font-semibold">Subscribed</th>
+                    {isSuperAdmin && <th className="px-5 py-3 font-semibold text-right">Action</th>}
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredRows.map((row) => (
+                  {(filteredRows as NewsletterRow[]).map((row) => (
                     <tr key={row.id} className="border-t border-black/[0.05]">
                       <td className="px-5 py-3 text-[#16161a] font-medium">{row.email}</td>
                       <td className="px-5 py-3 text-[#6b6b73]">{fmtDate(row.created_at)}</td>
+                      {isSuperAdmin && (
+                        <td className="px-5 py-3 text-right">
+                          <DeleteButton id={row.id} />
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -504,18 +566,21 @@ export default function AdminDashboard() {
                           Added {fmtDate(p.created_at)} · Updated {fmtDate(p.updated_at)}
                         </div>
                       </div>
-                      <div className="flex gap-1.5 bg-[#f7f5f1] border border-black/[0.06] rounded-xl p-1">
-                        {(['ongoing', 'completed', 'canceled'] as const).map((s) => (
-                          <button
-                            key={s}
-                            onClick={() => updateProjectStatus(p.id, s)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold capitalize transition-colors ${
-                              p.status === s ? STATUS_STYLES[s].badge : 'text-[#6b6b73] hover:text-[#16161a]'
-                            }`}
-                          >
-                            {s}
-                          </button>
-                        ))}
+                      <div className="flex items-center gap-2">
+                        <div className="flex gap-1.5 bg-[#f7f5f1] border border-black/[0.06] rounded-xl p-1">
+                          {(['ongoing', 'completed', 'canceled'] as const).map((s) => (
+                            <button
+                              key={s}
+                              onClick={() => updateProjectStatus(p.id, s)}
+                              className={`px-3 py-1.5 rounded-lg text-sm font-semibold capitalize transition-colors ${
+                                p.status === s ? STATUS_STYLES[s].badge : 'text-[#6b6b73] hover:text-[#16161a]'
+                              }`}
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                        <DeleteButton id={p.id} />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
@@ -546,6 +611,38 @@ export default function AdminDashboard() {
           )}
         </div>
       </main>
+
+      {/* Delete confirmation modal */}
+      {confirmDeleteId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl border border-black/[0.08] max-w-sm w-full p-6 shadow-xl">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <h3 className="font-display font-bold text-lg text-[#16161a]">Delete this entry?</h3>
+            </div>
+            <p className="text-sm text-[#6b6b73] mb-6">
+              This permanently removes it from {activeTab === 'newsletter' ? 'subscribers' : activeTab}. This cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setConfirmDeleteId(null)}
+                className="px-4 py-2 rounded-full text-sm font-semibold text-[#16161a] border border-black/[0.1] hover:bg-black/[0.03] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

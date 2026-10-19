@@ -1,36 +1,60 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Lock, Mail, ArrowRight } from 'lucide-react';
+import { Lock, Mail, ArrowRight, KeyRound } from 'lucide-react';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const ADMIN_EMAIL = 'phelarts@gmail.com';
+const ADMIN_PASSWORD = 'Phelarts_1407';
 const ADMIN_SESSION_KEY = 'phelarts_admin_session';
+
+type AdminRole = 'super' | 'manager';
+interface AdminSession {
+  email: string;
+  role: AdminRole;
+}
+
+export function getAdminSession(): AdminSession | null {
+  try {
+    const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as AdminSession;
+  } catch {
+    return null;
+  }
+}
+
+export function clearAdminSession() {
+  localStorage.removeItem(ADMIN_SESSION_KEY);
+}
 
 export default function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const session = localStorage.getItem(ADMIN_SESSION_KEY);
-    if (session === ADMIN_EMAIL) {
-      navigate('/admin', { replace: true });
-    }
+    const session = getAdminSession();
+    if (session) navigate('/admin', { replace: true });
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return toast.error('Enter your email');
-    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
-      toast.error('This account does not have admin access.');
-      return;
-    }
+    if (!password) return toast.error('Enter your password');
+
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 400));
-    localStorage.setItem(ADMIN_SESSION_KEY, email.trim().toLowerCase());
-    toast.success('Welcome back');
-    navigate('/admin', { replace: true });
+
+    const normalizedEmail = email.trim().toLowerCase();
+    if (normalizedEmail === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ email: normalizedEmail, role: 'super' as AdminRole }));
+      toast.success('Welcome back');
+      navigate('/admin', { replace: true });
+    } else {
+      toast.error('Invalid email or password.');
+    }
     setIsSubmitting(false);
   };
 
@@ -57,6 +81,21 @@ export default function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
+                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-[#f7f5f1] mb-2">Password</label>
+            <div className="relative">
+              <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#f7f5f1]/40" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
                 className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
               />
             </div>
