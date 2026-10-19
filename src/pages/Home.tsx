@@ -194,7 +194,7 @@ export default function Home() {
                 </a>
                 <a
                   href="/book-call"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:border-[#f59e0b]/60 hover:bg-[#f59e0b]/10 transition-all duration-300 hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:border-[#f59e0b]/60 hover:bg-[#f59e0b]/10 transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Start a Project
                   <ArrowRight className="w-4 h-4" />
@@ -306,7 +306,7 @@ export default function Home() {
                   <p className="text-[#6b6b73] leading-relaxed flex-1">{s.description}</p>
                   <a
                     href="/services"
-                    className="inline-flex items-center justify-center gap-2 mt-7 w-full rounded-xl bg-[#f59e0b] px-5 py-3.5 text-[#16161a] font-bold hover:bg-[#d97706] hover:-translate-y-0.5 transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2 mt-7 w-full rounded-xl bg-[#f59e0b] px-5 py-3 text-[#16161a] font-bold hover:bg-[#d97706] hover:-translate-y-0.5 transition-all duration-300"
                   >
                     Explore service
                     <ArrowRight className="w-4 h-4" />
@@ -417,13 +417,13 @@ export default function Home() {
                   Let's discuss your project and bring your vision to life.
                 </p>
                 <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-                  <a href="/book-call" className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f59e0b] bg-[#f59e0b] px-7 py-3.5 font-bold text-[#16161a] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#fbbf24] hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.7)]">
+                  <a href="/book-call" className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f59e0b] bg-[#f59e0b] px-7 py-3 font-bold text-[#16161a] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#fbbf24] hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.7)]">
                     Book a Call
                     <ArrowRight className="h-4 w-4" />
                   </a>
                   <a
                     href="/our-work"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f7f5f1]/50 px-7 py-3.5 font-semibold text-[#f7f5f1] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f59e0b] hover:bg-[#f59e0b]/10"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f7f5f1]/50 px-7 py-3 font-semibold text-[#f7f5f1] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f59e0b] hover:bg-[#f59e0b]/10"
                   >
                     View Our Work
                   </a>

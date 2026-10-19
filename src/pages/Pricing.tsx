@@ -240,7 +240,7 @@ const Pricing = () => {
 
                 <a
                   href="/book-call"
-                  className={`group/cta mt-auto flex w-full items-center justify-between rounded-2xl border px-5 py-4 font-semibold transition-all duration-300 hover:-translate-y-1 ${
+                  className={`group/cta mt-auto flex w-full items-center justify-between rounded-2xl border px-5 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 ${
                     plan.popular
                       ? 'border-[#f59e0b] bg-[#f59e0b] text-[#242424] shadow-lg shadow-[#f59e0b]/20 hover:bg-[#ffb347] hover:shadow-xl hover:shadow-[#f59e0b]/30'
                       : 'border-[#242424]/15 bg-transparent text-[#242424] hover:border-[#016952] hover:bg-[#016952] hover:text-[#fefefe] hover:shadow-lg hover:shadow-[#016952]/15'
@@ -328,13 +328,13 @@ const Pricing = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/book-call"
-              className="phel-btn px-8 py-4 text-lg"
+              className="phel-btn px-8 py-3 text-lg"
             >
               Book a Call
             </a>
             <a
               href="/contact"
-              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
+              className="border-2 border-[#fefefe]/30 text-[#fefefe] px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fefefe]/10 transition-all duration-300"
             >
               Get Custom Quote
             </a>
