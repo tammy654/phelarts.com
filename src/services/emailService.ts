@@ -152,7 +152,7 @@ export const submitContactForm = async (data: ContactData): Promise<void> => {
     }
 
     const emailData = {
-      to_email: 'pheldesignstudios@gmail.com',
+      to_email: 'phelarts@gmail.com',
       from_name: data.name,
       from_email: data.email,
       subject: data.subject || 'New Contact Form Submission - Phel Arts',
