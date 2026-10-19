@@ -71,7 +71,7 @@ const Pricing = () => {
         'Rush delivery available'
       ],
       popular: false,
-      cta: 'Contact Us'
+      cta: 'Get Custom Quote'
     }
   ];
 
@@ -239,7 +239,7 @@ const Pricing = () => {
                 </ul>
 
                 <a
-                  href="/book-call"
+                  href={plan.name === 'Enterprise' ? '/contact#enquiry' : '/book-call'}
                   className={`group/cta mt-auto flex w-full items-center justify-between rounded-2xl border px-5 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 ${
                     plan.popular
                       ? 'border-[#f59e0b] bg-[#f59e0b] text-[#242424] shadow-lg shadow-[#f59e0b]/20 hover:bg-[#ffb347] hover:shadow-xl hover:shadow-[#f59e0b]/30'
