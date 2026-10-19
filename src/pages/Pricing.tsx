@@ -6,7 +6,7 @@ const Pricing = () => {
     {
       name: 'Starter',
       icon: Star,
-      price: '$2,500',
+      price: '$299.99',
       period: 'per project',
       description: 'Your first animated project, built for small businesses and startups that need quality content without agency costs.',
       features: [
@@ -26,7 +26,7 @@ const Pricing = () => {
     {
       name: 'Professional',
       icon: Zap,
-      price: '$5,500',
+      price: '$899.99',
       period: 'per project',
       description: 'For established businesses that want animation with the polish to stand out in a crowded market.',
       features: [
