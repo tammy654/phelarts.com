@@ -10,8 +10,8 @@ const ADMIN_EMAIL = 'phelarts@gmail.com';
 export default function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [linkSent, setLinkSent] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -33,23 +33,24 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password) return toast.error('Enter your email and password');
+    if (!email.trim()) return toast.error('Enter your email');
+    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
+      toast.error('This account does not have admin access.');
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
-        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/admin`,
+        },
       });
       if (error) throw error;
-      if (data.user?.email?.toLowerCase() !== ADMIN_EMAIL) {
-        await supabase.auth.signOut();
-        toast.error('This account does not have admin access.');
-        return;
-      }
-      toast.success('Welcome back');
-      navigate('/admin', { replace: true });
+      setLinkSent(true);
+      toast.success('Check your email for the sign-in link.');
     } catch {
-      toast.error('Invalid email or password.');
+      toast.error('Could not send sign-in link. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -67,42 +68,49 @@ export default function AdminLogin() {
           <p className="text-[#f7f5f1]/55 mt-2 text-sm">Sign in to manage submissions.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white/[0.04] border border-white/10 rounded-3xl p-8 backdrop-blur-xl space-y-5">
-          <div>
-            <label className="block text-sm font-semibold text-[#f7f5f1] mb-2">Email</label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#f7f5f1]/40" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
-              />
+        {linkSent ? (
+          <div className="bg-white/[0.04] border border-white/10 rounded-3xl p-8 backdrop-blur-xl text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#f59e0b]/15 mb-4">
+              <Mail className="w-5 h-5 text-[#f59e0b]" />
             </div>
+            <p className="text-[#f7f5f1] font-semibold mb-2">Check your email</p>
+            <p className="text-[#f7f5f1]/55 text-sm">
+              We sent a sign-in link to <span className="text-[#f7f5f1]">{email.trim()}</span>.
+              Click the link to access the dashboard.
+            </p>
+            <button
+              onClick={() => { setLinkSent(false); setEmail(''); }}
+              className="mt-6 text-sm text-[#f59e0b] font-medium hover:underline"
+            >
+              Use a different email
+            </button>
           </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="bg-white/[0.04] border border-white/10 rounded-3xl p-8 backdrop-blur-xl space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-[#f7f5f1] mb-2">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#f7f5f1]/40" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
+                />
+              </div>
+            </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-[#f7f5f1] mb-2">Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
-            />
-          </div>
-
-          <button type="submit" disabled={isSubmitting} className="btn-primary w-full disabled:opacity-60">
-            {isSubmitting ? (
-              <><LoadingSpinner size="sm" color="#f7f5f1" /><span>Signing in...</span></>
-            ) : (
-              <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>
-            )}
-          </button>
-        </form>
+            <button type="submit" disabled={isSubmitting} className="btn-primary w-full disabled:opacity-60">
+              {isSubmitting ? (
+                <><LoadingSpinner size="sm" color="#f7f5f1" /><span>Sending link...</span></>
+              ) : (
+                <><span>Send Sign-In Link</span><ArrowRight className="w-4 h-4" /></>
+              )}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
