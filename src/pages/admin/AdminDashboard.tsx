@@ -5,6 +5,9 @@ import { LogOut, Search, Download, Calendar, Inbox, Mail } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
+const ADMIN_EMAIL = 'phelarts@gmail.com';
+const ADMIN_SESSION_KEY = 'phelarts_admin_session';
+
 type TabKey = 'bookings' | 'inquiries' | 'newsletter';
 
 interface LeadRow {
@@ -65,23 +68,13 @@ export default function AdminDashboard() {
   const [subscribers, setSubscribers] = useState<NewsletterRow[]>([]);
 
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!mounted) return;
-      if (!data.session) {
-        navigate('/admin/login', { replace: true });
-        return;
-      }
-      if (data.session.user.email?.toLowerCase() !== 'phelarts@gmail.com') {
-        await supabase.auth.signOut();
-        toast.error('This account does not have admin access.');
-        navigate('/admin/login', { replace: true });
-        return;
-      }
-      setReady(true);
-    })();
-    return () => { mounted = false; };
+    const session = localStorage.getItem(ADMIN_SESSION_KEY);
+    if (session !== ADMIN_EMAIL) {
+      if (session) toast.error('This account does not have admin access.');
+      navigate('/admin/login', { replace: true });
+      return;
+    }
+    setReady(true);
   }, [navigate]);
 
   useEffect(() => {
@@ -122,7 +115,7 @@ export default function AdminDashboard() {
   }, [activeTab, ready]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem(ADMIN_SESSION_KEY);
     navigate('/admin/login', { replace: true });
   };
 

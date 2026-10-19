@@ -2,33 +2,21 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
-import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const ADMIN_EMAIL = 'phelarts@gmail.com';
+const ADMIN_SESSION_KEY = 'phelarts_admin_session';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [linkSent, setLinkSent] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!mounted) return;
-      if (data.session) {
-        const sessionEmail = data.session.user.email?.toLowerCase();
-        if (sessionEmail === ADMIN_EMAIL) {
-          navigate('/admin', { replace: true });
-        } else {
-          await supabase.auth.signOut();
-          toast.error('This account does not have admin access.');
-        }
-      }
-    })();
-    return () => { mounted = false; };
+    const session = localStorage.getItem(ADMIN_SESSION_KEY);
+    if (session === ADMIN_EMAIL) {
+      navigate('/admin', { replace: true });
+    }
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,21 +27,11 @@ export default function AdminLogin() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: email.trim(),
-        options: {
-          emailRedirectTo: `${window.location.origin}/admin`,
-        },
-      });
-      if (error) throw error;
-      setLinkSent(true);
-      toast.success('Check your email for the sign-in link.');
-    } catch {
-      toast.error('Could not send sign-in link. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    await new Promise((r) => setTimeout(r, 400));
+    localStorage.setItem(ADMIN_SESSION_KEY, email.trim().toLowerCase());
+    toast.success('Welcome back');
+    navigate('/admin', { replace: true });
+    setIsSubmitting(false);
   };
 
   return (
@@ -68,49 +46,30 @@ export default function AdminLogin() {
           <p className="text-[#f7f5f1]/55 mt-2 text-sm">Sign in to manage submissions.</p>
         </div>
 
-        {linkSent ? (
-          <div className="bg-white/[0.04] border border-white/10 rounded-3xl p-8 backdrop-blur-xl text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#f59e0b]/15 mb-4">
-              <Mail className="w-5 h-5 text-[#f59e0b]" />
+        <form onSubmit={handleSubmit} className="bg-white/[0.04] border border-white/10 rounded-3xl p-8 backdrop-blur-xl space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-[#f7f5f1] mb-2">Email</label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#f7f5f1]/40" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
+              />
             </div>
-            <p className="text-[#f7f5f1] font-semibold mb-2">Check your email</p>
-            <p className="text-[#f7f5f1]/55 text-sm">
-              We sent a sign-in link to <span className="text-[#f7f5f1]">{email.trim()}</span>.
-              Click the link to access the dashboard.
-            </p>
-            <button
-              onClick={() => { setLinkSent(false); setEmail(''); }}
-              className="mt-6 text-sm text-[#f59e0b] font-medium hover:underline"
-            >
-              Use a different email
-            </button>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="bg-white/[0.04] border border-white/10 rounded-3xl p-8 backdrop-blur-xl space-y-5">
-            <div>
-              <label className="block text-sm font-semibold text-[#f7f5f1] mb-2">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#f7f5f1]/40" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-[#f7f5f1] placeholder-[#f7f5f1]/35 focus:outline-none focus:border-[#f59e0b] transition-colors"
-                />
-              </div>
-            </div>
 
-            <button type="submit" disabled={isSubmitting} className="btn-primary w-full disabled:opacity-60">
-              {isSubmitting ? (
-                <><LoadingSpinner size="sm" color="#f7f5f1" /><span>Sending link...</span></>
-              ) : (
-                <><span>Send Sign-In Link</span><ArrowRight className="w-4 h-4" /></>
-              )}
-            </button>
-          </form>
-        )}
+          <button type="submit" disabled={isSubmitting} className="btn-primary w-full disabled:opacity-60">
+            {isSubmitting ? (
+              <><LoadingSpinner size="sm" color="#f7f5f1" /><span>Signing in...</span></>
+            ) : (
+              <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );
