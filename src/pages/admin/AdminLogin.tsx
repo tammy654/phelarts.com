@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Lock, Mail, ArrowRight, KeyRound } from 'lucide-react';
+import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const ADMIN_EMAIL = 'phelarts@gmail.com';
@@ -45,17 +46,32 @@ export default function AdminLogin() {
     if (!password) return toast.error('Enter your password');
 
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 400));
-
     const normalizedEmail = email.trim().toLowerCase();
-    if (normalizedEmail === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ email: normalizedEmail, role: 'super' as AdminRole }));
+
+    try {
+      if (normalizedEmail !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+        toast.error('Invalid email or password.');
+        return;
+      }
+      const { error } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      });
+      if (error) {
+        toast.error('Invalid email or password.');
+        return;
+      }
+      localStorage.setItem(
+        ADMIN_SESSION_KEY,
+        JSON.stringify({ email: normalizedEmail, role: 'super' as AdminRole }),
+      );
       toast.success('Welcome back');
       navigate('/admin', { replace: true });
-    } else {
-      toast.error('Invalid email or password.');
+    } catch {
+      toast.error('Could not sign in. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   return (
