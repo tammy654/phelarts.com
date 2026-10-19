@@ -35,8 +35,7 @@ export default function About() {
               About Phel Arts.
             </h1>
             <p className="max-w-3xl text-xl leading-relaxed text-[#f7f5f1]/60 lg:text-2xl lg:mr-auto">
-              We're a passionate team of animators, designers, and storytellers dedicated to
-              creating exceptional visual experiences that move people.
+              We are a creative studio of animators, designers, and storytellers transforming bold ideas into captivating visual experiences that connect, inspire, and leave a lasting impression.
             </p>
           </motion.div>
           <div className="page-hero-visual">
