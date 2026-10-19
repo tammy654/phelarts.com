@@ -140,8 +140,7 @@ const Pricing = () => {
             Pricing
           </h1>
           <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
-            Transparent pricing for exceptional animation services. Choose the package 
-            that fits your project needs and budget.
+            Exceptional creativity. Flexible pricing. Explore our tailored animation and motion design packages, crafted to bring your vision to life without compromising on quality.
           </p>
           <div className="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
             <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
