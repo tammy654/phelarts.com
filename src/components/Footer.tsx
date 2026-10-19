@@ -72,8 +72,7 @@ export default function Footer() {
               {/* <span className="font-display font-bold text-xl">Phel Arts</span> */}
             </Link>
             <p className="text-[#f7f5f1]/55 max-w-md leading-relaxed">
-              A motion graphics and 2D animation studio crafting visual stories that move people
-              and drive results.
+              A creative motion studio blending design, animation, and storytelling to build memorable brand experiences that inspire action.
             </p>
             <div className="mt-8 space-y-3">
               <a href="mailto:phelarts@gmail.com" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
