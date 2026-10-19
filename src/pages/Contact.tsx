@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Mail, Phone, MessageCircle, MapPin, Send, Clock, Users } from 'lucide-react';
-import { submitContactForm, ContactData } from '../services/emailService';
+import { submitContactForm, InquiryData, CallType, ProjectType } from '../services/emailService';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const contactMethods = [
@@ -10,8 +10,10 @@ const contactMethods = [
   { icon: MessageCircle, title: 'WhatsApp', description: 'Chat with us anytime', contact: '+234 708 661 3704', action: 'https://wa.me/2347086613704' },
 ];
 
-const budgetOptions = ['Under $5,000', '$5,000 – $15,000', '$15,000 – $30,000', '$30,000 – $50,000', '$50,000+'];
-const projectTypes = ['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'];
+const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'];
+const callTypes: CallType[] = ['Video Call', 'Phone Call', 'Chat Session'];
+
+const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
 
 const faqs = [
   { question: 'What is your typical project timeline?', answer: 'Timelines vary by complexity, but most projects take 2–6 weeks from concept to completion.' },
@@ -20,10 +22,25 @@ const faqs = [
   { question: 'Can you work with tight deadlines?', answer: 'We can accommodate rush projects with additional fees. Contact us to discuss your timeline.' },
 ];
 
+const generateDates = (): { iso: string; label: string }[] => {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Lagos' }));
+  const out: { iso: string; label: string }[] = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const label = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    out.push({ iso, label });
+  }
+  return out;
+};
+
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', email: '', company: '', subject: '', budget: '', message: '', projectType: '',
+    fullName: '', email: '', company: '', phone: '',
+    projectType: '' as ProjectType | '',
+    callType: '' as CallType | '', preferredDate: '', preferredTime: '',
+    projectDetails: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -32,18 +49,31 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim()) return toast.error('Please enter your name');
+    if (!formData.fullName.trim()) return toast.error('Please enter your name');
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) return toast.error('Please enter a valid email');
-    if (!formData.message.trim()) return toast.error('Please enter a message');
+    if (!formData.projectDetails.trim()) return toast.error('Please enter a message');
 
     const submit = async () => {
       setIsSubmitting(true);
       try {
-        await submitContactForm(formData as ContactData);
+        await submitContactForm({
+          full_name: formData.fullName,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          project_type: formData.projectType,
+          call_type: formData.callType,
+          preferred_date: formData.preferredDate,
+          preferred_time: formData.preferredTime,
+          project_details: formData.projectDetails,
+        });
         toast.success("Message sent! We'll get back to you within 24 hours.");
-        setFormData({ name: '', email: '', company: '', subject: '', budget: '', message: '', projectType: '' });
-      } catch {
-        toast.error('Failed to send message. Please try again.');
+        setFormData({
+          fullName: '', email: '', company: '', phone: '', projectType: '',
+          callType: '', preferredDate: '', preferredTime: '', projectDetails: '',
+        });
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Failed to send message. Please try again.');
       } finally {
         setIsSubmitting(false);
       }
@@ -152,7 +182,7 @@ export default function Contact() {
               <div className="grid md:grid-cols-2 gap-5 mb-5">
                 <div>
                   <label className="block text-sm font-semibold text-[#16161a] mb-2">Full Name *</label>
-                  <input type="text" name="name" required value={formData.name} onChange={handleChange}
+                  <input type="text" name="fullName" required value={formData.fullName} onChange={handleChange}
                     className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors"
                     placeholder="Your name" />
                 </div>
@@ -172,10 +202,10 @@ export default function Contact() {
                     placeholder="Your company" />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-[#16161a] mb-2">Subject</label>
-                  <input type="text" name="subject" value={formData.subject} onChange={handleChange}
+                  <label className="block text-sm font-semibold text-[#16161a] mb-2">Phone</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange}
                     className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors"
-                    placeholder="What's this about?" />
+                    placeholder="+1 (555) 123-4567" />
                 </div>
               </div>
 
@@ -189,18 +219,37 @@ export default function Contact() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-[#16161a] mb-2">Budget</label>
-                  <select name="budget" value={formData.budget} onChange={handleChange}
+                  <label className="block text-sm font-semibold text-[#16161a] mb-2">Call Type</label>
+                  <select name="callType" value={formData.callType} onChange={handleChange}
                     className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] focus:outline-none focus:border-[#f59e0b] transition-colors">
-                    <option value="">Select range</option>
-                    {budgetOptions.map((b) => <option key={b} value={b}>{b}</option>)}
+                    <option value="">Select call type (optional)</option>
+                    {callTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-5 mb-5">
+                <div>
+                  <label className="block text-sm font-semibold text-[#16161a] mb-2">Preferred Date</label>
+                  <select name="preferredDate" value={formData.preferredDate} onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] focus:outline-none focus:border-[#f59e0b] transition-colors">
+                    <option value="">Select a date (optional)</option>
+                    {generateDates().map((d) => <option key={d.iso} value={d.iso}>{d.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-[#16161a] mb-2">Preferred Time</label>
+                  <select name="preferredTime" value={formData.preferredTime} onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] focus:outline-none focus:border-[#f59e0b] transition-colors">
+                    <option value="">Select a time (optional)</option>
+                    {timeSlots.map((t) => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
               </div>
 
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-[#16161a] mb-2">Project Details *</label>
-                <textarea name="message" required rows={5} value={formData.message} onChange={handleChange}
+                <textarea name="projectDetails" required rows={5} value={formData.projectDetails} onChange={handleChange}
                   className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors resize-none"
                   placeholder="Tell us about your project, goals, timeline, and any specific requirements..." />
               </div>

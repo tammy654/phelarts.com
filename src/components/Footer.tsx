@@ -51,11 +51,15 @@ export default function Footer() {
     }
     setSubscribing(true);
     try {
-      await subscribeToNewsletter({ email });
-      toast.success('You are subscribed. Welcome aboard!');
+      const result = await subscribeToNewsletter({ email });
+      if (result === 'already_subscribed') {
+        toast.success("You're already subscribed");
+      } else {
+        toast.success('You are subscribed. Welcome aboard!');
+      }
       setEmail('');
-    } catch {
-      toast.error('Could not subscribe. Please try again.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not subscribe. Please try again.');
     } finally {
       setSubscribing(false);
     }

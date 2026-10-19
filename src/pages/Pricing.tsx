@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import { Check, ArrowRight, Star, Zap, Crown, X, Calendar, Clock, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { submitBookingForm, BookingData, submitContactForm, ContactData } from '../services/emailService';
+import { submitBookingForm, submitContactForm } from '../services/emailService';
+
+const to24h = (display: string): string => {
+  const m = display.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return display;
+  let h = parseInt(m[1], 10) % 12;
+  if (/PM$/i.test(display)) h += 12;
+  return `${String(h).padStart(2, '0')}:${m[2]}`;
+};
 
 const Pricing = () => {
   const [currency, setCurrency] = useState<'USD' | 'NGN'>('USD');
@@ -32,7 +40,17 @@ const Pricing = () => {
 
     setIsSubmitting(true);
     try {
-      await submitBookingForm({ ...callForm, company: '', phone: '', projectType: '', budget: '', selectedDate: callForm.date, selectedTime: callForm.time, callType: 'video' } as BookingData);
+      await submitBookingForm({
+        full_name: callForm.name,
+        email: callForm.email,
+        company: '',
+        phone: '',
+        project_type: '',
+        call_type: 'Video Call',
+        preferred_date: callForm.date,
+        preferred_time: to24h(callForm.time),
+        project_details: callForm.message,
+      });
       toast.success("Call request sent! We'll contact you within 24 hours.");
       setCallForm({ name: '', email: '', date: '', time: '', message: '' });
       setActiveModal(null);
@@ -52,7 +70,14 @@ const Pricing = () => {
 
     setIsSubmitting(true);
     try {
-      await submitContactForm({ ...enquiryForm, company: '', subject: 'Enterprise Project Enquiry' } as ContactData);
+      await submitContactForm({
+        full_name: enquiryForm.name,
+        email: enquiryForm.email,
+        company: '',
+        phone: '',
+        project_type: enquiryForm.projectType as never,
+        project_details: enquiryForm.message,
+      });
       toast.success("Enquiry sent! We'll get back to you within 24 hours.");
       setEnquiryForm({ name: '', email: '', projectType: '', budget: '', message: '' });
       setActiveModal(null);

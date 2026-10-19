@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Calendar, Clock, Video, Phone, MessageCircle, Check, ArrowRight } from 'lucide-react';
-import { submitBookingForm, BookingData } from '../services/emailService';
+import { submitBookingForm, BookingData, CallType, ProjectType } from '../services/emailService';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
 
-const callTypes = [
-  { id: 'video', icon: Video, label: 'Video Call', description: 'Face-to-face via Zoom' },
-  { id: 'phone', icon: Phone, label: 'Phone Call', description: 'Traditional phone call' },
-  { id: 'chat', icon: MessageCircle, label: 'Chat Session', description: 'Text consultation' },
+const callTypes: { id: CallType; icon: typeof Video; label: CallType; description: string }[] = [
+  { id: 'Video Call', icon: Video, label: 'Video Call', description: 'Face-to-face via Zoom' },
+  { id: 'Phone Call', icon: Phone, label: 'Phone Call', description: 'Traditional phone call' },
+  { id: 'Chat Session', icon: MessageCircle, label: 'Chat Session', description: 'Text consultation' },
 ];
+
+const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'];
 
 const benefits = [
   'Free 30-minute consultation', 'Project scope discussion', 'Timeline and budget planning',
@@ -24,49 +26,69 @@ const faqs = [
   { question: 'Can I reschedule?', answer: 'Of course. Email us at least 2 hours before and we will find a new slot.' },
 ];
 
+const to24h = (display: string): string => {
+  const m = display.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return display;
+  let h = parseInt(m[1], 10) % 12;
+  if (/PM$/i.test(display)) h += 12;
+  return `${String(h).padStart(2, '0')}:${m[2]}`;
+};
+
+const generateDates = (): { iso: string; label: string }[] => {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Lagos' }));
+  const out: { iso: string; label: string }[] = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const label = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    out.push({ iso, label });
+  }
+  return out;
+};
+
 export default function BookCall() {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
-  const [callType, setCallType] = useState('video');
+  const [callType, setCallType] = useState<CallType>('Video Call');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', company: '', phone: '', projectType: '', budget: '', message: '' });
+  const [formData, setFormData] = useState({
+    fullName: '', email: '', company: '', phone: '', projectType: '' as ProjectType | '', projectDetails: '',
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const generateDates = () => {
-    const dates = [];
-    const today = new Date();
-    for (let i = 1; i <= 14; i++) {
-      const d = new Date(today);
-      d.setDate(today.getDate() + i);
-      dates.push(d);
-    }
-    return dates;
-  };
-
-  const formatDate = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim()) return toast.error('Please enter your name');
+    if (!formData.fullName.trim()) return toast.error('Please enter your name');
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) return toast.error('Please enter a valid email');
-    if (!formData.message.trim()) return toast.error('Please enter a message');
+    if (!callType) return toast.error('Please select a call type');
     if (!selectedDate) return toast.error('Please select a preferred date');
     if (!selectedTime) return toast.error('Please select a preferred time');
+    if (!formData.projectDetails.trim()) return toast.error('Please tell us about your project');
 
     const submit = async () => {
       setIsSubmitting(true);
       try {
-        await submitBookingForm({ ...formData, selectedDate, selectedTime, callType } as BookingData);
+        await submitBookingForm({
+          full_name: formData.fullName,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          project_type: formData.projectType,
+          call_type: callType,
+          preferred_date: selectedDate,
+          preferred_time: to24h(selectedTime),
+          project_details: formData.projectDetails,
+        });
         toast.success("Booking submitted! We'll contact you within 24 hours.");
-        setFormData({ name: '', email: '', company: '', phone: '', projectType: '', budget: '', message: '' });
+        setFormData({ fullName: '', email: '', company: '', phone: '', projectType: '', projectDetails: '' });
         setSelectedDate('');
         setSelectedTime('');
-        setCallType('video');
-      } catch {
-        toast.error('Failed to submit booking. Please try again.');
+        setCallType('Video Call');
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Failed to submit booking. Please try again.');
       } finally {
         setIsSubmitting(false);
       }
@@ -138,7 +160,7 @@ export default function BookCall() {
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-[#16161a] mb-2">Full Name *</label>
-                  <input type="text" name="name" required value={formData.name} onChange={handleChange}
+                  <input type="text" name="fullName" required value={formData.fullName} onChange={handleChange}
                     className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors"
                     placeholder="Your name" />
                 </div>
@@ -165,12 +187,7 @@ export default function BookCall() {
                   <select name="projectType" value={formData.projectType} onChange={handleChange}
                     className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] focus:outline-none focus:border-[#f59e0b] transition-colors">
                     <option value="">Select project type</option>
-                    <option value="2d-animation">2D Animation</option>
-                    <option value="motion-graphics">Motion Graphics</option>
-                    <option value="web-animation">Web Animation</option>
-                    <option value="video-production">Video Production</option>
-                    <option value="app-animations">App Animations</option>
-                    <option value="other">Other</option>
+                    {projectTypes.map((t) => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
               </div>
@@ -197,15 +214,12 @@ export default function BookCall() {
             <div className="mb-8">
               <h3 className="font-display font-bold text-lg text-[#16161a] mb-5">Select Date</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-                {generateDates().map((d) => {
-                  const iso = d.toISOString().split('T')[0];
-                  return (
-                    <button key={iso} type="button" onClick={() => setSelectedDate(iso)}
-                      className={`p-3 rounded-xl border-2 text-center transition-all duration-300 ${selectedDate === iso ? 'border-[#f59e0b] bg-[#f59e0b]/5 text-[#f59e0b]' : 'border-black/[0.08] hover:border-black/20 text-[#16161a]'}`}>
-                      <span className="text-xs font-semibold">{formatDate(d)}</span>
-                    </button>
-                  );
-                })}
+                {generateDates().map((d) => (
+                  <button key={d.iso} type="button" onClick={() => setSelectedDate(d.iso)}
+                    className={`p-3 rounded-xl border-2 text-center transition-all duration-300 ${selectedDate === d.iso ? 'border-[#f59e0b] bg-[#f59e0b]/5 text-[#f59e0b]' : 'border-black/[0.08] hover:border-black/20 text-[#16161a]'}`}>
+                    <span className="text-xs font-semibold">{d.label}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -225,7 +239,7 @@ export default function BookCall() {
             {/* Message */}
             <div className="mb-8">
               <label className="block text-sm font-semibold text-[#16161a] mb-2">Tell us about your project</label>
-              <textarea name="message" rows={4} value={formData.message} onChange={handleChange}
+              <textarea name="projectDetails" rows={4} value={formData.projectDetails} onChange={handleChange}
                 className="w-full px-4 py-3.5 bg-white border border-black/[0.08] rounded-xl text-[#16161a] placeholder-[#9a9a9a] focus:outline-none focus:border-[#f59e0b] transition-colors resize-none"
                 placeholder="Brief description of your project, goals, or questions you'd like to discuss..." />
             </div>
