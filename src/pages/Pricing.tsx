@@ -429,7 +429,7 @@ const Pricing = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/book-call"
-              className="phel-btn px-8 py-3 text-lg"
+              className="inline-flex items-center justify-center rounded-full bg-[#f59e0b] px-8 py-3 text-lg font-semibold text-[#242424] transition-all duration-300 hover:-translate-y-1 hover:bg-[#ffb347] hover:shadow-lg hover:shadow-[#f59e0b]/25"
             >
               Book a Call
             </a>
