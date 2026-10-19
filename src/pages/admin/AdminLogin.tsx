@@ -44,21 +44,24 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return toast.error('Enter your email');
-    if (!password) return toast.error('Enter your password');
+    if (!email.trim() || !password) {
+      toast.error('Please enter your email and password.');
+      return;
+    }
 
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
-      if (error) throw error;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        console.error('Supabase sign-in error:', error);
+        throw error;
+      }
       if (!data.user) throw new Error('No user returned');
       const role = roleFromEmail(data.user.email);
       toast.success(role === 'super' ? 'Welcome back, Super Admin' : 'Welcome back');
       navigate('/admin', { replace: true });
     } catch (err) {
+      console.error('Admin login failed:', err);
       toast.error(err instanceof Error ? err.message : 'Invalid email or password.');
     } finally {
       setIsSubmitting(false);
