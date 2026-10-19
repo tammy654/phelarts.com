@@ -4,16 +4,10 @@ import toast from 'react-hot-toast';
 import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { getAdminSession, clearAdminSession } from './AdminLogin';
+import { getCurrentAdmin, AdminUser } from './AdminLogin';
 
 type TabKey = 'bookings' | 'inquiries' | 'newsletter' | 'projects';
 type ProjectStatus = 'ongoing' | 'completed' | 'canceled';
-type AdminRole = 'super' | 'manager';
-
-interface AdminSession {
-  email: string;
-  role: AdminRole;
-}
 
 interface LeadRow {
   id: string;
@@ -89,7 +83,7 @@ const exportCsv = (filename: string, rows: Record<string, unknown>[], columns: {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [session, setSession] = useState<AdminSession | null>(null);
+  const [session, setSession] = useState<AdminUser | null>(null);
   const [ready, setReady] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>('bookings');
   const [query, setQuery] = useState('');
@@ -106,13 +100,25 @@ export default function AdminDashboard() {
   const isSuperAdmin = session?.role === 'super';
 
   useEffect(() => {
-    const s = getAdminSession();
-    if (!s) {
-      navigate('/admin/login', { replace: true });
-      return;
-    }
-    setSession(s);
-    setReady(true);
+    let mounted = true;
+    (async () => {
+      const admin = await getCurrentAdmin();
+      if (!mounted) return;
+      if (!admin) {
+        navigate('/admin/login', { replace: true });
+        return;
+      }
+      setSession(admin);
+      setReady(true);
+    })();
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, supaSession) => {
+      if (!supaSession) navigate('/admin/login', { replace: true });
+    });
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, [navigate]);
 
   // Track which source rows have been moved to projects
@@ -249,8 +255,8 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    clearAdminSession();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     navigate('/admin/login', { replace: true });
   };
 
