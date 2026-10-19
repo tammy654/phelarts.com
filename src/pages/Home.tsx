@@ -170,7 +170,7 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-6xl mx-auto px-5 lg:px-7">
-          <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-14 lg:gap-20 items-center">
+          <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-10 lg:gap-14 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -178,16 +178,16 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <span className="eyebrow text-[#f59e0b]">Motion Graphics & 2D Animation Studio</span>
-              <h1 className="font-display font-extrabold text-[#f7f5f1] text-5xl sm:text-6xl lg:text-8xl leading-[0.96] mt-6 tracking-[-0.04em]">
+              <h1 className="font-display font-extrabold text-[#f7f5f1] text-5xl sm:text-6xl lg:text-7xl leading-[0.98] mt-5 tracking-[-0.04em]">
                 We craft
                 <span className="block text-[#f59e0b]">visual stories</span>
                 <span className="block">that move</span>
                 <span className="block text-[#f7f5f1]/55">people.</span>
               </h1>
-              <p className="text-lg text-[#f7f5f1]/60 max-w-xl leading-relaxed mt-8">
+              <p className="text-base lg:text-lg text-[#f7f5f1]/60 max-w-lg leading-relaxed mt-6">
                 From concept to completion, we create motion graphics and 2D animations that captivate audiences and drive results for forward-thinking brands.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-10">
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
                 <a href="/our-work" className="btn-light">
                   <Play className="w-4 h-4" />
                   View Our Work
@@ -207,11 +207,11 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.9, delay: 0.15 }}
               viewport={{ once: true }}
-              className="relative min-h-[320px] lg:min-h-[420px] flex items-center justify-center"
+              className="relative min-h-[300px] lg:min-h-[360px] flex items-center justify-center"
             >
               <div className="absolute inset-8 rounded-[2.5rem] border border-white/10 rotate-6" />
               <div className="absolute inset-8 rounded-[2.5rem] border border-[#f59e0b]/25 -rotate-6" />
-              <div className="relative w-full max-w-[30rem] aspect-[4/5] rounded-[2.5rem] border border-white/15 bg-white/[0.055] backdrop-blur-sm p-5 shadow-2xl overflow-hidden">
+              <div className="relative w-full max-w-[25rem] aspect-[4/4.6] rounded-[2rem] border border-white/15 bg-white/[0.055] backdrop-blur-sm p-4 shadow-2xl overflow-hidden">
                 <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-[#f59e0b]/30" />
                 <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-[#f59e0b]/20 blur-2xl" />
                 <div className="absolute -left-20 bottom-0 h-52 w-52 rounded-full bg-[#0f5132]/50 blur-3xl" />
@@ -219,16 +219,16 @@ export default function Home() {
                   <span>Story / 001</span>
                   <span className="text-[#f59e0b]">In motion</span>
                 </div>
-                <div className="relative mt-8 h-[15rem] overflow-hidden rounded-3xl bg-[#242424]">
+                <div className="relative mt-6 h-[13rem] overflow-hidden rounded-[1.5rem] bg-[#242424]">
                   <div className="absolute inset-0 bg-[linear-gradient(135deg,transparent_45%,rgba(245,158,11,0.8)_46%,rgba(245,158,11,0.08)_58%,transparent_59%)]" />
-                  <div className="absolute left-8 top-10 h-28 w-28 rounded-full border-[18px] border-[#f59e0b] shadow-[0_0_45px_rgba(245,158,11,0.45)]" />
-                  <div className="absolute bottom-[-4rem] right-[-2rem] h-52 w-52 rounded-full border-[22px] border-[#0f5132] opacity-90" />
+                  <div className="absolute left-7 top-8 h-24 w-24 rounded-full border-[16px] border-[#f59e0b] shadow-[0_0_40px_rgba(245,158,11,0.45)]" />
+                  <div className="absolute bottom-[-3.5rem] right-[-1.5rem] h-44 w-44 rounded-full border-[18px] border-[#0f5132] opacity-90" />
                   <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                    <span className="font-display text-3xl font-bold text-[#f7f5f1]">Ideas<br />in motion.</span>
+                    <span className="font-display text-2xl font-bold text-[#f7f5f1]">Ideas<br />in motion.</span>
                     <span className="mb-1 h-3 w-3 rounded-full bg-[#f59e0b] shadow-[0_0_18px_#f59e0b]" />
                   </div>
                 </div>
-                <div className="relative mt-7 grid grid-cols-3 gap-3 text-[10px] uppercase tracking-[0.16em] text-[#f7f5f1]/45">
+                <div className="relative mt-5 grid grid-cols-3 gap-2 text-[9px] uppercase tracking-[0.14em] text-[#f7f5f1]/45">
                   <div><span className="mb-2 block h-1 w-8 bg-[#f59e0b]" />Concept</div>
                   <div><span className="mb-2 block h-1 w-8 bg-[#0f5132]" />Craft</div>
                   <div><span className="mb-2 block h-1 w-8 bg-[#f7f5f1]/40" />Impact</div>
