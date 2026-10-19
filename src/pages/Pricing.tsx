@@ -8,7 +8,7 @@ const Pricing = () => {
       icon: Star,
       price: '$2,500',
       period: 'per project',
-      description: 'Perfect for small businesses and startups looking to create their first animated content.',
+      description: 'Your first animated project, built for small businesses and startups that need quality content without agency costs.',
       features: [
         'Up to 60 seconds of animation',
         '2D character animation',
@@ -28,7 +28,7 @@ const Pricing = () => {
       icon: Zap,
       price: '$5,500',
       period: 'per project',
-      description: 'Ideal for established businesses wanting high-quality animated content that stands out.',
+      description: 'For established businesses that want animation with the polish to stand out in a crowded market.',
       features: [
         'Up to 120 seconds of animation',
         'Advanced 2D character animation',
@@ -50,7 +50,7 @@ const Pricing = () => {
       icon: Crown,
       price: 'Custom',
       period: 'quote',
-      description: 'Comprehensive animation solutions for large organizations and complex projects.',
+      description: 'End to end animation production for large organizations, with the scale and coordination complex projects demand.',
       features: [
         'Unlimited animation length',
         'Premium 2D & motion graphics',
