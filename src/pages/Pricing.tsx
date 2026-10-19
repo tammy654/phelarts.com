@@ -221,9 +221,11 @@ const Pricing = () => {
                   <h3 className="text-2xl font-bold text-[#242424] mb-2">{plan.name}</h3>
                   <p className="text-gray-600 mb-6">{plan.description}</p>
                   
-                  <div className="mb-6">
-                    <span className="text-4xl lg:text-5xl font-bold text-[#242424]">{currency === 'USD' ? plan.usdPrice : plan.ngnPrice}</span>
-                    <span className="text-gray-500 ml-2">{plan.period}</span>
+                  <div className="mb-6 text-center">
+                    <span className="block whitespace-nowrap text-[clamp(2rem,7vw,2.75rem)] font-bold leading-none tracking-[-0.04em] text-[#242424]">
+                      {currency === 'USD' ? plan.usdPrice : plan.ngnPrice}
+                    </span>
+                    <span className="mt-2 block text-gray-500">{plan.period}</span>
                   </div>
                 </div>
 
