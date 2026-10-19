@@ -11,6 +11,8 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import BookCall from './pages/BookCall';
 import Pricing from './pages/Pricing';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -27,6 +29,37 @@ function ScrollToTop() {
   }, [pathname, hash]);
 
   return null;
+}
+
+function AppShell() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith('/admin');
+
+  if (isAdmin) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/*" element={<AdminDashboard />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/our-work" element={<OurWork />} />
+        <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/book-call" element={<BookCall />} />
+        <Route path="/pricing" element={<Pricing />} />
+      </Routes>
+      <Footer />
+    </>
+  );
 }
 
 function App() {
@@ -50,18 +83,7 @@ function App() {
         }}
       />
       <div className="min-h-screen bg-[#f7f5f1]">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/our-work" element={<OurWork />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/book-call" element={<BookCall />} />
-          <Route path="/pricing" element={<Pricing />} />
-        </Routes>
-        <Footer />
+        <AppShell />
       </div>
     </Router>
   );
