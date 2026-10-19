@@ -3,27 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Lock, Mail, ArrowRight, KeyRound } from 'lucide-react';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { supabase } from '../../lib/supabase';
 
-export const SUPER_ADMIN_EMAIL = 'phelarts@gmail.com';
+const ADMIN_EMAIL = 'phelarts@gmail.com';
+const ADMIN_PASSWORD = 'Phelarts_1407';
+const ADMIN_SESSION_KEY = 'phelarts_admin_session';
 
-export type AdminRole = 'super' | 'manager';
-
-export interface AdminUser {
-  id: string;
+type AdminRole = 'super' | 'manager';
+interface AdminSession {
   email: string;
   role: AdminRole;
 }
 
-export function roleFromEmail(email: string | undefined | null): AdminRole {
-  return email && email.toLowerCase() === SUPER_ADMIN_EMAIL ? 'super' : 'manager';
+export function getAdminSession(): AdminSession | null {
+  try {
+    const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as AdminSession;
+  } catch {
+    return null;
+  }
 }
 
-export async function getCurrentAdmin(): Promise<AdminUser | null> {
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
-  const email = data.user.email ?? '';
-  return { id: data.user.id, email, role: roleFromEmail(email) };
+export function clearAdminSession() {
+  localStorage.removeItem(ADMIN_SESSION_KEY);
 }
 
 export default function AdminLogin() {
@@ -33,40 +35,27 @@ export default function AdminLogin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const admin = await getCurrentAdmin();
-      if (!mounted) return;
-      if (admin) navigate('/admin', { replace: true });
-    })();
-    return () => { mounted = false; };
+    const session = getAdminSession();
+    if (session) navigate('/admin', { replace: true });
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password) {
-      toast.error('Please enter your email and password.');
-      return;
-    }
+    if (!email.trim()) return toast.error('Enter your email');
+    if (!password) return toast.error('Enter your password');
 
     setIsSubmitting(true);
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-      if (error) {
-        console.error('Supabase sign-in error:', error);
-        toast.error('Invalid email or password.');
-        return;
-      }
-      if (!data.user) throw new Error('No user returned');
-      const role = roleFromEmail(data.user.email);
-      toast.success(role === 'super' ? 'Welcome back, Super Admin' : 'Welcome back');
+    await new Promise((r) => setTimeout(r, 400));
+
+    const normalizedEmail = email.trim().toLowerCase();
+    if (normalizedEmail === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ email: normalizedEmail, role: 'super' as AdminRole }));
+      toast.success('Welcome back');
       navigate('/admin', { replace: true });
-    } catch (err) {
-      console.error('Admin login failed:', err);
+    } else {
       toast.error('Invalid email or password.');
-    } finally {
-      setIsSubmitting(false);
     }
+    setIsSubmitting(false);
   };
 
   return (
