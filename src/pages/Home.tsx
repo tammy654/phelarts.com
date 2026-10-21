@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Play, X, Target, Layers3, SlidersHorizontal, Truck } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
@@ -322,6 +323,53 @@ export default function Home() {
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* AI video teaser */}
+      <section className="relative overflow-hidden bg-[#16161a] py-20 lg:py-24">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -left-32 top-0 h-80 w-80 rounded-full bg-[#f59e0b]/15 blur-[120px]" />
+          <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-[#0f5132]/30 blur-[120px]" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="relative rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-8 lg:p-12 overflow-hidden"
+          >
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#f59e0b]/10 blur-3xl" />
+            <div className="relative grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center">
+              <div>
+                <span className="eyebrow text-[#f59e0b]">AI video storytelling</span>
+                <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#f7f5f1] mt-4 leading-tight">
+                  Faster turnaround and creative direction from start to finish.
+                </h2>
+                <p className="text-lg text-[#f7f5f1]/60 mt-5 leading-relaxed max-w-xl">
+                  We combine AI tools with human creative direction to produce animated stories in less time,
+                  without losing the emotional impact your audience needs.
+                </p>
+                <div className="mt-8">
+                  <Link to="/ai-videos" className="btn-light">
+                    Explore AI videos
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+              <div className="relative hidden lg:block">
+                <div className="aspect-[4/3] rounded-2xl border border-white/10 bg-[#242424] overflow-hidden">
+                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(245,158,11,0.3)_0%,transparent_50%,rgba(15,81,50,0.45)_100%)]" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-[#f59e0b] flex items-center justify-center shadow-[0_0_40px_rgba(245,158,11,0.5)]">
+                      <Play className="w-6 h-6 text-[#16161a] fill-[#16161a] ml-1" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 

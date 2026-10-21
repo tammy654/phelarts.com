@@ -19,6 +19,7 @@ const linkGroups = [
       { href: '/about', label: 'About' },
       { href: '/our-work', label: 'Work' },
       { href: '/case-studies', label: 'Case Studies' },
+      { href: '/ai-videos', label: 'AI Videos' },
     ],
   },
   {
