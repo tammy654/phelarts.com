@@ -47,9 +47,9 @@ const timeline = [
 ];
 
 const packages = [
-  { name: 'Starter', days: '[X] days' },
-  { name: 'Professional', days: '[X] days' },
-  { name: 'Enterprise', days: '[X] days' },
+  { name: 'Starter', days: '72 hours' },
+  { name: 'Professional', days: '48 hours' },
+  { name: 'Enterprise', days: '24 hours' },
 ];
 
 const samples = [
@@ -208,7 +208,7 @@ export default function AIVideos() {
               ))}
             </ul>
             <p className="text-sm text-[#f7f5f1]/45 mt-5">
-              Replace the bracketed figures above with your real turnaround times before publishing.
+              Replace the bracketed sample turnaround times with your real figures before publishing.
             </p>
           </div>
         </div>

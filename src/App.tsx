@@ -12,6 +12,7 @@ import Contact from './pages/Contact';
 import BookCall from './pages/BookCall';
 import Pricing from './pages/Pricing';
 import AIVideos from './pages/AIVideos';
+import AIPricing from './pages/AIPricing';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 
@@ -58,6 +59,7 @@ function AppShell() {
         <Route path="/book-call" element={<BookCall />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/ai-videos" element={<AIVideos />} />
+        <Route path="/ai-pricing" element={<AIPricing />} />
       </Routes>
       <Footer />
     </>
