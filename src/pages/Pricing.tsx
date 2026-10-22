@@ -1,7 +1,30 @@
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Sparkles, Tag } from 'lucide-react';
 import PricingContent from '../components/PricingContent';
 import { aiPlans, aiAddOns, STANDARD_MULTIPLIER } from '../config/pricing';
 
+type Mode = 'standard' | 'ai';
+
 export default function Pricing() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialMode: Mode = searchParams.get('mode') === 'ai' ? 'ai' : 'standard';
+  const [mode, setMode] = useState<Mode>(initialMode);
+
+  const switchMode = (next: Mode) => {
+    setMode(next);
+    const params = new URLSearchParams(searchParams);
+    if (next === 'ai') params.set('mode', 'ai');
+    else params.delete('mode');
+    setSearchParams(params, { replace: true });
+  };
+
+  const isAI = mode === 'ai';
+  const heading = isAI ? 'AI Pricing' : 'Pricing';
+  const heroSubtitle = isAI
+    ? 'Pricing reflects AI assisted production with human creative direction.'
+    : 'Exceptional creativity. Flexible pricing. Explore our tailored animation and motion design packages, crafted to bring your vision to life without compromising on quality.';
+
   return (
     <div className="pt-28">
       {/* Hero Section */}
@@ -12,11 +35,47 @@ export default function Pricing() {
         }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
+          {/* Mode toggle */}
+          <div className="mb-8 flex justify-center">
+            <div
+              className="inline-flex items-center gap-1 rounded-full border border-[#fefefe]/25 bg-[#fefefe]/10 p-1 backdrop-blur-sm"
+              role="group"
+              aria-label="Switch pricing type"
+            >
+              <button
+                type="button"
+                onClick={() => switchMode('standard')}
+                aria-pressed={!isAI}
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold tracking-[0.08em] transition-all duration-300 ${
+                  !isAI
+                    ? 'bg-[#f59e0b] text-[#16161a] shadow-md'
+                    : 'text-[#fefefe]/70 hover:text-[#fefefe]'
+                }`}
+              >
+                <Tag className="w-4 h-4" />
+                Pricing
+              </button>
+              <button
+                type="button"
+                onClick={() => switchMode('ai')}
+                aria-pressed={isAI}
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold tracking-[0.08em] transition-all duration-300 ${
+                  isAI
+                    ? 'bg-[#f59e0b] text-[#16161a] shadow-md'
+                    : 'text-[#fefefe]/70 hover:text-[#fefefe]'
+                }`}
+              >
+                <Sparkles className="w-4 h-4" />
+                AI Pricing
+              </button>
+            </div>
+          </div>
+
           <h1 className="text-5xl lg:text-7xl font-bold text-[#fefefe] mb-8">
-            Pricing
+            {heading}
           </h1>
           <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
-            Exceptional creativity. Flexible pricing. Explore our tailored animation and motion design packages, crafted to bring your vision to life without compromising on quality.
+            {heroSubtitle}
           </p>
           <div className="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
             <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
@@ -33,9 +92,13 @@ export default function Pricing() {
       </section>
 
       <PricingContent
+        key={mode}
         plans={aiPlans}
         addOns={aiAddOns}
-        priceFactor={STANDARD_MULTIPLIER}
+        priceFactor={isAI ? 1 : STANDARD_MULTIPLIER}
+        badge={isAI ? 'AI Pricing' : undefined}
+        subtitle={isAI ? 'Pricing reflects AI assisted production with human creative direction.' : undefined}
+        accentBorder={isAI}
         bookCtaHref="/book-call"
         enquiryCtaHref="/contact#enquiry"
       />

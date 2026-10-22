@@ -90,6 +90,13 @@ export default function AIVideos() {
                 See AI samples
                 <Play className="w-4 h-4" />
               </a>
+              <Link
+                to="/pricing?mode=ai"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:border-[#f59e0b]/60 hover:bg-[#f59e0b]/10 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                See pricing
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
           <div className="page-hero-visual">
@@ -324,6 +331,13 @@ export default function AIVideos() {
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f59e0b] bg-[#f59e0b] px-7 py-3 font-bold text-[#16161a] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#fbbf24] hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.7)]"
                   >
                     Start your project
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to="/pricing?mode=ai"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#f7f5f1]/40 px-7 py-3 font-semibold text-[#f7f5f1] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#f59e0b] hover:bg-[#f59e0b]/10"
+                  >
+                    See pricing
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>

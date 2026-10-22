@@ -36,7 +36,6 @@ const linkGroups = [
       { href: '/contact', label: 'Contact' },
       { href: '/book-call', label: 'Book a Call' },
       { href: '/pricing', label: 'Pricing' },
-      { href: '/ai-pricing', label: 'AI Pricing' },
     ],
   },
 ];

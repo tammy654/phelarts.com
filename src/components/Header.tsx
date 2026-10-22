@@ -37,7 +37,6 @@ const navItems: NavItem[] = [
   },
   { href: '/about', label: 'About' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/ai-pricing', label: 'AI Pricing' },
   {
     href: '/contact',
     label: 'Contact',
