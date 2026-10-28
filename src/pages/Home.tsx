@@ -15,8 +15,8 @@ type Reel = {
 
 const featuredReels: Reel[] = [
   {
-    title: 'Brand Animation Series',
-    client: 'TechCorp',
+    title: 'Mograph Spotlight',
+    client: 'Mograph Spotlight',
     category: 'Motion Graphics',
     image: 'https://res.cloudinary.com/cqzopbig/image/upload/v1793164231/Phel_Arts_Campaign_Ads_Mograph_Spotlight_Cover_Image.png',
     video: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793163426/Phel_Arts_Campaign_Ads_Mograph_Spotlight.mp4',
