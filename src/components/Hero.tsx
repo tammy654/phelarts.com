@@ -26,7 +26,7 @@ export default function Hero() {
         muted
         loop
         playsInline
-        poster="https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        poster="https://res.cloudinary.com/cqzopbig/image/upload/v1793164229/Phel_Arts_New_Logo_Reveal_Cover_Image.png"
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source
