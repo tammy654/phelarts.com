@@ -22,11 +22,11 @@ const featuredReels: Reel[] = [
     video: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793163426/Phel_Arts_Campaign_Ads_Mograph_Spotlight.mp4',
   },
   {
-    title: 'Character Animation Short',
-    client: 'StoryTech',
+    title: 'Product Explainer Video',
+    client: 'Banda Ride',
     category: '2D Animation',
     image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    video: 'https://cdn.coverr.co/videos/coverr-drawing-on-a-tablet-1572/1080p.mp4',
+    video: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793164605/Banda_Ride_Animation_Final.mp4',
   },
   {
     title: 'Corporate Video Series',
