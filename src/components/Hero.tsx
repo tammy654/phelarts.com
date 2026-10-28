@@ -30,7 +30,7 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source
-          src="https://cdn.coverr.co/videos/coverr-abstract-motion-graphics-1572/1080p.mp4"
+          src="https://res.cloudinary.com/cqzopbig/video/upload/v1793163411/Phel_Arts_New_Logo_Reveal.mp4"
           type="video/mp4"
         />
       </video>
