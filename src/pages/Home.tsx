@@ -124,7 +124,7 @@ const services = [
     title: 'Video Production',
     level: 'Concept to Final Delivery',
     description: 'Produce engaging films from first idea to final cut with creative direction, cinematography, editing, colour, and sound handled with care.',
-    image: 'https://images.pexels.com/photos/8102676/pexels-photo-8102676.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: 'https://res.cloudinary.com/cqzopbig/image/upload/v1793170475/Video_Production.jpg',
   },
 ];
 
