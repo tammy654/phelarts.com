@@ -112,7 +112,7 @@ const services = [
     title: '2D Animation',
     level: 'Character & Explainer Films',
     description: 'Create memorable character-driven stories and explainer videos with expressive movement, thoughtful pacing, and a distinct visual style.',
-    image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793167815/Career_Switch.mp4',
   },
   {
     title: 'Motion Graphics',
