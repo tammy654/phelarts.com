@@ -26,7 +26,7 @@ const featuredReels: Reel[] = [
     client: 'Banda Ride',
     category: '2D Animation',
     image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    video: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793164605/Banda_Ride_Animation_Final.mp4',
+    video: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793165665/Banda_Ride_Animation_Final.mp4',
   },
   {
     title: 'Corporate Video Series',
