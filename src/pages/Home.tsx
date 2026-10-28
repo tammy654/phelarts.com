@@ -33,7 +33,7 @@ const featuredReels: Reel[] = [
     client: 'GlobalTech',
     category: 'Video Production',
     image: 'https://images.pexels.com/photos/8102676/pexels-photo-8102676.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    video: 'https://cdn.coverr.co/videos/coverr-working-in-an-office-1572/1080p.mp4',
+    video: 'https://res.cloudinary.com/cqzopbig/video/upload/v1793163411/Phel_Arts_New_Logo_Reveal.mp4',
   },
 ];
 
