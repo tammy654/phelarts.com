@@ -118,7 +118,7 @@ const services = [
     title: 'Motion Graphics',
     level: 'Brand & Campaign Visuals',
     description: 'Bring your brand to life with dynamic visual systems, bold transitions, and polished motion built for campaigns, launches, and digital platforms.',
-    image: 'https://images.pexels.com/photos/12966745/pexels-photo-12966745.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: 'https://res.cloudinary.com/cqzopbig/image/upload/v1793169689/Motion_Graphics.jpg',
   },
   {
     title: 'Video Production',
