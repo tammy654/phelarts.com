@@ -1,9 +1,37 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Play, Pause } from 'lucide-react';
+
+const MOBILE_BREAKPOINT = 768;
+
+const DESKTOP_POSTER = 'https://res.cloudinary.com/cqzopbig/image/upload/v1793164229/Phel_Arts_New_Logo_Reveal_Cover_Image.png';
+const DESKTOP_VIDEO = 'https://res.cloudinary.com/cqzopbig/video/upload/v1793163411/Phel_Arts_New_Logo_Reveal.mp4';
+
+const MOBILE_POSTER = 'https://res.cloudinary.com/cqzopbig/image/upload/v1793267823/Phel_Arts_New_Logo_Reveal_Cover_Image_9x16.png';
+const MOBILE_VIDEO = 'https://res.cloudinary.com/cqzopbig/video/upload/v1793267621/Phel_Arts_New_Logo_Reveal_9x16.mp4';
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < MOBILE_BREAKPOINT : false
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', onChange);
+    setIsMobile(mql.matches);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
+  return isMobile;
+}
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
+  const isMobile = useIsMobile();
+
+  const poster = isMobile ? MOBILE_POSTER : DESKTOP_POSTER;
+  const src = isMobile ? MOBILE_VIDEO : DESKTOP_VIDEO;
 
   const toggle = () => {
     const v = videoRef.current;
@@ -19,20 +47,18 @@ export default function Hero() {
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-[#16161a]">
-      {/* Background showreel video */}
+      {/* Background showreel video — switches between desktop landscape and mobile 9:16 */}
       <video
+        key={src}
         ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        poster="https://res.cloudinary.com/cqzopbig/image/upload/v1793164229/Phel_Arts_New_Logo_Reveal_Cover_Image.png"
+        poster={poster}
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source
-          src="https://res.cloudinary.com/cqzopbig/video/upload/v1793163411/Phel_Arts_New_Logo_Reveal.mp4"
-          type="video/mp4"
-        />
+        <source src={src} type="video/mp4" />
       </video>
 
       {/* Subtle vignette for legibility of controls */}
