@@ -4,10 +4,10 @@ import { Play, Pause } from 'lucide-react';
 const MOBILE_BREAKPOINT = 768;
 
 const DESKTOP_POSTER = 'https://res.cloudinary.com/cqzopbig/image/upload/v1793164229/Phel_Arts_New_Logo_Reveal_Cover_Image.png';
-const DESKTOP_VIDEO = 'https://res.cloudinary.com/cqzopbig/video/upload/v1793163411/Phel_Arts_New_Logo_Reveal.mp4';
+const DESKTOP_VIDEO = 'https://res.cloudinary.com/cqzopbig/image/upload/v1793164229/Phel_Arts_New_Logo_Reveal_Cover_Image.png';
 
 const MOBILE_POSTER = 'https://res.cloudinary.com/cqzopbig/image/upload/v1793267823/Phel_Arts_New_Logo_Reveal_Cover_Image_9x16.png';
-const MOBILE_VIDEO = 'https://res.cloudinary.com/cqzopbig/video/upload/v1793267621/Phel_Arts_New_Logo_Reveal_9x16.mp4';
+const MOBILE_VIDEO = 'https://res.cloudinary.com/cqzopbig/video/upload/v1793352389/Phel_Arts_New_Logo_Reveal_9x16.mp4';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(
