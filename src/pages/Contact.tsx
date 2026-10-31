@@ -10,7 +10,7 @@ const contactMethods = [
   { icon: MessageCircle, title: 'WhatsApp', description: 'Chat with us anytime', contact: '+234 708 661 3704', action: 'https://wa.me/2347086613704' },
 ];
 
-const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'];
+const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
 const callTypes: CallType[] = ['Video Call', 'Phone Call', 'Chat Session'];
 
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];

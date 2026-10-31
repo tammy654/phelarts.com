@@ -2,7 +2,12 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Sparkles, Tag } from 'lucide-react';
 import PricingContent from '../components/PricingContent';
-import { aiPlans, aiAddOns, STANDARD_MULTIPLIER } from '../config/pricing';
+import {
+  standardPlans,
+  aiPlans,
+  addOns,
+  pricingBadges,
+} from '../config/pricing';
 
 type Mode = 'standard' | 'ai';
 
@@ -78,24 +83,20 @@ export default function Pricing() {
             {heroSubtitle}
           </p>
           <div className="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
-            <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
-              <span className="text-sm font-medium text-[#fefefe]/90">No Hidden Fees</span>
-            </div>
-            <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
-              <span className="text-sm font-medium text-[#fefefe]/90">Flexible Payment Plans</span>
-            </div>
-            <div className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
-              <span className="text-sm font-medium text-[#fefefe]/90">100% Satisfaction Guarantee</span>
-            </div>
+            {pricingBadges.map((badge) => (
+              <div key={badge} className="bg-[#fefefe]/10 backdrop-blur-sm border border-[#fefefe]/20 rounded-full px-4 py-2">
+                <span className="text-sm font-medium text-[#fefefe]/90">{badge}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       <PricingContent
         key={mode}
-        plans={aiPlans}
-        addOns={aiAddOns}
-        priceFactor={isAI ? 1 : STANDARD_MULTIPLIER}
+        plans={isAI ? aiPlans : standardPlans}
+        addOns={addOns}
+        isAI={isAI}
         badge={isAI ? 'AI Pricing' : undefined}
         subtitle={isAI ? 'Pricing reflects AI assisted production with human creative direction.' : undefined}
         accentBorder={isAI}

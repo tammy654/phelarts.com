@@ -3,9 +3,8 @@ import { supabase } from '../config/supabase';
 export type ProjectType =
   | '2D Animation'
   | 'Motion Graphics'
-  | 'Web Animation'
   | 'Video Production'
-  | 'App Animations'
+  | 'AI Videos'
   | 'Other';
 
 export type CallType = 'Video Call' | 'Phone Call' | 'Chat Session';

@@ -15,6 +15,7 @@ import {
   Film,
   ShieldCheck,
 } from 'lucide-react';
+import { aiVideoTurnaround } from '../config/pricing';
 
 const aiCapabilities = [
   {
@@ -46,21 +47,6 @@ const timeline = [
   { icon: PackageCheck, step: '04', title: 'Final delivery', description: 'We finish, color, and master the cut for the formats you need.' },
 ];
 
-const packages = [
-  { name: 'Starter', days: '72 hours' },
-  { name: 'Professional', days: '48 hours' },
-  { name: 'Enterprise', days: '24 hours' },
-];
-
-const samples = [
-  { title: 'Brand story short', type: 'Motion Graphics', turnaround: '[X] days' },
-  { title: 'Product explainer', type: '2D Animation', turnaround: '[X] days' },
-  { title: 'Founder narrative', type: 'AI Video', turnaround: '[X] days' },
-  { title: 'Social campaign cut', type: 'Motion Graphics', turnaround: '[X] days' },
-  { title: 'Character pilot', type: '2D Animation', turnaround: '[X] days' },
-  { title: 'Announcement teaser', type: 'AI Video', turnaround: '[X] days' },
-];
-
 export default function AIVideos() {
   return (
     <div className="pt-28">
@@ -83,13 +69,6 @@ export default function AIVideos() {
                 Book a screening
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <a
-                href="#samples"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:border-[#f59e0b]/60 hover:bg-[#f59e0b]/10 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                See AI samples
-                <Play className="w-4 h-4" />
-              </a>
               <Link
                 to="/pricing?mode=ai"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-[#f7f5f1] font-semibold border border-white/15 hover:border-[#f59e0b]/60 hover:bg-[#f59e0b]/10 transition-all duration-300 hover:-translate-y-0.5"
@@ -110,10 +89,6 @@ export default function AIVideos() {
                 <div className="w-20 h-20 rounded-full bg-[#f59e0b] flex items-center justify-center shadow-[0_0_40px_rgba(245,158,11,0.5)]">
                   <Play className="w-7 h-7 text-[#16161a] fill-[#16161a] ml-1" />
                 </div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#16161a] to-transparent">
-                <div className="text-[#f7f5f1] font-display font-bold text-lg">Sample preview</div>
-                <div className="text-[#f7f5f1]/55 text-sm">Replace with a real clip you have rights to</div>
               </div>
             </div>
           </div>
@@ -204,7 +179,7 @@ export default function AIVideos() {
               Typical turnaround by package
             </div>
             <ul className="divide-y divide-white/10">
-              {packages.map((p) => (
+              {aiVideoTurnaround.map((p) => (
                 <li key={p.name} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-4">
                   <div className="flex items-center gap-3">
                     <span className="w-2 h-2 rounded-full bg-[#f59e0b]" />
@@ -214,60 +189,11 @@ export default function AIVideos() {
                 </li>
               ))}
             </ul>
-            <p className="text-sm text-[#f7f5f1]/45 mt-5">
-              Replace the bracketed sample turnaround times with your real figures before publishing.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Samples */}
-      <section id="samples" className="py-24 bg-[#f7f5f1] scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-2xl mb-14">
-            <span className="eyebrow">AI samples</span>
-            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a] mt-4 leading-tight">
-              Selected AI video work.
-            </h2>
-            <p className="text-lg text-[#6b6b73] mt-5 leading-relaxed">
-              A preview of the kinds of stories we produce with AI assisted tools. Swap these for real clips you have rights to.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {samples.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                viewport={{ once: true, margin: '-60px' }}
-                className="lift group rounded-3xl overflow-hidden bg-white border border-black/[0.06] flex flex-col"
-              >
-                <div className="relative aspect-video bg-[#242424] overflow-hidden">
-                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(245,158,11,0.18)_0%,transparent_50%,rgba(15,81,50,0.35)_100%)]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 rounded-full bg-[#f59e0b]/90 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-                      <Play className="w-5 h-5 text-[#16161a] fill-[#16161a] ml-0.5" />
-                    </div>
-                  </div>
-                  <div className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] font-semibold text-[#f7f5f1]/70 bg-[#16161a]/40 backdrop-blur-sm px-2.5 py-1 rounded-full">
-                    Thumbnail placeholder
-                  </div>
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="text-xs font-semibold tracking-[0.18em] uppercase text-[#b45309]">{s.type}</div>
-                  <h3 className="font-display font-bold text-xl text-[#16161a] mt-2 leading-snug">{s.title}</h3>
-                  <div className="mt-4 pt-4 border-t border-black/[0.06] flex items-center justify-between text-sm">
-                    <span className="text-[#6b6b73]">Turnaround</span>
-                    <span className="font-semibold text-[#16161a]">{s.turnaround}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Samples section hidden until real clips and thumbnails are supplied */}
 
       {/* Human led process */}
       <section className="py-24 bg-white border-y border-black/[0.06]">

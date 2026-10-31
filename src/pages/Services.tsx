@@ -1,55 +1,16 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { Video, Palette, Globe, Film, Smartphone, ArrowRight, Check } from 'lucide-react';
+import { Video, Palette, Film, Sparkles, ArrowRight, Check } from 'lucide-react';
+import { servicesSummary, formatUsd, formatNgn } from '../config/pricing';
 
-const services = [
-  {
-    id: '2d-animation',
-    icon: Video,
-    title: '2D Animation',
-    description: 'Character-driven stories and explainer videos that engage and educate your audience with compelling narratives.',
-    features: ['Character Animation', 'Explainer Videos', 'Educational Content', 'Storyboarding'],
-    price: 'Starting at $2,500',
-    timeline: '2–4 weeks',
-  },
-  {
-    id: 'motion-graphics',
-    icon: Palette,
-    title: 'Motion Graphics',
-    description: 'Dynamic visual elements that bring your brand to life with style, sophistication, and memorable impact.',
-    features: ['Logo Animation', 'Brand Videos', 'Title Sequences', 'Social Content'],
-    price: 'Starting at $1,500',
-    timeline: '1–3 weeks',
-  },
-  {
-    id: 'web-animation',
-    icon: Globe,
-    title: 'Web Animation',
-    description: 'Interactive animations that enhance user experience and drive engagement across digital platforms.',
-    features: ['UI Animations', 'Interactive Elements', 'Micro-interactions', 'Loaders'],
-    price: 'Starting at $1,200',
-    timeline: '1–2 weeks',
-  },
-  {
-    id: 'video-production',
-    icon: Film,
-    title: 'Video Production',
-    description: 'End-to-end video production from concept development to final delivery with professional quality.',
-    features: ['Concept Development', 'Scriptwriting', 'Production', 'Post-Production'],
-    price: 'Starting at $4,000',
-    timeline: '4–6 weeks',
-  },
-  {
-    id: 'app-animations',
-    icon: Smartphone,
-    title: 'App Animations',
-    description: 'Smooth, delightful animations that make mobile experiences memorable and user-friendly.',
-    features: ['App Transitions', 'Loading Animations', 'UI Elements', 'Onboarding'],
-    price: 'Starting at $1,800',
-    timeline: '2–3 weeks',
-  },
-];
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  '2d-animation': Video,
+  'motion-graphics': Palette,
+  'video-production': Film,
+  'ai-videos': Sparkles,
+};
 
 const process = [
   { step: '01', title: 'Discovery', description: 'We start by understanding your goals, target audience, and project requirements.' },
@@ -61,6 +22,7 @@ const process = [
 export default function Services() {
   const location = useLocation();
   const [highlightedService, setHighlightedService] = useState<string | null>(null);
+  const [currency, setCurrency] = useState<'USD' | 'NGN'>('USD');
 
   useEffect(() => {
     if (!location.hash) return;
@@ -110,49 +72,101 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Services grid */}
-      <section className="py-28 bg-[#f7f5f1]">
+      {/* Currency toggle */}
+      <div className="flex justify-center py-8 bg-[#f7f5f1]">
+        <div className="inline-flex items-center gap-1 rounded-full border border-[#242424]/10 bg-[#fefefe] p-1 shadow-sm" role="group" aria-label="Choose currency">
+          {(['USD', 'NGN'] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setCurrency(option)}
+              aria-pressed={currency === option}
+              className={`rounded-full px-4 py-2 text-xs font-bold tracking-[0.12em] transition-all duration-300 ${
+                currency === option
+                  ? 'bg-[#016952] text-[#fefefe] shadow-md'
+                  : 'text-[#242424]/55 hover:bg-[#242424]/[0.06] hover:text-[#242424]'
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Services grid — 2×2 on desktop, 1 column on mobile */}
+      <section className="pb-28 bg-[#f7f5f1]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-6">
-            {services.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: (i % 2) * 0.1 }}
-                viewport={{ once: true }}
-                id={s.id}
-                className={`group lift scroll-mt-28 rounded-3xl border bg-white p-8 transition-all duration-500 ${
-                  highlightedService === s.id
-                    ? 'border-[#f59e0b] ring-4 ring-[#f59e0b]/20 shadow-[0_18px_45px_rgba(245,158,11,0.2)]'
-                    : 'border-black/[0.06]'
-                }`}
-              >
-                <div className="flex items-start justify-between mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-[#16161a] flex items-center justify-center group-hover:bg-[#f59e0b] transition-colors duration-300">
-                    <s.icon className="w-6 h-6 text-[#f7f5f1] group-hover:text-[#16161a] transition-colors duration-300" />
+          <div className="grid md:grid-cols-2 gap-6">
+            {servicesSummary.map((s, i) => {
+              const Icon = iconMap[s.id] ?? Video;
+              const priceText = currency === 'USD' ? `Starting at ${formatUsd(s.startingUsd)}` : `Starting at ${formatNgn(s.startingNgn)}`;
+              const cardContent = (
+                <>
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="w-14 h-14 rounded-2xl bg-[#16161a] flex items-center justify-center group-hover:bg-[#f59e0b] transition-colors duration-300">
+                      <Icon className="w-6 h-6 text-[#f7f5f1] group-hover:text-[#16161a] transition-colors duration-300" />
+                    </div>
+                    <div className="text-right">
+                      <div className="font-display font-bold text-lg text-[#16161a]">{priceText}</div>
+                      <div className="text-sm text-[#6b6b73]">{s.timeline}</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-display font-bold text-lg text-[#16161a]">{s.price}</div>
-                    <div className="text-sm text-[#6b6b73]">{s.timeline}</div>
-                  </div>
-                </div>
-                <h3 className="font-display font-bold text-2xl text-[#16161a] mb-3">{s.title}</h3>
-                <p className="text-[#6b6b73] leading-relaxed mb-6">{s.description}</p>
-                <ul className="grid grid-cols-2 gap-2 mb-6">
-                  {s.features.map((f) => (
-                    <li key={f} className="flex items-center text-sm text-[#3a3a42]">
-                      <Check className="w-4 h-4 text-[#0f5132] mr-2 flex-shrink-0" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a href="/book-call" className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all">
-                  Get a Quote
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </motion.div>
-            ))}
+                  <h3 className="font-display font-bold text-2xl text-[#16161a] mb-3">{s.title}</h3>
+                  <p className="text-[#6b6b73] leading-relaxed mb-6">{s.description}</p>
+                  <ul className="grid grid-cols-2 gap-2 mb-6">
+                    {s.features.map((f) => (
+                      <li key={f} className="flex items-center text-sm text-[#3a3a42]">
+                        <Check className="w-4 h-4 text-[#0f5132] mr-2 flex-shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <span className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all">
+                    {s.href ? 'Explore AI Videos' : 'Get a Quote'}
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </>
+              );
+
+              if (s.href) {
+                return (
+                  <Link
+                    key={s.id}
+                    to={s.href}
+                    id={s.id}
+                    className={`group lift scroll-mt-28 rounded-3xl border bg-white p-8 transition-all duration-500 block ${
+                      highlightedService === s.id
+                        ? 'border-[#f59e0b] ring-4 ring-[#f59e0b]/20 shadow-[0_18px_45px_rgba(245,158,11,0.2)]'
+                        : 'border-black/[0.06]'
+                    }`}
+                  >
+                    {cardContent}
+                  </Link>
+                );
+              }
+
+              return (
+                <motion.div
+                  key={s.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: (i % 2) * 0.1 }}
+                  viewport={{ once: true }}
+                  id={s.id}
+                  className={`group lift scroll-mt-28 rounded-3xl border bg-white p-8 transition-all duration-500 ${
+                    highlightedService === s.id
+                      ? 'border-[#f59e0b] ring-4 ring-[#f59e0b]/20 shadow-[0_18px_45px_rgba(245,158,11,0.2)]'
+                      : 'border-black/[0.06]'
+                  }`}
+                >
+                  {cardContent}
+                  <a href="/book-call" className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all mt-6">
+                    Get a Quote
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

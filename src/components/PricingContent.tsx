@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Check, ArrowRight, Star, Zap, Crown, X, Calendar, Clock, Send } from 'lucide-react';
+import { Check, ArrowRight, Star, Zap, Crown, X, Calendar, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
 import { submitBookingForm, submitContactForm } from '../services/emailService';
 import {
   type PlanData,
   type AddOnData,
-  faqs as sharedFaqs,
+  pricingFaqs,
+  pricingBadges,
   formatUsd,
   formatNgn,
   formatAddonUsd,
@@ -27,10 +28,12 @@ const planIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Enterprise: Crown,
 };
 
+const projectTypeOptions = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
+
 interface PricingContentProps {
   plans: PlanData[];
   addOns: AddOnData[];
-  priceFactor: number;
+  isAI: boolean;
   badge?: string;
   subtitle?: string;
   accentBorder?: boolean;
@@ -41,7 +44,7 @@ interface PricingContentProps {
 export default function PricingContent({
   plans,
   addOns,
-  priceFactor,
+  isAI,
   badge,
   subtitle,
   accentBorder,
@@ -163,8 +166,8 @@ export default function PricingContent({
             {plans.map((plan, index) => {
               const Icon = planIcons[plan.name] ?? Star;
               const isCustom = plan.usd === 'custom';
-              const usdDisplay = isCustom ? 'Custom' : formatUsd(priceFactor === 1 ? plan.usd : Math.round(plan.usd * priceFactor));
-              const ngnDisplay = isCustom ? 'Custom' : formatNgn(priceFactor === 1 ? plan.ngn : Math.round(plan.ngn * priceFactor));
+              const usdText = isCustom && plan.fromUsd ? `From ${formatUsd(plan.fromUsd)}` : formatUsd(plan.usd);
+              const ngnText = isCustom && plan.fromNgn ? `From ${formatNgn(plan.fromNgn)}` : formatNgn(plan.ngn);
               return (
                 <div
                   key={index}
@@ -196,7 +199,7 @@ export default function PricingContent({
                     <p className="text-gray-600 mb-6">{plan.description}</p>
                     <div className="mb-6 text-center">
                       <span className="block whitespace-nowrap text-[clamp(2rem,7vw,2.75rem)] font-bold leading-none tracking-[-0.04em] text-[#242424]">
-                        {currency === 'USD' ? usdDisplay : ngnDisplay}
+                        {currency === 'USD' ? usdText : ngnText}
                       </span>
                       <span className="mt-2 block text-gray-500">{plan.period}</span>
                     </div>
@@ -264,7 +267,7 @@ export default function PricingContent({
                 <div className="grid gap-5 sm:grid-cols-2">
                   <input required name="name" value={enquiryForm.name} onChange={updateEnquiryForm} placeholder="Full name *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
                   <input required type="email" name="email" value={enquiryForm.email} onChange={updateEnquiryForm} placeholder="Email *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
-                  <select name="projectType" value={enquiryForm.projectType} onChange={updateEnquiryForm} className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a]"><option value="">Project type</option>{['2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production', 'App Animations', 'Other'].map((type) => <option key={type}>{type}</option>)}</select>
+                  <select name="projectType" value={enquiryForm.projectType} onChange={updateEnquiryForm} className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a]"><option value="">Project type</option>{projectTypeOptions.map((type) => <option key={type}>{type}</option>)}</select>
                   <select name="budget" value={enquiryForm.budget} onChange={updateEnquiryForm} className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a]"><option value="">Budget range</option>{['Under $5,000', '$5,000 to $15,000', '$15,000 to $30,000', '$30,000+'].map((budget) => <option key={budget}>{budget}</option>)}</select>
                 </div>
                 <textarea required name="message" rows={5} value={enquiryForm.message} onChange={updateEnquiryForm} placeholder="Tell us about your project, goals, and timeline *" className="mt-5 w-full resize-none rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
@@ -287,7 +290,7 @@ export default function PricingContent({
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {addOns.map((addon, index) => (
               <div
                 key={index}
@@ -296,9 +299,10 @@ export default function PricingContent({
                 data-aos-delay={index * 100}
               >
                 <h3 className="text-xl font-bold text-[#242424] mb-3">{addon.name}</h3>
-                <p className="text-gray-600 mb-4">{addon.description}</p>
+                <p className="text-gray-600 mb-4 text-sm">{addon.description}</p>
                 <div className="text-lg font-semibold text-[#ff9a1d]">
-                  {currency === 'USD' ? formatAddonUsd(addon, priceFactor) : formatAddonNgn(addon, priceFactor)}
+                  {currency === 'USD' ? formatAddonUsd(addon, isAI) : formatAddonNgn(addon, isAI)}
+                  {addon.unit && <span className="text-sm font-normal text-gray-500 ml-1">{addon.unit}</span>}
                 </div>
               </div>
             ))}
@@ -319,7 +323,7 @@ export default function PricingContent({
           </div>
 
           <div className="space-y-6">
-            {sharedFaqs.map((faq, index) => (
+            {pricingFaqs.map((faq, index) => (
               <div
                 key={index}
                 className="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-lg transition-all duration-300"

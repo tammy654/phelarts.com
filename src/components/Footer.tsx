@@ -25,9 +25,10 @@ const linkGroups = [
   {
     title: 'Services',
     links: [
-      { href: '/services', label: '2D Animation' },
-      { href: '/services', label: 'Motion Graphics' },
-      { href: '/services', label: 'Video Production' },
+      { href: '/services#2d-animation', label: '2D Animation' },
+      { href: '/services#motion-graphics', label: 'Motion Graphics' },
+      { href: '/services#video-production', label: 'Video Production' },
+      { href: '/ai-videos', label: 'AI Videos' },
     ],
   },
   {
@@ -159,7 +160,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-[#f7f5f1]/40">© 2025 Phel Arts. All rights reserved.</p>
+          <p className="text-sm text-[#f7f5f1]/40">© 2026 Phel Arts. All rights reserved.</p>
           <div className="flex gap-8 text-sm text-[#f7f5f1]/40">
             <a href="#" className="hover:text-[#f59e0b] transition-colors">Privacy</a>
             <a href="#" className="hover:text-[#f59e0b] transition-colors">Terms</a>

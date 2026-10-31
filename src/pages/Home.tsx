@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Play, X, Target, Layers3, SlidersHorizontal, Truck } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import Hero from '../components/Hero';
-import ClientLogos from '../components/ClientLogos';
 type Reel = {
   title: string;
   client: string;
@@ -263,7 +262,7 @@ export default function Home() {
         </div>
       </section>
 
-      <ClientLogos />
+      {/* Trusted by logo strip hidden until real client logos are added */}
 
       {/* Services preview */}
       <section className="py-28 bg-[#f7f5f1]">

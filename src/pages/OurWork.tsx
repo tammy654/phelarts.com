@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, X, Play, Volume2 } from 'lucide-react';
 
-const filters = ['All', '2D Animation', 'Motion Graphics', 'Web Animation', 'Video Production'];
+const filters = ['All', '2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos'];
 
 type Reel = {
   title: string;
@@ -41,9 +41,9 @@ const reels: Reel[] = [
     year: '2023',
   },
   {
-    title: 'Web Interface Animations',
-    client: 'DigitalFlow',
-    category: 'Web Animation',
+    title: 'AI Assisted Brand Film',
+    client: 'NovaBrand',
+    category: 'AI Videos',
     image: 'https://images.pexels.com/photos/31899138/pexels-photo-31899138.jpeg?auto=compress&cs=tinysrgb&w=1200',
     video: 'https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1572/1080p.mp4',
     year: '2023',
