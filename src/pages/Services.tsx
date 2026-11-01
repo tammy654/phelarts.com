@@ -121,10 +121,12 @@ export default function Services() {
                       </li>
                     ))}
                   </ul>
-                  <span className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all">
-                    {s.href ? 'Explore AI Videos' : 'Get a Quote'}
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
+                  {s.href && (
+                    <span className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all">
+                      Explore AI Videos
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  )}
                 </>
               );
 
@@ -160,7 +162,7 @@ export default function Services() {
                   }`}
                 >
                   {cardContent}
-                  <a href="/book-call" className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all mt-6">
+                  <a href="/book-call" className="inline-flex items-center gap-2 text-[#f59e0b] font-semibold text-sm hover:gap-3 transition-all">
                     Get a Quote
                     <ArrowRight className="w-4 h-4" />
                   </a>

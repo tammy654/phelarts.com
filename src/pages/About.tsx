@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Award, Users, Clock, Target, ArrowRight, Heart, Shield, Lightbulb } from 'lucide-react';
-import ClientLogos from '../components/ClientLogos';
 
 const stats = [
   { icon: Award, value: '500+', label: 'Projects Delivered' },
@@ -44,7 +43,7 @@ export default function About() {
         </div>
       </section>
 
-      <ClientLogos />
+      {/* Trusted by logo strip hidden until real client logos are added */}
 
       {/* Story */}
       <section className="py-28 bg-[#f7f5f1]">

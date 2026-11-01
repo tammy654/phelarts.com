@@ -321,7 +321,7 @@ export const pricingBadges = ['No Hidden Fees', 'Flexible Payment Plans', 'Clear
 
 export function formatUsd(value: number | 'custom'): string {
   if (value === 'custom') return 'Custom';
-  return `${value.toLocaleString('en-US')}`;
+  return `$${value.toLocaleString('en-US')}`;
 }
 
 export function formatNgn(value: number | 'custom'): string {
@@ -335,7 +335,7 @@ export function formatAddonUsd(addon: AddOnData, isAI: boolean): string {
   if (typeof v === 'string' && v.includes('%')) return v;
   if (typeof v === 'string') {
     const parts = v.split(' to ').map((p) => `$${parseInt(p.trim(), 10).toLocaleString('en-US')}`);
-    return parts.join(' to ');
+    return parts.join('–');
   }
   return String(v);
 }
@@ -346,7 +346,7 @@ export function formatAddonNgn(addon: AddOnData, isAI: boolean): string {
   if (typeof v === 'string' && v.includes('%')) return v;
   if (typeof v === 'string') {
     const parts = v.split(' to ').map((p) => `₦${parseInt(p.trim(), 10).toLocaleString('en-US')}`);
-    return parts.join(' to ');
+    return parts.join('–');
   }
   return String(v);
 }
