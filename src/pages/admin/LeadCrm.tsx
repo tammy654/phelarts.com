@@ -70,6 +70,11 @@ export default function LeadCrm({ row, sourceType, onUpdated, onDrafted }: Props
     }
     setDrafting(true);
     try {
+      // Save any unsaved notes first so the AI sees them.
+      if ((row.notes ?? '') !== notes) {
+        const ok = await save({ notes: notes.trim() || null });
+        if (!ok) return;
+      }
       const res = await invokeFunction<{ draft: FollowUpDraft }>('draft-followup', {
         source_type: sourceType,
         source_id: row.id,

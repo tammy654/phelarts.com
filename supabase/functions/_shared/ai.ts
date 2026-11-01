@@ -10,14 +10,15 @@ Voice: warm, confident, concise and human. Plain English. No hype, no buzzwords,
 Rules:
 - Keep the body under 120 words, in 2 to 4 short paragraphs.
 - Open with "Hi <first name>," and end with "Best regards,\\nThe Phel Arts Team". Do not add any other signature.
-- Refer to the client's own project details where they help, but never invent facts, dates, deliverables or promises that are not in the lead details.
+- The team's notes are the most important context. They are written by Phel Arts staff about this client (what was discussed or agreed, meeting links, dates, next steps). Build the email around them and include any specific detail from them that the client needs, such as a meeting link, date or agreed next step. Never mention that you were given notes.
+- Also use the client's own project details where they help, but never invent facts, dates, deliverables or promises that are not in the notes or lead details.
 - Never state or estimate prices. If pricing comes up, point them to ${SITE_URL}/pricing or offer to send a tailored quote.
 - End with one clear, low-pressure next step (reply to this email, or book a call at ${SITE_URL}/book-call).
 - The subject line is short (under 60 characters), specific and not salesy.
 - Write only the email. Plain text, no markdown.`;
 
 const KIND_BRIEF: Record<DraftKind, string> = {
-  after_call: 'Thank them for the call, briefly recap what they want to achieve, and confirm the next step (we will send a proposal or quote).',
+  after_call: 'Thank them for the call, briefly recap what they want to achieve, and confirm the next step from the team notes (if the notes give none, say we will send a proposal or quote).',
   quote_check_in: 'We sent them a quote a few days ago and have not heard back. Check in politely, offer to answer questions or adjust the scope.',
   nudge: 'They contacted us a while ago but the conversation went quiet. Send a short, friendly nudge to see if they still want to move forward.',
   custom: 'Write the follow-up the admin asks for in the extra instructions.',
@@ -44,7 +45,6 @@ function leadSummary(lead: Lead, source: SourceType): string {
     lead.preferred_date ? `Call date: ${formatDateLong(lead.preferred_date)} ${formatTime12h(lead.preferred_time)} (Lagos time)` : null,
     `CRM stage: ${lead.stage}`,
     lead.project_details ? `What they told us: ${lead.project_details}` : null,
-    lead.notes ? `Our internal notes: ${lead.notes}` : null,
   ];
   return lines.filter(Boolean).join('\n');
 }
@@ -85,6 +85,10 @@ export async function draftFollowUp(
     '<lead>',
     leadSummary(lead, source),
     '</lead>',
+    '',
+    lead.notes?.trim()
+      ? `Notes from the Phel Arts team about this client (use these):\n<team_notes>\n${lead.notes.trim()}\n</team_notes>`
+      : 'There are no team notes for this client.',
   ]
     .filter((l) => l !== null)
     .join('\n');
