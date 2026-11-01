@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck } from 'lucide-react';
+import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck, Send } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAdminSession, clearAdminSession } from './AdminLogin';
+import LeadCrm, { type CrmFields } from './LeadCrm';
+import DraftsPanel from './DraftsPanel';
+import { STAGES, stageInfo, type FollowUpDraft, type LeadStage } from './crm';
 
-type TabKey = 'bookings' | 'inquiries' | 'newsletter' | 'projects';
+type TabKey = 'bookings' | 'inquiries' | 'drafts' | 'newsletter' | 'projects';
 type ProjectStatus = 'ongoing' | 'completed' | 'canceled';
 type AdminRole = 'super' | 'manager';
 
@@ -27,6 +30,11 @@ interface LeadRow {
   preferred_time?: string | null;
   project_details?: string | null;
   created_at: string;
+  stage?: LeadStage | null;
+  notes?: string | null;
+  next_follow_up_at?: string | null;
+  last_contacted_at?: string | null;
+  confirmation_sent_at?: string | null;
 }
 
 interface NewsletterRow {
@@ -56,6 +64,7 @@ interface ProjectRow {
 const TABS: { key: TabKey; label: string; icon: typeof Calendar }[] = [
   { key: 'bookings', label: 'Bookings', icon: Calendar },
   { key: 'inquiries', label: 'Inquiries', icon: Inbox },
+  { key: 'drafts', label: 'To approve', icon: Send },
   { key: 'projects', label: 'Projects', icon: FolderKanban },
   { key: 'newsletter', label: 'Newsletter Subscribers', icon: Mail },
 ];
@@ -99,6 +108,8 @@ export default function AdminDashboard() {
   const [subscribers, setSubscribers] = useState<NewsletterRow[]>([]);
   const [projects, setProjects] = useState<ProjectRow[]>([]);
   const [projectFilter, setProjectFilter] = useState<ProjectStatus | 'all'>('all');
+  const [stageFilter, setStageFilter] = useState<LeadStage | 'all'>('all');
+  const [drafts, setDrafts] = useState<FollowUpDraft[]>([]);
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -142,6 +153,10 @@ export default function AdminDashboard() {
           const { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false });
           if (error) throw error;
           if (mounted) setInquiries((data as LeadRow[]) ?? []);
+        } else if (activeTab === 'drafts') {
+          const { data, error } = await supabase.from('followup_drafts').select('*').eq('status', 'pending').order('created_at', { ascending: false });
+          if (error) throw error;
+          if (mounted) setDrafts((data as FollowUpDraft[]) ?? []);
         } else if (activeTab === 'newsletter') {
           const { data, error } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
           if (error) throw error;
@@ -168,6 +183,8 @@ export default function AdminDashboard() {
     (async () => {
       const { data, error } = await supabase.from('projects').select('*').order('updated_at', { ascending: false });
       if (!error && data && mounted) setProjects(data as ProjectRow[]);
+      const draftsRes = await supabase.from('followup_drafts').select('*').eq('status', 'pending').order('created_at', { ascending: false });
+      if (!draftsRes.error && draftsRes.data && mounted) setDrafts(draftsRes.data as FollowUpDraft[]);
     })();
     return () => { mounted = false; };
   }, [ready]);
@@ -254,6 +271,15 @@ export default function AdminDashboard() {
     }
   };
 
+  const updateLead = (sourceType: 'booking' | 'inquiry', id: string, patch: Partial<CrmFields>) => {
+    const apply = (rows: LeadRow[]) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r));
+    if (sourceType === 'booking') setBookings(apply);
+    else setInquiries(apply);
+  };
+
+  const addDraft = (draft: FollowUpDraft) => setDrafts((cur) => [draft, ...cur.filter((d) => d.id !== draft.id)]);
+  const removeDraft = (id: string) => setDrafts((cur) => cur.filter((d) => d.id !== id));
+
   const handleLogout = async () => {
     await clearAdminSession();
     navigate('/admin/login', { replace: true });
@@ -274,13 +300,18 @@ export default function AdminDashboard() {
         (r.email ?? '').toLowerCase().includes(q),
       );
     }
-    const rows = activeTab === 'bookings' ? bookings : inquiries;
+    if (activeTab === 'drafts') {
+      if (!q) return drafts;
+      return drafts.filter((d) => (d.to_name ?? '').toLowerCase().includes(q) || d.to_email.toLowerCase().includes(q));
+    }
+    const all = activeTab === 'bookings' ? bookings : inquiries;
+    const rows = stageFilter === 'all' ? all : all.filter((r) => (r.stage ?? 'new') === stageFilter);
     if (!q) return rows;
     return rows.filter((r) =>
       (r.full_name ?? '').toLowerCase().includes(q) ||
       r.email.toLowerCase().includes(q),
     );
-  }, [activeTab, query, bookings, inquiries, subscribers, projects, projectFilter]);
+  }, [activeTab, query, bookings, inquiries, subscribers, projects, projectFilter, drafts, stageFilter]);
 
   const leadColumns = [
     { key: 'full_name', label: 'Name' },
@@ -292,7 +323,20 @@ export default function AdminDashboard() {
     { key: 'preferred_date', label: 'Preferred Date' },
     { key: 'preferred_time', label: 'Preferred Time' },
     { key: 'project_details', label: 'Project Details' },
+    { key: 'stage', label: 'Stage' },
+    { key: 'next_follow_up_at', label: 'Next Follow-up' },
+    { key: 'last_contacted_at', label: 'Last Contacted' },
+    { key: 'notes', label: 'Notes' },
     { key: 'created_at', label: 'Submitted' },
+  ];
+
+  const draftColumns = [
+    { key: 'to_name', label: 'Name' },
+    { key: 'to_email', label: 'Email' },
+    { key: 'kind', label: 'Type' },
+    { key: 'subject', label: 'Subject' },
+    { key: 'body', label: 'Message' },
+    { key: 'created_at', label: 'Drafted' },
   ];
 
   const newsletterColumns = [
@@ -311,10 +355,11 @@ export default function AdminDashboard() {
   const totalCount =
     activeTab === 'bookings' ? bookings.length :
     activeTab === 'inquiries' ? inquiries.length :
+    activeTab === 'drafts' ? drafts.length :
     activeTab === 'newsletter' ? subscribers.length :
     projects.length;
 
-  const currentColumns = activeTab === 'newsletter' ? newsletterColumns : leadColumns;
+  const currentColumns = activeTab === 'newsletter' ? newsletterColumns : activeTab === 'drafts' ? draftColumns : leadColumns;
   const exportName = `${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`;
 
   const DeleteButton = ({ id }: { id: string }) => {
@@ -346,6 +391,14 @@ export default function AdminDashboard() {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <div className="font-display font-bold text-lg text-[#16161a]">{row.full_name || '—'}</div>
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${stageInfo(row.stage).badge}`}>
+                {stageInfo(row.stage).label}
+              </span>
+              {row.next_follow_up_at && (
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#16161a]/[0.06] text-[#16161a]">
+                  Follow up {row.next_follow_up_at}
+                </span>
+              )}
               {moved && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-[#0f5132]/10 text-[#0f5132] border border-[#0f5132]/20">
                   <FolderKanban className="w-3 h-3" /> In Projects
@@ -376,6 +429,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+          <div><span className="text-[#6b6b73]">Email:</span> <a href={`mailto:${row.email}`} className="text-[#16161a] hover:underline break-all">{row.email}</a></div>
           <div><span className="text-[#6b6b73]">Company:</span> <span className="text-[#16161a]">{row.company || '—'}</span></div>
           <div><span className="text-[#6b6b73]">Phone:</span> <span className="text-[#16161a]">{row.phone || '—'}</span></div>
           <div><span className="text-[#6b6b73]">Project Type:</span> <span className="text-[#16161a]">{row.project_type || '—'}</span></div>
@@ -389,6 +443,12 @@ export default function AdminDashboard() {
             <p className="text-[#16161a] mt-1 whitespace-pre-wrap">{row.project_details}</p>
           </div>
         )}
+        <LeadCrm
+          row={row as CrmFields}
+          sourceType={sourceType}
+          onUpdated={(id, patch) => updateLead(sourceType, id, patch)}
+          onDrafted={addDraft}
+        />
       </div>
     );
   };
@@ -429,13 +489,14 @@ export default function AdminDashboard() {
             const count =
               tab.key === 'bookings' ? bookings.length :
               tab.key === 'inquiries' ? inquiries.length :
+              tab.key === 'drafts' ? drafts.length :
               tab.key === 'newsletter' ? subscribers.length :
               projects.length;
             const active = activeTab === tab.key;
             return (
               <button
                 key={tab.key}
-                onClick={() => { setActiveTab(tab.key); setQuery(''); setProjectFilter('all'); }}
+                onClick={() => { setActiveTab(tab.key); setQuery(''); setProjectFilter('all'); setStageFilter('all'); }}
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors ${
                   active
                     ? 'bg-[#f59e0b] text-[#16161a] border border-[#f59e0b]'
@@ -485,6 +546,19 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+            {(activeTab === 'bookings' || activeTab === 'inquiries') && (
+              <select
+                value={stageFilter}
+                onChange={(e) => setStageFilter(e.target.value as LeadStage | 'all')}
+                aria-label="Filter by stage"
+                className="rounded-xl border border-black/[0.08] bg-white px-3 py-2 text-sm font-semibold text-[#16161a]"
+              >
+                <option value="all">All stages</option>
+                {STAGES.map((st) => (
+                  <option key={st.key} value={st.key}>{st.label}</option>
+                ))}
+              </select>
+            )}
           </div>
           <button
             onClick={() => exportCsv(exportName, filteredRows as unknown as Record<string, unknown>[], currentColumns)}
@@ -498,7 +572,7 @@ export default function AdminDashboard() {
 
         <div className="mb-4 text-sm text-[#6b6b73]">
           Showing {filteredRows.length} of {totalCount}{' '}
-          {activeTab === 'newsletter' ? 'subscribers' : activeTab === 'projects' ? 'projects' : 'submissions'}
+          {activeTab === 'newsletter' ? 'subscribers' : activeTab === 'projects' ? 'projects' : activeTab === 'drafts' ? 'drafts' : 'submissions'}
         </div>
 
         {/* Content */}
@@ -507,6 +581,8 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-center py-20">
               <LoadingSpinner size="lg" color="#16161a" />
             </div>
+          ) : activeTab === 'drafts' ? (
+            <DraftsPanel drafts={filteredRows as FollowUpDraft[]} onRemoved={removeDraft} />
           ) : filteredRows.length === 0 ? (
             <div className="py-20 text-center">
               <div className="text-[#16161a] font-semibold mb-1">

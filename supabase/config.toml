@@ -1,0 +1,16 @@
+# Supabase CLI settings for deploying Edge Functions.
+# JWT checks are done inside each function (admin functions verify the
+# signed-in user; the cron job uses a Vault secret), so the gateway check is off.
+project_id = "gnvcvidmnjykarvssrhl"
+
+[functions.lead-confirmation]
+verify_jwt = false
+
+[functions.draft-followup]
+verify_jwt = false
+
+[functions.send-followup]
+verify_jwt = false
+
+[functions.daily-digest]
+verify_jwt = false
