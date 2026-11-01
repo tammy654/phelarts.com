@@ -69,7 +69,10 @@ export const submitBookingForm = async (data: BookingData): Promise<void> => {
     project_details: data.project_details.trim(),
   });
 
-  if (error) throw new Error('Failed to submit booking. Please try again.');
+  if (error) {
+    console.error('Booking submit failed:', error);
+    throw new Error('Failed to submit booking. Please try again.');
+  }
 };
 
 export const submitContactForm = async (data: InquiryData): Promise<void> => {
@@ -92,7 +95,10 @@ export const submitContactForm = async (data: InquiryData): Promise<void> => {
     project_details: data.project_details.trim(),
   });
 
-  if (error) throw new Error('Failed to send message. Please try again.');
+  if (error) {
+    console.error('Inquiry submit failed:', error);
+    throw new Error('Failed to send message. Please try again.');
+  }
 };
 
 export const subscribeToNewsletter = async (data: NewsletterData): Promise<'subscribed' | 'already_subscribed'> => {
