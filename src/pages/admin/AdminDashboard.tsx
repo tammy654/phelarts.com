@@ -106,13 +106,17 @@ export default function AdminDashboard() {
   const isSuperAdmin = session?.role === 'super';
 
   useEffect(() => {
-    const s = getAdminSession();
-    if (!s) {
-      navigate('/admin/login', { replace: true });
-      return;
-    }
-    setSession(s);
-    setReady(true);
+    let mounted = true;
+    getAdminSession().then((s) => {
+      if (!mounted) return;
+      if (!s) {
+        navigate('/admin/login', { replace: true });
+        return;
+      }
+      setSession(s);
+      setReady(true);
+    });
+    return () => { mounted = false; };
   }, [navigate]);
 
   // Track which source rows have been moved to projects
@@ -147,7 +151,8 @@ export default function AdminDashboard() {
           if (error) throw error;
           if (mounted) setProjects((data as ProjectRow[]) ?? []);
         }
-      } catch {
+      } catch (err) {
+        console.error('Admin load failed:', err);
         toast.error('Could not load submissions.');
       } finally {
         if (mounted) setLoading(false);
@@ -249,8 +254,8 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    clearAdminSession();
+  const handleLogout = async () => {
+    await clearAdminSession();
     navigate('/admin/login', { replace: true });
   };
 

@@ -5,9 +5,9 @@ import { Lock, Mail, ArrowRight, KeyRound } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-const ADMIN_EMAIL = 'phelarts@gmail.com';
-const ADMIN_PASSWORD = 'Phelarts_1407';
-const ADMIN_SESSION_KEY = 'phelarts_admin_session';
+export const ADMIN_EMAIL = 'phelarts@gmail.com';
+// Old local flag from the previous login system; removed on sign-in/out.
+const LEGACY_SESSION_KEY = 'phelarts_admin_session';
 
 type AdminRole = 'super' | 'manager';
 interface AdminSession {
@@ -15,18 +15,30 @@ interface AdminSession {
   role: AdminRole;
 }
 
-export function getAdminSession(): AdminSession | null {
+// The admin is whoever is signed in to Supabase Auth as ADMIN_EMAIL.
+// Database access is enforced by Supabase row level security, not by this check.
+export async function getAdminSession(): Promise<AdminSession | null> {
   try {
-    const raw = localStorage.getItem(ADMIN_SESSION_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as AdminSession;
+    const { data } = await supabase.auth.getSession();
+    const email = data.session?.user.email?.toLowerCase();
+    if (email !== ADMIN_EMAIL) return null;
+    return { email, role: 'super' };
   } catch {
     return null;
   }
 }
 
-export function clearAdminSession() {
-  localStorage.removeItem(ADMIN_SESSION_KEY);
+export async function clearAdminSession() {
+  try {
+    localStorage.removeItem(LEGACY_SESSION_KEY);
+  } catch {
+    // ignore
+  }
+  try {
+    await supabase.auth.signOut();
+  } catch {
+    // ignore
+  }
 }
 
 export default function AdminLogin() {
@@ -36,8 +48,9 @@ export default function AdminLogin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const session = getAdminSession();
-    if (session) navigate('/admin', { replace: true });
+    getAdminSession().then((session) => {
+      if (session) navigate('/admin', { replace: true });
+    });
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,7 +62,7 @@ export default function AdminLogin() {
     const normalizedEmail = email.trim().toLowerCase();
 
     try {
-      if (normalizedEmail !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      if (normalizedEmail !== ADMIN_EMAIL) {
         toast.error('Invalid email or password.');
         return;
       }
@@ -58,13 +71,15 @@ export default function AdminLogin() {
         password,
       });
       if (error) {
+        console.error('Admin sign-in failed:', error);
         toast.error('Invalid email or password.');
         return;
       }
-      localStorage.setItem(
-        ADMIN_SESSION_KEY,
-        JSON.stringify({ email: normalizedEmail, role: 'super' as AdminRole }),
-      );
+      try {
+        localStorage.removeItem(LEGACY_SESSION_KEY);
+      } catch {
+        // ignore
+      }
       toast.success('Welcome back');
       navigate('/admin', { replace: true });
     } catch {

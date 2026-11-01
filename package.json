@@ -12,8 +12,6 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.74.0",
     "aos": "^2.3.4",
-    "emailjs-com": "^3.2.0",
-    "firebase": "^12.3.0",
     "framer-motion": "^12.23.12",
     "locomotive-scroll": "^4.1.4",
     "lucide-react": "^0.344.0",

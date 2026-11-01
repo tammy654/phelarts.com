@@ -1,47 +1,29 @@
-phelarts.com
+# phelarts.com
 
-## Firebase Setup Instructions
+Website for Phel Arts. React + Vite + Tailwind, hosted on Netlify, data in Supabase.
 
-### 1. Create Firebase Project
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project named "phelarts-website"
-3. Enable Firestore Database
-4. Enable Storage (optional)
+## Local development
 
-### 2. Configure Environment Variables
-1. Copy `.env.local` and fill in your Firebase configuration
-2. Get your config from Firebase Project Settings > General > Your apps
-3. Add your Firebase config values to `.env.local`
+1. `npm install`
+2. Create a `.env` file:
+   ```
+   VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+   VITE_SUPABASE_ANON_KEY=<publishable key>
+   ```
+3. `npm run dev`
 
-### 3. EmailJS Setup
-1. Create account at [EmailJS](https://www.emailjs.com/)
-2. Create email service (Gmail recommended)
-3. Create email template with these variables:
-   - `{{to_email}}`
-   - `{{from_name}}`
-   - `{{from_email}}`
-   - `{{subject}}`
-   - `{{message}}`
-   - `{{reply_to}}`
-4. Add your EmailJS credentials to `.env.local`
+## Hosting (Netlify)
 
-### 4. Firestore Collections
-The app will automatically create these collections:
-- `bookings` - Book a Call form submissions
-- `contacts` - Contact form submissions  
-- `newsletter` - Newsletter subscriptions
+- Netlify builds from the `main` branch on GitHub (`npm run build`, publish `dist`).
+- The two `VITE_SUPABASE_*` variables above are set in Netlify under Site configuration → Environment variables.
+- `public/_redirects` sends every path to `index.html` so direct links like `/admin` work.
 
-### 5. Security Rules
-Deploy the included `firestore.rules` to your Firebase project:
-```bash
-firebase deploy --only firestore:rules
-```
+## Database (Supabase)
 
-### 6. Features Implemented
-- ✅ Firebase Firestore integration
-- ✅ EmailJS email notifications
-- ✅ Form validation with toast notifications
-- ✅ Loading states and error handling
-- ✅ Auto-confirmation emails to users
-- ✅ Responsive Google Forms newsletter integration
-- ✅ Secure environment variable configuration
+- Tables: `bookings` and `inquiries` (public forms insert), `newsletter_subscribers` (via the `subscribe_to_newsletter` function), `projects` (admin only).
+- Only the Supabase Auth user `phelarts@gmail.com` can read or manage submissions; this is enforced by row level security.
+- SQL changes live in `supabase/migrations/`. Run new files in the Supabase SQL Editor.
+
+## Pricing
+
+All prices live in `src/config/pricing.ts`. The Pricing, Services and AI Videos pages read from it.
