@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck, Send } from 'lucide-react';
+import { LogOut, Search, Download, Calendar, Inbox, Mail, FolderKanban, ArrowRight, Loader2, Trash2, ShieldCheck, Send, Megaphone } from 'lucide-react';
 import { supabase } from '../../config/supabase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { getAdminSession, clearAdminSession } from './AdminLogin';
 import LeadCrm, { type CrmFields } from './LeadCrm';
 import DraftsPanel from './DraftsPanel';
+import SocialPanel from './SocialPanel';
 import { STAGES, stageInfo, type FollowUpDraft, type LeadStage } from './crm';
 
-type TabKey = 'bookings' | 'inquiries' | 'drafts' | 'newsletter' | 'projects';
+type TabKey = 'bookings' | 'inquiries' | 'drafts' | 'social' | 'newsletter' | 'projects';
 type ProjectStatus = 'ongoing' | 'completed' | 'canceled';
 type AdminRole = 'super' | 'manager';
 
@@ -65,6 +66,7 @@ const TABS: { key: TabKey; label: string; icon: typeof Calendar }[] = [
   { key: 'bookings', label: 'Bookings', icon: Calendar },
   { key: 'inquiries', label: 'Inquiries', icon: Inbox },
   { key: 'drafts', label: 'To approve', icon: Send },
+  { key: 'social', label: 'Social', icon: Megaphone },
   { key: 'projects', label: 'Projects', icon: FolderKanban },
   { key: 'newsletter', label: 'Newsletter Subscribers', icon: Mail },
 ];
@@ -142,6 +144,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!ready) return;
     let mounted = true;
+    if (activeTab === 'social') return;
     (async () => {
       setLoading(true);
       try {
@@ -505,16 +508,18 @@ export default function AdminDashboard() {
               >
                 <tab.icon className="w-4 h-4" />
                 <span>{tab.label}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${active ? 'bg-[#16161a]/10' : 'bg-black/[0.06]'}`}>
-                  {count}
-                </span>
+                {tab.key !== 'social' && (
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${active ? 'bg-[#16161a]/10' : 'bg-black/[0.06]'}`}>
+                    {count}
+                  </span>
+                )}
               </button>
             );
           })}
         </div>
 
         {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6 items-stretch sm:items-center justify-between">
+        <div className={`${activeTab === 'social' ? 'hidden' : 'flex'} flex-col sm:flex-row gap-4 mb-6 items-stretch sm:items-center justify-between`}>
           <div className="flex flex-1 gap-3 max-w-xl">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6b73]" />
@@ -570,14 +575,16 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        <div className="mb-4 text-sm text-[#6b6b73]">
+        <div className={`mb-4 text-sm text-[#6b6b73] ${activeTab === 'social' ? 'hidden' : ''}`}>
           Showing {filteredRows.length} of {totalCount}{' '}
           {activeTab === 'newsletter' ? 'subscribers' : activeTab === 'projects' ? 'projects' : activeTab === 'drafts' ? 'drafts' : 'submissions'}
         </div>
 
         {/* Content */}
         <div className="bg-white rounded-3xl border border-black/[0.06] overflow-hidden">
-          {loading ? (
+          {activeTab === 'social' ? (
+            <SocialPanel />
+          ) : loading ? (
             <div className="flex items-center justify-center py-20">
               <LoadingSpinner size="lg" color="#16161a" />
             </div>

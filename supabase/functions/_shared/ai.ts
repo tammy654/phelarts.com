@@ -49,7 +49,18 @@ function leadSummary(lead: Lead, source: SourceType): string {
   return lines.filter(Boolean).join('\n');
 }
 
-function friendlyAiError(err: unknown): string {
+export function aiClient(): Anthropic {
+  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY secret');
+  // Organization-wide keys need to say which workspace to use.
+  const workspaceId = Deno.env.get('ANTHROPIC_WORKSPACE_ID')?.trim();
+  return new Anthropic({
+    apiKey,
+    ...(workspaceId ? { defaultHeaders: { 'anthropic-workspace-id': workspaceId } } : {}),
+  });
+}
+
+export function friendlyAiError(err: unknown): string {
   if (err instanceof Anthropic.AuthenticationError) return 'The Anthropic API key was rejected. Check the ANTHROPIC_API_KEY secret.';
   if (err instanceof Anthropic.PermissionDeniedError) return 'The Anthropic API key is not allowed to use this model or workspace.';
   if (err instanceof Anthropic.RateLimitError) return 'The AI is busy right now. Try again in a minute.';
@@ -68,14 +79,7 @@ export async function draftFollowUp(
   kind: DraftKind,
   extraInstructions?: string,
 ): Promise<{ subject: string; body: string }> {
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
-  if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY secret');
-  // Organization-wide keys need to say which workspace to use.
-  const workspaceId = Deno.env.get('ANTHROPIC_WORKSPACE_ID')?.trim();
-  const client = new Anthropic({
-    apiKey,
-    ...(workspaceId ? { defaultHeaders: { 'anthropic-workspace-id': workspaceId } } : {}),
-  });
+  const client = aiClient();
 
   const userPrompt = [
     `Task: ${KIND_BRIEF[kind]}`,
