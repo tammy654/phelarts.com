@@ -49,6 +49,19 @@ function leadSummary(lead: Lead, source: SourceType): string {
   return lines.filter(Boolean).join('\n');
 }
 
+function friendlyAiError(err: unknown): string {
+  if (err instanceof Anthropic.AuthenticationError) return 'The Anthropic API key was rejected. Check the ANTHROPIC_API_KEY secret.';
+  if (err instanceof Anthropic.PermissionDeniedError) return 'The Anthropic API key is not allowed to use this model or workspace.';
+  if (err instanceof Anthropic.RateLimitError) return 'The AI is busy right now. Try again in a minute.';
+  if (err instanceof Anthropic.BadRequestError) {
+    if (/workspace/i.test(err.message)) return 'The Anthropic API key needs a workspace ID. Set the ANTHROPIC_WORKSPACE_ID secret.';
+    if (/credit|billing|balance/i.test(err.message)) return 'Your Anthropic account is out of credit. Add credit at console.anthropic.com.';
+    return 'The AI request was rejected. See the function logs for details.';
+  }
+  if (err instanceof Anthropic.APIError) return 'The AI service had a problem. Try again shortly.';
+  return 'Could not reach the AI service. Try again shortly.';
+}
+
 export async function draftFollowUp(
   lead: Lead,
   source: SourceType,
@@ -57,7 +70,12 @@ export async function draftFollowUp(
 ): Promise<{ subject: string; body: string }> {
   const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
   if (!apiKey) throw new Error('Missing ANTHROPIC_API_KEY secret');
-  const client = new Anthropic({ apiKey });
+  // Organization-wide keys need to say which workspace to use.
+  const workspaceId = Deno.env.get('ANTHROPIC_WORKSPACE_ID')?.trim();
+  const client = new Anthropic({
+    apiKey,
+    ...(workspaceId ? { defaultHeaders: { 'anthropic-workspace-id': workspaceId } } : {}),
+  });
 
   const userPrompt = [
     `Task: ${KIND_BRIEF[kind]}`,
@@ -71,7 +89,9 @@ export async function draftFollowUp(
     .filter((l) => l !== null)
     .join('\n');
 
-  const response = await client.beta.messages.create({
+  let response: Anthropic.Beta.BetaMessage;
+  try {
+    response = await client.beta.messages.create({
     model: MODEL,
     max_tokens: 4000,
     betas: ['server-side-fallback-2026-07-01'],
@@ -82,7 +102,11 @@ export async function draftFollowUp(
     },
     system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: userPrompt }],
-  } as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming);
+  } as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming) as Anthropic.Beta.BetaMessage;
+  } catch (err) {
+    console.error('Anthropic request failed:', err);
+    throw new Error(friendlyAiError(err));
+  }
 
   if (response.stop_reason === 'refusal') {
     throw new Error('The AI declined to write this draft.');
