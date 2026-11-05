@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.social-drafts]
 verify_jwt = false
+
+[functions.campaign-reminders]
+verify_jwt = false
