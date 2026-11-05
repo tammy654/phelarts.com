@@ -30,6 +30,8 @@ Deno.serve(async (req) => {
     const { data, error } = await db.rpc('crm_verify_cron_secret', { candidate: cronSecret });
     if (error || data !== true) return json({ error: 'Not authorized' }, 401);
     fromCron = true;
+    // Weekly runs can be paused with the SOCIAL_WEEKLY_PAUSED secret ("true").
+    if (Deno.env.get('SOCIAL_WEEKLY_PAUSED') === 'true') return json({ ok: true, paused: true });
   } else if (!(await isAdminRequest(req))) {
     return json({ error: 'Not authorized' }, 401);
   }

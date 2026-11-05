@@ -83,6 +83,11 @@ Deno.serve(async (req) => {
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
   if (!(await authorized(req))) return json({ error: 'Not authorized' }, 401);
 
+  // Scheduled runs can be paused with the DAILY_DIGEST_PAUSED secret ("true").
+  if (req.headers.get('x-cron-secret') && Deno.env.get('DAILY_DIGEST_PAUSED') === 'true') {
+    return json({ ok: true, paused: true });
+  }
+
   const db = serviceClient();
   const today = todayLagos();
   const now = Date.now();
