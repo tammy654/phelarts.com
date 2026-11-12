@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Mail, Phone, MessageCircle, MapPin, Send, Clock, Users } from 'lucide-react';
-import { submitContactForm, InquiryData, CallType, ProjectType } from '../services/emailService';
+import { Mail, Phone, MessageCircle, MapPin, Send, Clock, Users, Instagram, Facebook } from 'lucide-react';
+import { submitContactForm, CallType, ProjectType } from '../services/emailService';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { BUSINESS } from '../config/business';
 
 const contactMethods = [
-  { icon: Mail, title: 'Email us', description: 'We respond within 24 hours', contact: 'phelarts@gmail.com', action: 'mailto:phelarts@gmail.com' },
-  { icon: Phone, title: 'Call us', description: 'Speak directly with our team', contact: '+234 906 755 6062', action: 'tel:+2349067556062' },
-  { icon: MessageCircle, title: 'WhatsApp', description: 'Chat with us anytime', contact: '+234 708 661 3704', action: 'https://wa.me/2347086613704' },
+  { icon: Mail, title: 'Email us', description: 'We respond within 24 hours', contact: BUSINESS.email, action: BUSINESS.emailHref },
+  { icon: Phone, title: 'Call us', description: 'Speak directly with our team', contact: BUSINESS.phone, action: BUSINESS.phoneHref },
+  { icon: MessageCircle, title: 'WhatsApp', description: 'Chat with us anytime', contact: BUSINESS.phone, action: BUSINESS.whatsappHref },
 ];
 
 const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
@@ -142,11 +143,26 @@ export default function Contact() {
             <div>
               <h2 className="font-display font-bold text-3xl text-[#16161a] mb-8">Let's start a conversation</h2>
               <div className="space-y-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-[#16161a] flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-[#f59e0b]" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-[#16161a]">{BUSINESS.name}</div>
+                    <address className="not-italic text-[#6b6b73]">
+                      {BUSINESS.addressLines.map((line) => (
+                        <span key={line} className="block">{line}</span>
+                      ))}
+                    </address>
+                  </div>
+                </div>
                 {[
-                  { icon: Mail, label: 'Email us', value: 'phelarts@gmail.com' },
-                  { icon: Phone, label: 'Call us', value: '+234 906 755 6062' },
-                  { icon: MessageCircle, label: 'WhatsApp', value: '+234 708 661 3704' },
-                  { icon: MapPin, label: 'Visit us', value: 'Port Harcourt, Nigeria' },
+                  { icon: Phone, label: 'Phone', value: `${BUSINESS.phone} (international: ${BUSINESS.phoneIntl})`, href: BUSINESS.phoneHref },
+                  { icon: MessageCircle, label: 'WhatsApp', value: BUSINESS.phone, href: BUSINESS.whatsappHref },
+                  { icon: Mail, label: 'Email', value: BUSINESS.email, href: BUSINESS.emailHref },
+                  { icon: Clock, label: 'Hours', value: BUSINESS.hours },
+                  { icon: Instagram, label: 'Instagram', value: BUSINESS.instagram.handle, href: BUSINESS.instagram.href, external: true },
+                  { icon: Facebook, label: 'Facebook', value: BUSINESS.facebook.label, href: BUSINESS.facebook.href, external: true },
                 ].map((c) => (
                   <div key={c.label} className="flex items-start gap-4">
                     <div className="w-11 h-11 rounded-xl bg-[#16161a] flex items-center justify-center flex-shrink-0">
@@ -154,7 +170,17 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold text-[#16161a]">{c.label}</div>
-                      <div className="text-[#6b6b73]">{c.value}</div>
+                      {c.href ? (
+                        <a
+                          href={c.href}
+                          {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                          className="text-[#6b6b73] hover:text-[#f59e0b] transition-colors"
+                        >
+                          {c.value}
+                        </a>
+                      ) : (
+                        <div className="text-[#6b6b73]">{c.value}</div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -268,8 +294,31 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* Map */}
+      <section id="location" className="scroll-mt-28 py-20 bg-[#f7f5f1]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span className="eyebrow">Find us</span>
+            <h2 className="font-display font-bold text-4xl lg:text-5xl text-[#16161a] mt-4">Visit the studio.</h2>
+            <address className="not-italic text-[#6b6b73] mt-4">
+              {BUSINESS.name}, {BUSINESS.addressLines.join(' ')}
+            </address>
+          </div>
+          <div className="rounded-3xl overflow-hidden border border-black/[0.06] bg-white">
+            <iframe
+              title={`${BUSINESS.name} on Google Maps`}
+              src={BUSINESS.mapEmbedSrc}
+              className="w-full h-[360px] md:h-[450px] border-0 block"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section className="py-28 bg-[#f7f5f1]">
+      <section className="py-28 bg-white">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-14">
             <span className="eyebrow">FAQ</span>
@@ -279,7 +328,7 @@ export default function Contact() {
           </div>
           <div className="space-y-4">
             {faqs.map((f) => (
-              <div key={f.question} className="bg-white rounded-2xl p-7 border border-black/[0.06] lift">
+              <div key={f.question} className="bg-[#f7f5f1] rounded-2xl p-7 border border-black/[0.06] lift">
                 <h3 className="font-display font-bold text-lg text-[#16161a] mb-3">{f.question}</h3>
                 <p className="text-[#6b6b73] leading-relaxed">{f.answer}</p>
               </div>

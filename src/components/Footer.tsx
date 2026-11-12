@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MessageCircle, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, ArrowRight, Instagram, Facebook } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { subscribeToNewsletter } from '../services/emailService';
+import { BUSINESS } from '../config/business';
 
 const socials = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Youtube, href: '#', label: 'YouTube' },
+  { icon: Instagram, href: BUSINESS.instagram.href, label: `Instagram ${BUSINESS.instagram.handle}` },
+  { icon: Facebook, href: BUSINESS.facebook.href, label: 'Facebook' },
 ];
 
 const linkGroups = [
@@ -81,18 +80,24 @@ export default function Footer() {
               A creative motion studio blending design, animation, and storytelling to build memorable brand experiences that inspire action.
             </p>
             <div className="mt-8 space-y-3">
-              <a href="mailto:phelarts@gmail.com" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
-                <Mail className="w-4 h-4" /> phelarts@gmail.com
+              <div className="font-semibold text-[#f7f5f1]">{BUSINESS.name}</div>
+              <address className="not-italic flex items-start gap-3 text-[#f7f5f1]/70">
+                <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
+                <span>
+                  {BUSINESS.addressLines.map((line) => (
+                    <span key={line} className="block">{line}</span>
+                  ))}
+                </span>
+              </address>
+              <a href={BUSINESS.phoneHref} className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
+                <Phone className="w-4 h-4" /> {BUSINESS.phone}
               </a>
-              <a href="tel:+2349067556062" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
-                <Phone className="w-4 h-4" /> +234 906 755 6062
+              <a href={BUSINESS.whatsappHref} className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
+                <MessageCircle className="w-4 h-4" /> WhatsApp {BUSINESS.phone}
               </a>
-              <a href="https://wa.me/2347086613704" className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
-                <MessageCircle className="w-4 h-4" /> +234 708 661 3704
+              <a href={BUSINESS.emailHref} className="flex items-center gap-3 text-[#f7f5f1]/70 hover:text-[#f59e0b] transition-colors">
+                <Mail className="w-4 h-4" /> {BUSINESS.email}
               </a>
-              <div className="flex items-center gap-3 text-[#f7f5f1]/70">
-                <MapPin className="w-4 h-4" /> Port Harcourt, Nigeria
-              </div>
             </div>
           </div>
 
@@ -148,6 +153,8 @@ export default function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s.label}
                   className="w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-[#f59e0b] hover:border-[#f59e0b] hover:text-[#16161a] transition-all duration-300"
                 >
