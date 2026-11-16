@@ -5,6 +5,7 @@ export type ProjectType =
   | 'Motion Graphics'
   | 'Video Production'
   | 'AI Videos'
+  | 'Video Editing'
   | 'Other';
 
 export type CallType = 'Video Call' | 'Phone Call' | 'Chat Session';

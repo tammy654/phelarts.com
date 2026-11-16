@@ -29,7 +29,7 @@ const planIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Enterprise: Crown,
 };
 
-const projectTypeOptions = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
+const projectTypeOptions = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Video Editing', 'Other'];
 
 interface PricingContentProps {
   service: PricingService;

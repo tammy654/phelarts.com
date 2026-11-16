@@ -12,7 +12,7 @@ const callTypes: { id: CallType; icon: typeof Video; label: CallType; descriptio
   { id: 'Chat Session', icon: MessageCircle, label: 'Chat Session', description: 'Text consultation' },
 ];
 
-const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
+const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Video Editing', 'Other'];
 
 const benefits = [
   'Free 30 minute consultation', 'Project scope discussion', 'Timeline and budget planning',

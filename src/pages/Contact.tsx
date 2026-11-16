@@ -11,7 +11,7 @@ const contactMethods = [
   { icon: MessageCircle, title: 'WhatsApp', description: 'Chat with us anytime', contact: BUSINESS.phone, action: BUSINESS.whatsappHref },
 ];
 
-const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
+const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Video Editing', 'Other'];
 const callTypes: CallType[] = ['Video Call', 'Phone Call', 'Chat Session'];
 
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
