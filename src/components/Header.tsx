@@ -21,10 +21,11 @@ const navItems: NavItem[] = [
     href: '/services',
     label: 'Services',
     dropdown: [
-      { href: '/services#2d-animation', label: '2D Animation', description: 'Character-driven stories and explainer videos.' },
+      { href: '/services#2d-animation', label: '2D Animation', description: 'Character driven stories and explainer videos.' },
       { href: '/services#motion-graphics', label: 'Motion Graphics', description: 'Dynamic visuals that bring brands to life.' },
-      { href: '/services#video-production', label: 'Video Production', description: 'End-to-end video, concept to delivery.' },
+      { href: '/services#video-production', label: 'Video Production', description: 'End to end video, concept to delivery.' },
       { href: '/services#ai-videos', label: 'AI Videos', description: 'AI assisted storytelling with human direction.' },
+      { href: '/services#video-editing', label: 'Video Editing', description: 'Social, ad and long form edits from your footage.' },
     ],
   },
   {
@@ -42,7 +43,7 @@ const navItems: NavItem[] = [
     label: 'Contact',
     dropdown: [
       { href: '/contact', label: 'General Inquiry', description: 'Tell us about your project.' },
-      { href: '/book-call', label: 'Book a Call', description: 'Free 30-minute consultation.' },
+      { href: '/book-call', label: 'Book a Call', description: 'Free 30 minute consultation.' },
     ],
   },
 ];

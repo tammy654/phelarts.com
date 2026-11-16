@@ -4,14 +4,15 @@ import toast from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
 import { submitBookingForm, submitContactForm } from '../services/emailService';
 import {
-  type PlanData,
+  type PricingService,
   type AddOnData,
   pricingFaqs,
-  pricingBadges,
+  pricingTerms,
+  festivePackages,
   formatUsd,
   formatNgn,
-  formatAddonUsd,
-  formatAddonNgn,
+  formatBoth,
+  formatAddon,
 } from '../config/pricing';
 
 const to24h = (display: string): string => {
@@ -31,9 +32,8 @@ const planIcons: Record<string, React.ComponentType<{ className?: string }>> = {
 const projectTypeOptions = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
 
 interface PricingContentProps {
-  plans: PlanData[];
+  service: PricingService;
   addOns: AddOnData[];
-  isAI: boolean;
   badge?: string;
   subtitle?: string;
   accentBorder?: boolean;
@@ -42,16 +42,15 @@ interface PricingContentProps {
 }
 
 export default function PricingContent({
-  plans,
+  service,
   addOns,
-  isAI,
   badge,
   subtitle,
   accentBorder,
   bookCtaHref,
   enquiryCtaHref,
 }: PricingContentProps) {
-  const [currency, setCurrency] = useState<'USD' | 'NGN'>('USD');
+  const { plans, isAI } = service;
   const [activeModal, setActiveModal] = useState<'call' | 'enquiry' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [callForm, setCallForm] = useState({ name: '', email: '', date: '', time: '', message: '' });
@@ -126,26 +125,6 @@ export default function PricingContent({
 
   return (
     <>
-      <div className="fixed right-4 top-24 z-40 sm:right-6" role="group" aria-label="Choose pricing currency">
-        <div className="flex items-center gap-1 rounded-full border border-[#242424]/10 bg-[#fefefe]/95 p-1 shadow-xl shadow-[#242424]/10 backdrop-blur-md">
-          {(['USD', 'NGN'] as const).map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setCurrency(option)}
-              aria-pressed={currency === option}
-              className={`rounded-full px-3 py-2 text-xs font-bold tracking-[0.12em] transition-all duration-300 sm:px-4 ${
-                currency === option
-                  ? 'bg-[#016952] text-[#fefefe] shadow-md shadow-[#016952]/20'
-                  : 'text-[#242424]/55 hover:bg-[#242424]/[0.06] hover:text-[#242424]'
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Pricing Plans */}
       <section className="py-24 bg-[#fefefe]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -165,9 +144,8 @@ export default function PricingContent({
           <div className="grid lg:grid-cols-3 gap-8">
             {plans.map((plan, index) => {
               const Icon = planIcons[plan.name] ?? Star;
-              const isCustom = plan.usd === 'custom';
-              const usdText = isCustom && plan.fromUsd ? `From ${formatUsd(plan.fromUsd)}` : formatUsd(plan.usd);
-              const ngnText = isCustom && plan.fromNgn ? `From ${formatNgn(plan.fromNgn)}` : formatNgn(plan.ngn);
+              const ngnText = `${plan.from ? 'From ' : ''}${formatNgn(plan.ngn)}`;
+              const usdText = `(${formatUsd(plan.usd)})`;
               return (
                 <div
                   key={index}
@@ -196,11 +174,12 @@ export default function PricingContent({
                       <Icon className={`w-8 h-8 ${plan.popular ? 'text-[#fefefe]' : 'text-gray-600'}`} />
                     </div>
                     <h3 className="text-2xl font-bold text-[#242424] mb-2">{plan.name}</h3>
-                    <p className="text-gray-600 mb-6">{plan.description}</p>
+                    {plan.description && <p className="text-gray-600 mb-6">{plan.description}</p>}
                     <div className="mb-6 text-center">
-                      <span className="block whitespace-nowrap text-[clamp(2rem,7vw,2.75rem)] font-bold leading-none tracking-[-0.04em] text-[#242424]">
-                        {currency === 'USD' ? usdText : ngnText}
+                      <span className="block whitespace-nowrap text-[clamp(1.75rem,6vw,2.5rem)] font-bold leading-none tracking-[-0.04em] text-[#242424]">
+                        {ngnText}
                       </span>
+                      <span className="mt-2 block text-xl font-semibold text-[#242424]/70">{usdText}</span>
                       <span className="mt-2 block text-gray-500">{plan.period}</span>
                     </div>
                   </div>
@@ -234,6 +213,70 @@ export default function PricingContent({
               );
             })}
           </div>
+
+          {(service.policy || service.extras.length > 0) && (
+            <div className="mt-16 max-w-4xl mx-auto rounded-2xl border border-gray-200 bg-gray-50 p-8" data-aos="fade-up">
+              <h3 className="text-xl font-bold text-[#242424] mb-4">{service.label}</h3>
+              <ul className="space-y-3">
+                {service.policy?.map((line) => (
+                  <li key={line} className="flex items-start">
+                    <Check className="w-5 h-5 text-[#016952] mr-3 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">{line}</span>
+                  </li>
+                ))}
+                {service.extras.map((extra) => (
+                  <li key={extra.label} className="flex items-start">
+                    <Check className="w-5 h-5 text-[#016952] mr-3 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      {extra.label}: <span className="font-semibold text-[#ff9a1d]">{formatBoth(extra.ngn, extra.usd)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className={`${service.policy || service.extras.length > 0 ? 'mt-6' : 'mt-16'} max-w-4xl mx-auto space-y-2 text-center text-sm text-gray-500`}>
+            {service.notes.map((note) => (
+              <p key={note}>{note}</p>
+            ))}
+          </div>
+
+          <div className="mt-10 max-w-4xl mx-auto rounded-2xl border border-[#ff9a1d]/40 bg-[#ff9a1d]/5 p-8" data-aos="fade-up">
+            <h3 className="text-xl font-bold text-[#242424] mb-4">Terms</h3>
+            <ul className="space-y-3">
+              {pricingTerms.map((term) => (
+                <li key={term} className="flex items-start">
+                  <Check className="w-5 h-5 text-[#ff9a1d] mr-3 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">{term}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Festive Packages */}
+      <section className="py-24 bg-[#fefefe] border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16" data-aos="fade-up">
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#242424] mb-6">
+              Festive packages
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {festivePackages.map((pkg, index) => (
+              <div
+                key={pkg.name}
+                className="p-6 bg-gray-50 rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
+                <h3 className="text-xl font-bold text-[#242424] mb-3">{pkg.name}</h3>
+                <div className="text-lg font-semibold text-[#ff9a1d]">{formatBoth(pkg.ngn, pkg.usd, pkg.from)}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -246,7 +289,7 @@ export default function PricingContent({
                 <div className="mb-8 pr-8">
                   <span className="eyebrow text-[#016952]">Schedule your call</span>
                   <h2 id="pricing-modal-title" className="mt-3 text-3xl font-bold text-[#242424]">Let’s find the right fit.</h2>
-                  <p className="mt-2 text-[#6b6b73]">Book a free 30-minute consultation with our team.</p>
+                  <p className="mt-2 text-[#6b6b73]">Book a free 30 minute consultation with our team.</p>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <input required name="name" value={callForm.name} onChange={updateCallForm} placeholder="Your name *" className="w-full rounded-xl border border-black/[0.08] bg-white px-4 py-3.5 text-[#16161a] outline-none focus:border-[#f59e0b]" />
@@ -279,6 +322,7 @@ export default function PricingContent({
       )}
 
       {/* Add-ons Section */}
+      {service.showAddOns && (
       <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16" data-aos="fade-up">
@@ -301,7 +345,7 @@ export default function PricingContent({
                 <h3 className="text-xl font-bold text-[#242424] mb-3">{addon.name}</h3>
                 <p className="text-gray-600 mb-4 text-sm">{addon.description}</p>
                 <div className="text-lg font-semibold text-[#ff9a1d]">
-                  {currency === 'USD' ? formatAddonUsd(addon, isAI) : formatAddonNgn(addon, isAI)}
+                  {formatAddon(addon, isAI)}
                   {addon.unit && <span className="text-sm font-normal text-gray-500 ml-1">{addon.unit}</span>}
                 </div>
               </div>
@@ -309,6 +353,7 @@ export default function PricingContent({
           </div>
         </div>
       </section>
+      )}
 
       {/* FAQ Section */}
       <section className="py-24 bg-[#fefefe]">

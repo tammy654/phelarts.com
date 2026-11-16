@@ -3,28 +3,29 @@ import { useSearchParams } from 'react-router-dom';
 import { Sparkles, Tag } from 'lucide-react';
 import PricingContent from '../components/PricingContent';
 import {
-  standardPlans,
-  aiPlans,
+  pricingServices,
   addOns,
   pricingBadges,
 } from '../config/pricing';
 
-type Mode = 'standard' | 'ai';
+const DEFAULT_MODE = pricingServices[0].id;
 
 export default function Pricing() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialMode: Mode = searchParams.get('mode') === 'ai' ? 'ai' : 'standard';
-  const [mode, setMode] = useState<Mode>(initialMode);
+  const requested = searchParams.get('mode');
+  const initialMode = pricingServices.some((s) => s.id === requested) ? (requested as string) : DEFAULT_MODE;
+  const [mode, setMode] = useState<string>(initialMode);
 
-  const switchMode = (next: Mode) => {
+  const switchMode = (next: string) => {
     setMode(next);
     const params = new URLSearchParams(searchParams);
-    if (next === 'ai') params.set('mode', 'ai');
+    if (next !== DEFAULT_MODE) params.set('mode', next);
     else params.delete('mode');
     setSearchParams(params, { replace: true });
   };
 
-  const isAI = mode === 'ai';
+  const service = pricingServices.find((s) => s.id === mode) ?? pricingServices[0];
+  const isAI = service.isAI;
   const heading = isAI ? 'AI Pricing' : 'Pricing';
   const heroSubtitle = isAI
     ? 'Pricing reflects AI assisted production with human creative direction.'
@@ -43,36 +44,30 @@ export default function Pricing() {
           {/* Mode toggle */}
           <div className="mb-8 flex justify-center">
             <div
-              className="inline-flex items-center gap-1 rounded-full border border-[#fefefe]/25 bg-[#fefefe]/10 p-1 backdrop-blur-sm"
+              className="inline-flex flex-wrap items-center justify-center gap-1 rounded-3xl border border-[#fefefe]/25 bg-[#fefefe]/10 p-1 backdrop-blur-sm"
               role="group"
               aria-label="Switch pricing type"
             >
-              <button
-                type="button"
-                onClick={() => switchMode('standard')}
-                aria-pressed={!isAI}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold tracking-[0.08em] transition-all duration-300 ${
-                  !isAI
-                    ? 'bg-[#f59e0b] text-[#16161a] shadow-md'
-                    : 'text-[#fefefe]/70 hover:text-[#fefefe]'
-                }`}
-              >
-                <Tag className="w-4 h-4" />
-                Pricing
-              </button>
-              <button
-                type="button"
-                onClick={() => switchMode('ai')}
-                aria-pressed={isAI}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold tracking-[0.08em] transition-all duration-300 ${
-                  isAI
-                    ? 'bg-[#f59e0b] text-[#16161a] shadow-md'
-                    : 'text-[#fefefe]/70 hover:text-[#fefefe]'
-                }`}
-              >
-                <Sparkles className="w-4 h-4" />
-                AI Pricing
-              </button>
+              {pricingServices.map((svc) => {
+                const active = svc.id === mode;
+                const Icon = svc.isAI ? Sparkles : Tag;
+                return (
+                  <button
+                    key={svc.id}
+                    type="button"
+                    onClick={() => switchMode(svc.id)}
+                    aria-pressed={active}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold tracking-[0.08em] transition-all duration-300 ${
+                      active
+                        ? 'bg-[#f59e0b] text-[#16161a] shadow-md'
+                        : 'text-[#fefefe]/70 hover:text-[#fefefe]'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {svc.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -94,9 +89,8 @@ export default function Pricing() {
 
       <PricingContent
         key={mode}
-        plans={isAI ? aiPlans : standardPlans}
+        service={service}
         addOns={addOns}
-        isAI={isAI}
         badge={isAI ? 'AI Pricing' : undefined}
         subtitle={isAI ? 'Pricing reflects AI assisted production with human creative direction.' : undefined}
         accentBorder={isAI}

@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { Video, Palette, Film, Sparkles, ArrowRight, Check } from 'lucide-react';
-import { servicesSummary, formatUsd, formatNgn } from '../config/pricing';
+import { Video, Palette, Film, Sparkles, Scissors, ArrowRight, Check } from 'lucide-react';
+import { servicesSummary, formatBoth } from '../config/pricing';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   '2d-animation': Video,
   'motion-graphics': Palette,
   'video-production': Film,
   'ai-videos': Sparkles,
+  'video-editing': Scissors,
 };
 
 const process = [
@@ -22,7 +23,6 @@ const process = [
 export default function Services() {
   const location = useLocation();
   const [highlightedService, setHighlightedService] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'USD' | 'NGN'>('USD');
 
   useEffect(() => {
     if (!location.hash) return;
@@ -72,34 +72,13 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Currency toggle */}
-      <div className="flex justify-center py-8 bg-[#f7f5f1]">
-        <div className="inline-flex items-center gap-1 rounded-full border border-[#242424]/10 bg-[#fefefe] p-1 shadow-sm" role="group" aria-label="Choose currency">
-          {(['USD', 'NGN'] as const).map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setCurrency(option)}
-              aria-pressed={currency === option}
-              className={`rounded-full px-4 py-2 text-xs font-bold tracking-[0.12em] transition-all duration-300 ${
-                currency === option
-                  ? 'bg-[#016952] text-[#fefefe] shadow-md'
-                  : 'text-[#242424]/55 hover:bg-[#242424]/[0.06] hover:text-[#242424]'
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Services grid — 2×2 on desktop, 1 column on mobile */}
-      <section className="pb-28 bg-[#f7f5f1]">
+      {/* Services grid: 2 columns on desktop, 1 column on mobile */}
+      <section className="pt-20 pb-28 bg-[#f7f5f1]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-6">
             {servicesSummary.map((s, i) => {
               const Icon = iconMap[s.id] ?? Video;
-              const priceText = currency === 'USD' ? `Starting at ${formatUsd(s.startingUsd)}` : `Starting at ${formatNgn(s.startingNgn)}`;
+              const priceText = formatBoth(s.startingNgn, s.startingUsd, true);
               const cardContent = (
                 <>
                   <div className="flex items-start justify-between mb-6">

@@ -28,7 +28,7 @@ const caseStudies = [
     category: '2D Animation & Educational Content',
     image: 'https://images.pexels.com/photos/12198536/pexels-photo-12198536.jpeg?auto=compress&cs=tinysrgb&w=800',
     challenge: 'EduLearn\'s educational content had low engagement and high dropout rates. Students found the material boring and difficult to understand.',
-    solution: 'We created a series of character-driven 2D animations that simplified complex concepts and made learning fun through storytelling.',
+    solution: 'We created a series of character driven 2D animations that simplified complex concepts and made learning fun through storytelling.',
     results: [
       { metric: 'User Engagement', value: '+250%', icon: TrendingUp },
       { metric: 'Course Completion', value: '+180%', icon: Target },
@@ -78,7 +78,7 @@ export default function CaseStudies() {
               Results that speak.
             </h1>
             <p className="max-w-2xl text-xl leading-relaxed text-[#f7f5f1]/60 lg:mr-auto">
-              Deep dives into our most successful projects — the challenges we solved, the solutions
+              Deep dives into our most successful projects, the challenges we solved, the solutions
               we built, and the measurable results we achieved.
             </p>
           </motion.div>

@@ -28,6 +28,7 @@ const linkGroups = [
       { href: '/services#motion-graphics', label: 'Motion Graphics' },
       { href: '/services#video-production', label: 'Video Production' },
       { href: '/ai-videos', label: 'AI Videos' },
+      { href: '/services#video-editing', label: 'Video Editing' },
     ],
   },
   {

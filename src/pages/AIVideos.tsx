@@ -15,7 +15,7 @@ import {
   Film,
   ShieldCheck,
 } from 'lucide-react';
-import { aiVideoTurnaround } from '../config/pricing';
+import { aiVideoTurnaround, aiPolicy, aiExtraShot, turnaroundNote, formatBoth } from '../config/pricing';
 
 const aiCapabilities = [
   {
@@ -36,7 +36,7 @@ const aiCapabilities = [
   {
     icon: RefreshCw,
     title: 'Fast revision rounds',
-    description: 'AI speeds up iteration, so you see new versions sooner without extra cost pressure.',
+    description: 'AI speeds up iteration, so you see new versions sooner within your included revision rounds.',
   },
 ];
 
@@ -176,7 +176,7 @@ export default function AIVideos() {
           {/* Packages */}
           <div className="mt-12 rounded-3xl border border-white/10 bg-white/[0.04] p-7 lg:p-8">
             <div className="text-xs font-semibold tracking-[0.18em] uppercase text-[#f7f5f1]/45 mb-5">
-              Typical turnaround by package
+              Typical turnaround
             </div>
             <ul className="divide-y divide-white/10">
               {aiVideoTurnaround.map((p) => (
@@ -188,6 +188,29 @@ export default function AIVideos() {
                   <span className="text-[#f7f5f1]/70 font-medium">{p.days}</span>
                 </li>
               ))}
+            </ul>
+            <p className="mt-4 text-sm text-[#f7f5f1]/55">{turnaroundNote}</p>
+          </div>
+
+          {/* AI Videos policy */}
+          <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.04] p-7 lg:p-8">
+            <div className="text-xs font-semibold tracking-[0.18em] uppercase text-[#f7f5f1]/45 mb-5">
+              AI Videos policy
+            </div>
+            <ul className="divide-y divide-white/10">
+              {aiPolicy.map((line) => (
+                <li key={line} className="flex items-center gap-3 py-4">
+                  <span className="w-2 h-2 rounded-full bg-[#f59e0b] flex-shrink-0" />
+                  <span className="text-[#f7f5f1]/80 font-medium">{line}</span>
+                </li>
+              ))}
+              <li className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-4">
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-[#f59e0b] flex-shrink-0" />
+                  <span className="text-[#f7f5f1]/80 font-medium">{aiExtraShot.label}</span>
+                </div>
+                <span className="font-display font-bold text-lg text-[#f7f5f1]">{formatBoth(aiExtraShot.ngn, aiExtraShot.usd)}</span>
+              </li>
             </ul>
           </div>
         </div>

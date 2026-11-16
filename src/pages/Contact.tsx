@@ -17,8 +17,8 @@ const callTypes: CallType[] = ['Video Call', 'Phone Call', 'Chat Session'];
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
 
 const faqs = [
-  { question: 'What is your typical project timeline?', answer: 'Timelines vary by complexity, but most projects take 2–6 weeks from concept to completion.' },
-  { question: 'Do you offer revisions?', answer: 'Yes, we include unlimited revisions during the concept phase and 3 rounds during production.' },
+  { question: 'What is your typical project timeline?', answer: 'Timelines vary by service. You get a first draft or first cut in 48 hours, and final delivery ranges from 72 hours for motion graphics to 3 to 6 weeks for video production. See our pricing page for each service.' },
+  { question: 'Do you offer revisions?', answer: 'Yes. Starter packages include 2 revision rounds, Professional packages include 3, and Enterprise revisions are agreed per project.' },
   { question: 'What file formats do you deliver?', answer: 'We deliver in all major formats including MP4, MOV, GIF, and source files in After Effects.' },
   { question: 'Can you work with tight deadlines?', answer: 'We can accommodate rush projects with additional fees. Contact us to discuss your timeline.' },
 ];
@@ -190,7 +190,7 @@ export default function Contact() {
             <div className="bg-[#f7f5f1] rounded-2xl p-8 border border-black/[0.06]">
               <h3 className="font-display font-bold text-[#16161a] mb-5">Why work with us?</h3>
               <ul className="space-y-3">
-                {['Fast turnaround times', 'Unlimited concept revisions', 'Professional quality guaranteed', 'Competitive pricing', 'Dedicated project manager', 'Post-delivery support'].map((item) => (
+                {['Fast turnaround times', 'Clear revision rounds', 'Professional quality guaranteed', 'Competitive pricing', 'Dedicated project manager', 'Post delivery support'].map((item) => (
                   <li key={item} className="flex items-center text-[#3a3a42] text-sm">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] mr-3 flex-shrink-0" />
                     {item}

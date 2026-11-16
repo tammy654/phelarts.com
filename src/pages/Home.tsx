@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Play, X, Target, Layers3, SlidersHorizontal, Truck } from 'lucide-react';
+import { ArrowRight, Sparkles, Play, X, Target, Layers3, SlidersHorizontal, Truck, Scissors } from 'lucide-react';
+import { servicesSummary, formatBoth } from '../config/pricing';
 import { AnimatePresence } from 'framer-motion';
 import Hero from '../components/Hero';
 type Reel = {
@@ -106,26 +107,40 @@ function FeaturedReel({ reel, onPlay }: { reel: Reel; onPlay: (r: Reel) => void 
   );
 }
 
-const services = [
+const services: { id: string; title: string; level: string; description: string; image?: string }[] = [
   {
+    id: '2d-animation',
     title: '2D Animation',
     level: 'Character & Explainer Films',
-    description: 'Create memorable character-driven stories and explainer videos with expressive movement, thoughtful pacing, and a distinct visual style.',
+    description: 'Create memorable character driven stories and explainer videos with expressive movement, thoughtful pacing, and a distinct visual style.',
     image: 'https://res.cloudinary.com/cqzopbig/image/upload/v1793168240/Stories_2.png',
   },
   {
+    id: 'motion-graphics',
     title: 'Motion Graphics',
     level: 'Brand & Campaign Visuals',
     description: 'Bring your brand to life with dynamic visual systems, bold transitions, and polished motion built for campaigns, launches, and digital platforms.',
     image: 'https://res.cloudinary.com/cqzopbig/image/upload/v1793169689/Motion_Graphics.jpg',
   },
   {
+    id: 'video-production',
     title: 'Video Production',
     level: 'Concept to Final Delivery',
     description: 'Produce engaging films from first idea to final cut with creative direction, cinematography, editing, colour, and sound handled with care.',
     image: 'https://res.cloudinary.com/cqzopbig/image/upload/v1793170475/Video_Production.jpg',
   },
+  {
+    id: 'video-editing',
+    title: 'Video Editing',
+    level: 'Social, Ad & Long Form Edits',
+    description: 'Turn the footage you send us into polished social and ad edits, main videos, and long form or multi camera cuts that keep your audience watching.',
+  },
 ];
+
+const startingPrice = (id: string) => {
+  const s = servicesSummary.find((x) => x.id === id);
+  return s ? formatBoth(s.startingNgn, s.startingUsd, true) : null;
+};
 
 const process = [
   { step: '01', title: 'Discovery', description: 'We learn your goals, audience, and project requirements.', icon: Target },
@@ -278,7 +293,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((s, i) => (
               <motion.div
                 key={s.title}
@@ -293,13 +308,25 @@ export default function Home() {
                     {s.title}
                   </h3>
                   <p className="text-[#6b6b73] text-sm mt-2">{s.level}</p>
+                  {startingPrice(s.id) && (
+                    <p className="font-display font-bold text-[#b45309] text-sm mt-2">{startingPrice(s.id)}</p>
+                  )}
                 </div>
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  {s.image ? (
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#242424] flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
+                      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(245,158,11,0.25)_0%,transparent_45%,rgba(15,81,50,0.4)_100%)]" />
+                      <div className="relative w-20 h-20 rounded-full bg-[#f59e0b] flex items-center justify-center shadow-[0_0_40px_rgba(245,158,11,0.5)]">
+                        <Scissors className="w-8 h-8 text-[#16161a]" />
+                      </div>
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#16161a]/20 to-transparent" />
                 </div>
                 <div className="p-7 flex flex-col flex-1">

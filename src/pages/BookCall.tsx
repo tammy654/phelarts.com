@@ -15,12 +15,12 @@ const callTypes: { id: CallType; icon: typeof Video; label: CallType; descriptio
 const projectTypes: ProjectType[] = ['2D Animation', 'Motion Graphics', 'Video Production', 'AI Videos', 'Other'];
 
 const benefits = [
-  'Free 30-minute consultation', 'Project scope discussion', 'Timeline and budget planning',
-  'Creative direction guidance', 'No-obligation quote', 'Expert recommendations',
+  'Free 30 minute consultation', 'Project scope discussion', 'Timeline and budget planning',
+  'Creative direction guidance', 'No obligation quote', 'Expert recommendations',
 ];
 
 const faqs = [
-  { question: 'Is the consultation really free?', answer: 'Yes! Our 30-minute consultation is completely free with no strings attached.' },
+  { question: 'Is the consultation really free?', answer: 'Yes! Our 30 minute consultation is completely free with no strings attached.' },
   { question: 'What should I prepare?', answer: 'Come with a basic idea of your goals, audience, and timeline. Reference materials help too.' },
   { question: 'Will I get a quote on the call?', answer: 'We can provide a rough estimate; detailed quotes are sent within 24 hours after.' },
   { question: 'Can I reschedule?', answer: 'Of course. Email us at least 2 hours before and we will find a new slot.' },
@@ -109,7 +109,7 @@ export default function BookCall() {
             Schedule a consultation.
           </h1>
           <p className="max-w-2xl text-xl leading-relaxed text-[#f7f5f1]/60 lg:mr-auto">
-            A free 30-minute call to discuss your project and discover how we can bring your
+            A free 30 minute call to discuss your project and discover how we can bring your
             vision to life through stunning animation.
           </p>
           <div className="mt-8 flex flex-wrap justify-start gap-3">
